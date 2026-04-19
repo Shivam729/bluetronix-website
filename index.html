@@ -56,10 +56,38 @@ nav {
 .hero {
   background: var(--navy);
   min-height: 90vh;
-  padding: 80px 5vw 80px;
-  display: flex; flex-direction: column; justify-content: center;
+  display: grid; grid-template-columns: 1fr 1fr;
   position: relative; overflow: hidden;
 }
+.hero-content {
+  padding: 80px 5vw 80px;
+  display: flex; flex-direction: column; justify-content: center;
+  position: relative; z-index: 2;
+}
+/* Slideshow */
+.hero-slideshow {
+  position: relative; overflow: hidden;
+}
+.hero-slideshow .slide {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  opacity: 0; transition: opacity 1s ease;
+}
+.hero-slideshow .slide.active { opacity: 1; }
+.hero-slideshow::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to right, var(--navy) 0%, rgba(13,27,78,0.3) 40%, rgba(13,27,78,0.1) 100%);
+  z-index: 1;
+}
+.slideshow-dots {
+  position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 8px; z-index: 2;
+}
+.slideshow-dots span {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: rgba(255,255,255,0.3); cursor: pointer; transition: background 0.3s;
+}
+.slideshow-dots span.active { background: var(--blue); width: 20px; border-radius: 3px; }
 .hero-badge {
   display: inline-flex; align-items: center; gap: 8px;
   background: rgba(65,105,225,0.15); border: 1px solid rgba(65,105,225,0.3);
@@ -104,7 +132,7 @@ nav {
 }
 .btn-outline:hover { border-color: rgba(255,255,255,0.5); color: #fff; }
 
-/* Hero circuit decoration */
+/* Hero circuit decoration (shows on mobile when slideshow hidden) */
 .hero-circuit {
   position: absolute; right: 0; top: 0; bottom: 0; width: 50%;
   opacity: 0.07; pointer-events: none;
@@ -112,6 +140,7 @@ nav {
     linear-gradient(rgba(65,105,225,1) 1px, transparent 1px),
     linear-gradient(90deg, rgba(65,105,225,1) 1px, transparent 1px);
   background-size: 80px 80px;
+  display: none;
 }
 
 /* ── ACCRED STRIP ── */
@@ -290,6 +319,9 @@ footer { background: #060c24; padding: 56px 0 24px; }
 
 /* RESPONSIVE */
 @media(max-width: 1024px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-slideshow { display: none; }
+  .hero-circuit { display: block; }
   .why-layout, .about-layout, .contact-layout { grid-template-columns: 1fr; gap: 48px; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .pathway-grid { grid-template-columns: 1fr 1fr; }
@@ -346,21 +378,34 @@ footer { background: #060c24; padding: 56px 0 24px; }
 
 <!-- HERO -->
 <div id="home" class="hero">
-  <div class="hero-circuit" aria-hidden="true"></div>
-  <div class="hero-badge">Kerala's Oldest ITI · Since 1968 · Kochi</div>
-  <h1>
-    Marks<br/>
-    <span class="accent">Doesn't</span><br/>
-    Matter.<br/>
-    Skills Do.
-  </h1>
-  <p class="hero-tagline">ഒരു തൊഴിൽ. ഒരു ഭാവി. ഇവിടെ നിന്ന് തുടങ്ങാം.</p>
-  <p class="hero-desc">പഠനത്തിൽ പിന്നിലായോ? വേവലാതിപ്പേടണ്ട. Bluetronix-ൽ 1–2 വർഷം practical training എടുക്കൂ — നല്ല ജോലി, നല്ല ശമ്പളം, ഉറപ്പ്. 1968 മുതൽ Kerala-ൽ ഏറ്റവും trusted ITI.</p>
-  <div class="hero-actions">
-    <a href="#contact" class="btn-blue">Admission Enquiry →</a>
-    <a href="#courses" class="btn-outline">Which course suits me? ↓</a>
+  <div class="hero-content">
+    <div class="hero-circuit" aria-hidden="true"></div>
+    <div class="hero-badge">Kerala's Oldest ITI · Since 1968 · Kochi</div>
+    <h1>
+      Marks<br/>
+      <span class="accent">Doesn't</span><br/>
+      Matter.<br/>
+      Skills Do.
+    </h1>
+    <p class="hero-tagline">ഒരു തൊഴിൽ. ഒരു ഭാവി. ഇവിടെ നിന്ന് തുടങ്ങാം.</p>
+    <p class="hero-desc">പഠനത്തിൽ പിന്നിലായോ? വേവലാതിപ്പേടണ്ട. Bluetronix-ൽ 1–2 വർഷം practical training എടുക്കൂ — നല്ല ജോലി, നല്ല ശമ്പളം, ഉറപ്പ്. 1968 മുതൽ Kerala-ൽ ഏറ്റവും trusted ITI.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-blue">Admission Enquiry →</a>
+      <a href="#courses" class="btn-outline">Which course suits me? ↓</a>
+    </div>
   </div>
-  <div class="accred-strip">
+  <!-- Slideshow -->
+  <div class="hero-slideshow" aria-hidden="true">
+    <div class="slide active" style="background-image:url('uploads/slide1.jpg')"></div>
+    <div class="slide" style="background-image:url('uploads/slide4.jpg')"></div>
+    <div class="slide" style="background-image:url('uploads/slide2.jpg')"></div>
+    <div class="slide" style="background-image:url('uploads/slide3.jpg')"></div>
+    <div class="slide" style="background-image:url('uploads/slide5.jpg')"></div>
+    <div class="slideshow-dots">
+      <span class="active"></span><span></span><span></span><span></span><span></span>
+    </div>
+  </div>
+  <div class="accred-strip" style="grid-column:1/-1;align-self:end;">
     <span class="accred-strip-label">Recognized &amp; Affiliated By</span>
     <div class="accred-strip-items">
       <div class="accred-strip-item">
@@ -808,6 +853,22 @@ footer { background: #060c24; padding: 56px 0 24px; }
 </a>
 
 <script>
+// Hero slideshow
+(function() {
+  const slides = document.querySelectorAll('.hero-slideshow .slide');
+  const dots = document.querySelectorAll('.slideshow-dots span');
+  let current = 0;
+  function goTo(n) {
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = (n + slides.length) % slides.length;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+  }
+  dots.forEach((dot, i) => dot.addEventListener('click', () => { goTo(i); clearInterval(timer); timer = setInterval(() => goTo(current + 1), 4500); }));
+  let timer = setInterval(() => goTo(current + 1), 4500);
+})();
+
 // Mobile nav
 const hamburger = document.getElementById('hamburger');
 const mnav = document.getElementById('mnav');
