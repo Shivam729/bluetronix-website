@@ -161,6 +161,68 @@ nav {
 }
 .accred-strip-item img { height: 20px; filter: brightness(0) invert(1); opacity: 0.5; }
 
+/* ── PARTNERS MARQUEE ── */
+.partners-section {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0;
+  overflow: hidden;
+}
+.partners-header {
+  text-align: center;
+  padding: 36px 5vw 20px;
+}
+.partners-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--blue);
+  margin-bottom: 6px;
+}
+.partners-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 28px; font-weight: 900; color: var(--navy);
+  text-transform: uppercase; letter-spacing: 0.04em;
+  line-height: 1.1;
+}
+.partners-title span { color: var(--blue); }
+.marquee-wrap {
+  position: relative;
+  padding: 20px 0 32px;
+  mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+}
+.marquee-track {
+  display: flex;
+  gap: 0;
+  width: max-content;
+  animation: marquee-scroll 30s linear infinite;
+}
+.marquee-track:hover { animation-play-state: paused; }
+@keyframes marquee-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.partner-chip {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 12px 28px;
+  margin: 0 8px;
+  border: 1.5px solid var(--border);
+  border-radius: 4px;
+  background: var(--white);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px; font-weight: 800;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--navy);
+  white-space: nowrap;
+  transition: border-color 0.2s, background 0.2s;
+  cursor: default;
+}
+.partner-chip:hover { border-color: var(--blue); background: var(--blue-light); }
+.partner-chip .pc-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--blue); flex-shrink: 0;
+}
+
 /* ── STATS BAND ── */
 .stats-band {
   background: var(--blue);
@@ -431,6 +493,54 @@ footer { background: #060c24; padding: 56px 0 24px; }
     </div>
   </div>
 </div>
+
+<!-- PARTNERS / OJT COMPANIES -->
+<section class="partners-section">
+  <div class="partners-header">
+    <div class="partners-eyebrow">OJT &amp; Placement Partners</div>
+    <div class="partners-title">Our Graduates Work At <span>Top Companies</span></div>
+  </div>
+  <div class="marquee-wrap">
+    <div class="marquee-track" id="marquee-track">
+      <!-- set 1 -->
+      <div class="partner-chip"><span class="pc-dot"></span>Blue Star</div>
+      <div class="partner-chip"><span class="pc-dot"></span>Voltas</div>
+      <div class="partner-chip"><span class="pc-dot"></span>Crompton Greaves</div>
+      <div class="partner-chip"><span class="pc-dot"></span>Maruti Suzuki</div>
+      <div class="partner-chip"><span class="pc-dot"></span>SFO Technologies</div>
+      <div class="partner-chip"><span class="pc-dot"></span>Amphenol</div>
+      <div class="partner-chip"><span class="pc-dot"></span>Snowline Refrigeration</div>
+      <div class="partner-chip"><span class="pc-dot"></span>Asha Power</div>
+      <div class="partner-chip"><span class="pc-dot"></span>Saraswathi Metal Works</div>
+      <div class="partner-chip"><span class="pc-dot"></span>MNE Tech Pvt. Ltd.</div>
+      <div class="partner-chip"><span class="pc-dot"></span>SEAIMOTO Marine</div>
+      <div class="partner-chip"><span class="pc-dot"></span>Nalcin</div>
+      <div class="partner-chip"><span class="pc-dot"></span>Embrace</div>
+      <div class="partner-chip"><span class="pc-dot"></span>Cochin AC &amp; Refrigeration</div>
+      <div class="partner-chip"><span class="pc-dot"></span>Indian Railways</div>
+      <div class="partner-chip"><span class="pc-dot"></span>ISRO</div>
+      <div class="partner-chip"><span class="pc-dot"></span>Indian Navy</div>
+      <!-- set 2 (duplicate for seamless loop) -->
+      <div class="partner-chip"><span class="pc-dot"></span>Blue Star</div>
+      <div class="partner-chip"><span class="pc-dot"></span>Voltas</div>
+      <div class="partner-chip"><span class="pc-dot"></span>Crompton Greaves</div>
+      <div class="partner-chip"><span class="pc-dot"></span>Maruti Suzuki</div>
+      <div class="partner-chip"><span class="pc-dot"></span>SFO Technologies</div>
+      <div class="partner-chip"><span class="pc-dot"></span>Amphenol</div>
+      <div class="partner-chip"><span class="pc-dot"></span>Snowline Refrigeration</div>
+      <div class="partner-chip"><span class="pc-dot"></span>Asha Power</div>
+      <div class="partner-chip"><span class="pc-dot"></span>Saraswathi Metal Works</div>
+      <div class="partner-chip"><span class="pc-dot"></span>MNE Tech Pvt. Ltd.</div>
+      <div class="partner-chip"><span class="pc-dot"></span>SEAIMOTO Marine</div>
+      <div class="partner-chip"><span class="pc-dot"></span>Nalcin</div>
+      <div class="partner-chip"><span class="pc-dot"></span>Embrace</div>
+      <div class="partner-chip"><span class="pc-dot"></span>Cochin AC &amp; Refrigeration</div>
+      <div class="partner-chip"><span class="pc-dot"></span>Indian Railways</div>
+      <div class="partner-chip"><span class="pc-dot"></span>ISRO</div>
+      <div class="partner-chip"><span class="pc-dot"></span>Indian Navy</div>
+    </div>
+  </div>
+</section>
 
 <!-- STATS BAND -->
 <div class="stats-band">
