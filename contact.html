@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admissions &amp; Contact — Bluetronix ITI Kochi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#F2F0EB;--paper:#FDFCF9;--navy:#0B1D3A;--orange:#FF5500;--orange-light:#FFF0E8;--white:#FFFFFF;--ink:#1A1A2E;--muted:#6B6877;--border:#DDD9CF;--border-light:#EAE7E0;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--ink);font-family:'Barlow',sans-serif;overflow-x:hidden;}
+.eng-grid{background-image:linear-gradient(rgba(11,29,58,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(11,29,58,0.04) 1px,transparent 1px);background-size:40px 40px;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 5vw;height:72px;background:rgba(253,252,249,0.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);box-shadow:0 1px 20px rgba(11,29,58,0.06);}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.nav-logo img{height:44px;width:auto;object-fit:contain;}
+.nav-wordmark{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:22px;letter-spacing:0.05em;color:var(--navy);display:flex;flex-direction:column;line-height:1;}
+.nav-wordmark span{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;}
+.nav-links{display:flex;align-items:center;gap:36px;list-style:none;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;transition:color 0.2s;}
+.nav-links a:hover{color:var(--navy);}
+.nav-links a.active{color:var(--navy);border-bottom:2px solid var(--orange);padding-bottom:2px;}
+.nav-cta{background:var(--orange)!important;color:#fff!important;padding:10px 24px;clip-path:polygon(0 0,92% 0,100% 25%,100% 100%,8% 100%,0 75%);}
+
+/* ELIGIBILITY HERO BAND */
+.elig-band{margin-top:72px;background:var(--navy);padding:36px 5vw;display:flex;gap:40px;align-items:center;flex-wrap:wrap;position:relative;overflow:hidden;}
+.elig-band::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:40px 40px;}
+.elig-band>*{position:relative;z-index:1;}
+.elig-label{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:22px;text-transform:uppercase;color:#fff;white-space:nowrap;}
+.elig-label span{color:var(--orange);}
+.elig-chips{display:flex;gap:10px;flex-wrap:wrap;}
+.elig-chip{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);padding:9px 16px;font-size:13px;font-weight:700;color:rgba(255,255,255,0.85);letter-spacing:0.04em;display:flex;align-items:center;gap:6px;}
+.elig-chip::before{content:'✓';color:var(--orange);font-weight:900;}
+
+/* MAIN LAYOUT */
+.contact-wrap{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 72px - 100px);}
+
+/* LEFT */
+.contact-left{padding:64px 5vw;background:var(--paper);border-right:1px solid var(--border);}
+.eyebrow{font-size:11px;font-weight:800;letter-spacing:0.2em;text-transform:uppercase;color:var(--orange);margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.eyebrow::before{content:'';width:24px;height:2px;background:var(--orange);}
+.contact-left h1{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(44px,5.5vw,80px);line-height:0.92;text-transform:uppercase;color:var(--navy);margin-bottom:36px;}
+.contact-left h1 em{font-style:normal;color:var(--orange);}
+
+.info-blocks{display:flex;flex-direction:column;margin-bottom:44px;}
+.info-block{display:flex;gap:18px;align-items:flex-start;padding:20px 0;border-bottom:1px solid var(--border);}
+.info-block:first-child{border-top:1px solid var(--border);}
+.info-icon{width:40px;height:40px;background:var(--orange-light);border:1px solid rgba(255,85,0,0.15);display:flex;align-items:center;justify-content:center;font-size:17px;min-width:40px;flex-shrink:0;}
+.info-lbl{font-size:10px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--orange);margin-bottom:5px;}
+.info-val{font-size:14px;font-weight:600;color:var(--ink);line-height:1.6;}
+.info-val a{color:var(--ink);text-decoration:none;transition:color 0.2s;}
+.info-val a:hover{color:var(--orange);}
+
+.steps-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:20px;text-transform:uppercase;color:var(--navy);margin-bottom:20px;letter-spacing:0.02em;}
+.steps{display:flex;flex-direction:column;gap:14px;}
+.step{display:flex;gap:14px;align-items:flex-start;}
+.step-num{width:28px;height:28px;background:var(--orange);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:13px;color:#fff;min-width:28px;flex-shrink:0;clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);}
+.step-txt{font-size:13px;color:var(--muted);line-height:1.65;padding-top:4px;}
+.step-txt strong{color:var(--ink);display:block;margin-bottom:2px;font-size:14px;}
+
+/* RIGHT — FORM */
+.contact-right{padding:64px 5vw;background:var(--bg) url("data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='1' cy='1' r='1' fill='rgba(11,29,58,0.06)'/%3E%3C/svg%3E");}
+.form-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:32px;text-transform:uppercase;color:var(--navy);margin-bottom:6px;}
+.form-sub{font-size:14px;color:var(--muted);margin-bottom:32px;line-height:1.55;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-group{margin-bottom:16px;}
+.form-label{font-size:10px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:7px;}
+.form-input,.form-select,.form-textarea{width:100%;background:var(--white);border:1px solid var(--border);color:var(--ink);padding:13px 14px;font-family:'Barlow',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s;appearance:none;-webkit-appearance:none;}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(255,85,0,0.08);}
+.form-input::placeholder,.form-textarea::placeholder{color:rgba(107,104,119,0.5);}
+.form-textarea{resize:vertical;min-height:90px;}
+.submit-btn{width:100%;background:var(--navy);color:#fff;border:none;padding:17px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:19px;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;clip-path:polygon(0 0,95% 0,100% 25%,100% 100%,5% 100%,0 75%);transition:background 0.2s;margin-top:6px;}
+.submit-btn:hover{background:var(--orange);}
+.form-note{font-size:12px;color:var(--muted);margin-top:10px;text-align:center;line-height:1.6;}
+#success-msg{display:none;background:rgba(22,163,74,0.08);border:1px solid rgba(22,163,74,0.2);color:#166534;padding:16px 20px;font-size:14px;font-weight:600;margin-bottom:20px;line-height:1.6;}
+
+/* MAP */
+.map-section{border-top:1px solid var(--border);}
+.map-ph{width:100%;height:320px;background:var(--navy);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;position:relative;overflow:hidden;}
+.map-ph::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:40px 40px;}
+.map-ph>*{position:relative;z-index:1;}
+.map-pin{width:48px;height:48px;background:var(--orange);border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;}
+.map-pin::after{content:'';width:18px;height:18px;background:var(--navy);border-radius:50%;transform:rotate(45deg);}
+.map-addr{text-align:center;}
+.map-addr h3{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:22px;text-transform:uppercase;color:#fff;margin-bottom:6px;}
+.map-addr p{font-size:13px;color:rgba(255,255,255,0.5);}
+.map-addr a{display:inline-block;margin-top:12px;background:var(--orange);color:#fff;padding:10px 24px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:14px;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;}
+.map-addr a:hover{background:#e04400;}
+
+footer{background:var(--navy);padding:40px 5vw 24px;}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
+.footer-bottom p{font-size:11px;color:rgba(255,255,255,0.3);}
+.footer-bottom strong{color:var(--orange);}
+
+@media(max-width:900px){
+  .contact-wrap{grid-template-columns:1fr;}
+  .contact-left,.contact-right{padding:48px 5vw;}
+  .nav-links{display:none;}
+}
+@media(max-width:600px){.form-row{grid-template-columns:1fr;}.elig-band{flex-direction:column;gap:20px;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">
+    <img src="https://www.bluetronixiti.com/img/logo.jpg" alt="Bluetronix" onerror="this.style.display='none'"/>
+    <div class="nav-wordmark">BLUETRONIX<span>College of Engineering & Private ITI</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="courses.html">Courses</a></li>
+    <li><a href="about.html">Our Story</a></li>
+    <li><a href="contact.html" class="active">Contact</a></li>
+    <li><a href="contact.html" class="nav-cta">Apply Now</a></li>
+  </ul>
+</nav>
+
+<!-- ELIGIBILITY BAND -->
+<div class="elig-band">
+  <div class="elig-label">Who Can Apply? <span>Anyone.</span></div>
+  <div class="elig-chips">
+    <div class="elig-chip">SSLC Pass (10th)</div>
+    <div class="elig-chip">SSLC Fail also eligible</div>
+    <div class="elig-chip">Boys &amp; Girls</div>
+    <div class="elig-chip">No Upper Age Limit</div>
+    <div class="elig-chip">Min. Age 14 Years</div>
+    <div class="elig-chip">Session Starts August 2025</div>
+  </div>
+</div>
+
+<div class="contact-wrap">
+
+  <!-- LEFT INFO -->
+  <div class="contact-left">
+    <div class="eyebrow">Admissions &amp; Contact</div>
+    <h1>Let's Get<br/>You <em>Enrolled.</em></h1>
+
+    <div class="info-blocks">
+      <div class="info-block">
+        <div class="info-icon">📍</div>
+        <div>
+          <div class="info-lbl">Address</div>
+          <div class="info-val">Vadakkumthodam Lane, ESI Road<br/>Palluruthy, Kochi – 682006, Ernakulam, Kerala</div>
+        </div>
+      </div>
+      <div class="info-block">
+        <div class="info-icon">📞</div>
+        <div>
+          <div class="info-lbl">Phone</div>
+          <div class="info-val">
+            <a href="tel:04842231926">0484-2231926</a><br/>
+            <a href="tel:9746835055">97468 35055</a><br/>
+            <a href="tel:6238607424">62386 07424</a>
+          </div>
+        </div>
+      </div>
+      <div class="info-block">
+        <div class="info-icon">✉️</div>
+        <div>
+          <div class="info-lbl">Email</div>
+          <div class="info-val"><a href="mailto:bluetronix7@gmail.com">bluetronix7@gmail.com</a></div>
+        </div>
+      </div>
+      <div class="info-block">
+        <div class="info-icon">🕐</div>
+        <div>
+          <div class="info-lbl">Office Hours</div>
+          <div class="info-val">Monday – Saturday<br/>9:00 AM – 5:00 PM</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="steps-title">How Admissions Work</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-txt"><strong>Fill the form or call us</strong>Submit the enquiry form on the right or call any number above. We'll guide you right away — Malayalam-speaking staff available.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-txt"><strong>Visit the campus (recommended)</strong>Come see the labs, workshops and equipment in person. No appointment needed. Open Mon–Sat.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-txt"><strong>Submit documents</strong>10th marksheet (pass or fail), Aadhaar card, 2 passport photos. That's all you need.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-txt"><strong>Start August 2025</strong>Join your chosen trade and begin building your career from Day 1.</div>
+      </div>
+    </div>
+
+    <!-- S.B. ITI Sister Institute -->
+    <div style="margin-top:40px;background:var(--bg);border:1px solid var(--border);border-left:3px solid var(--orange);padding:20px 20px 20px 20px;">
+      <div style="font-size:10px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--orange);margin-bottom:6px;">Sister Institute</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:18px;text-transform:uppercase;color:var(--navy);margin-bottom:4px;">S.B. College of Engineering &amp; Private ITI</div>
+      <div style="font-size:13px;color:var(--muted);">Court Jn., Cherthala, Alappuzha</div>
+      <div style="font-size:13px;color:var(--muted);margin-top:4px;">0478-2812215 · 92872 73329 · <a href="https://www.sbitccherthala.com" target="_blank" style="color:var(--orange);text-decoration:none;">sbitccherthala.com</a></div>
+    </div>
+  </div>
+
+  <!-- RIGHT FORM -->
+  <div class="contact-right">
+    <div class="form-title">Enquiry Form</div>
+    <p class="form-sub">Fill this and we'll call you back within 24 hours.<br/>Malayalam-speaking staff always available — <strong style="color:var(--ink)">ഞങ്ങൾ മലയാളത്തിൽ സംസാരിക്കും.</strong></p>
+
+    <div id="success-msg">
+      ✓ Thank you! We'll call you back within 24 hours.<br/>
+      <strong>ഞങ്ങൾ 24 മണിക്കൂറിനുള്ളിൽ തിരിച്ചു വിളിക്കുന്നതാണ്.</strong>
+    </div>
+
+    <form id="enquiry-form" onsubmit="handleSubmit(event)" novalidate>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Full Name / പേര്</label>
+          <input class="form-input" type="text" placeholder="Your full name" required/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Mobile / ഫോൺ</label>
+          <input class="form-input" type="tel" placeholder="Mobile number" required/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Course Interest / ഏത് കോഴ്‌സ്?</label>
+        <select class="form-select" required>
+          <option value="" disabled selected>Select a course</option>
+          <option>Refrigeration &amp; Air Conditioning (2 Year)</option>
+          <option>Electrician (2 Year)</option>
+          <option>Mechanic Diesel (1 Year)</option>
+          <option>Draughtsman Civil (2 Year)</option>
+          <option>Fitter (2 Year)</option>
+          <option>Short Term Certificate Course</option>
+          <option>Not sure — please advise me</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Education / വിദ്യാഭ്യാസം</label>
+          <select class="form-select">
+            <option>SSLC Passed</option>
+            <option>SSLC Failed (still eligible)</option>
+            <option>Plus Two / Higher</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Age / പ്രായം</label>
+          <input class="form-input" type="number" placeholder="Your age" min="14"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Location / സ്ഥലം</label>
+        <input class="form-input" type="text" placeholder="Which area? (e.g. Ernakulam, Alappuzha, Thrissur)"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Questions / സംശയം (Optional)</label>
+        <textarea class="form-textarea" placeholder="Any questions? We'll answer everything in detail."></textarea>
+      </div>
+      <button type="submit" class="submit-btn">Send Enquiry →</button>
+      <p class="form-note">We respond within a few hours. Or just walk in — Mon–Sat, 9am to 5pm.</p>
+    </form>
+  </div>
+</div>
+
+<!-- MAP -->
+<div class="map-section">
+  <div class="map-ph">
+    <div class="map-pin"></div>
+    <div class="map-addr">
+      <h3>Bluetronix ITI, Palluruthy</h3>
+      <p>Vadakkumthodam Lane, ESI Road, Palluruthy, Kochi – 682006</p>
+      <a href="https://maps.google.com/?q=Bluetronix+ITI+Palluruthy+Kochi+682006" target="_blank">Open in Google Maps →</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-bottom">
+    <p>© 2025 <strong>Bluetronix</strong> College of Engineering &amp; Private ITI · ESI Road, Palluruthy, Kochi – 682006</p>
+    <p>NCVT MIS Code: <strong>PU32000240</strong></p>
+  </div>
+</footer>
+
+<script>
+function handleSubmit(e) {
+  e.preventDefault();
+  document.getElementById('enquiry-form').style.display = 'none';
+  const msg = document.getElementById('success-msg');
+  msg.style.display = 'block';
+  msg.scrollIntoView({block:'nearest',behavior:'smooth'});
+}
+</script>
+</body>
+</html>

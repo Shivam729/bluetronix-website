@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Bluetronix ITI — Kerala's Oldest. India's Best.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --navy: #0D1B4E;
+  --navy2: #0a1640;
+  --blue: #4169E1;
+  --blue-dark: #2d52c4;
+  --blue-light: #EEF2FF;
+  --white: #FFFFFF;
+  --off-white: #F8F9FF;
+  --ink: #1A1A2E;
+  --body: #3D3D52;
+  --muted: #6B6B80;
+  --border: #E2E5F0;
+  --border-dark: #C8CCDC;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--white); color: var(--ink); font-family: 'Barlow', sans-serif; overflow-x: hidden; line-height: 1.6; }
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 200;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 12px rgba(13,27,78,0.08);
+}
+.nav-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 5vw; height: 68px; max-width: 1400px; margin: 0 auto;
+}
+.nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.nav-logo img { height: 44px; width: auto; object-fit: contain; }
+.nav-logo-text { display: flex; flex-direction: column; }
+.nav-logo-name { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 800; color: var(--navy); letter-spacing: 0.04em; text-transform: uppercase; line-height: 1; }
+.nav-logo-sub { font-size: 9px; font-weight: 500; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 2px; }
+.nav-links { display: flex; align-items: center; gap: 0; list-style: none; }
+.nav-links a { color: var(--body); text-decoration: none; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 18px; display: block; border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--navy); border-bottom-color: var(--blue); }
+.nav-apply { background: var(--blue); color: #fff; padding: 10px 24px; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: background 0.2s; white-space: nowrap; }
+.nav-apply:hover { background: var(--blue-dark); }
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; }
+.hamburger span { width: 22px; height: 2px; background: var(--navy); display: block; }
+.nav-mobile { display: none; position: fixed; top: 68px; left: 0; right: 0; background: var(--white); border-bottom: 1px solid var(--border); padding: 16px 5vw 24px; flex-direction: column; gap: 0; z-index: 199; box-shadow: 0 8px 24px rgba(13,27,78,0.1); }
+.nav-mobile.open { display: flex; }
+.nav-mobile a { color: var(--body); text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 14px 0; border-bottom: 1px solid var(--border); }
+
+/* ── HERO ── */
+.hero {
+  background: var(--navy);
+  min-height: 90vh;
+  padding: 80px 5vw 80px;
+  display: flex; flex-direction: column; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(65,105,225,0.15); border: 1px solid rgba(65,105,225,0.3);
+  color: var(--blue); font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; padding: 6px 14px; margin-bottom: 32px;
+  width: fit-content;
+}
+.hero-badge::before { content: ''; width: 6px; height: 6px; background: var(--blue); border-radius: 50%; }
+.hero h1 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(64px, 9vw, 118px);
+  font-weight: 900; line-height: 0.95;
+  color: #fff; text-transform: uppercase;
+  letter-spacing: -0.01em; margin-bottom: 0;
+  max-width: 800px;
+}
+.hero h1 .accent { color: var(--blue); }
+.hero-tagline {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(18px, 2.5vw, 28px);
+  font-weight: 400; color: rgba(255,255,255,0.5);
+  margin-top: 16px; margin-bottom: 24px; max-width: 540px;
+}
+.hero-desc {
+  font-size: 15px; color: rgba(255,255,255,0.55);
+  line-height: 1.8; max-width: 480px; margin-bottom: 40px;
+}
+.hero-actions { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+.btn-blue {
+  background: var(--blue); color: #fff;
+  padding: 14px 32px; font-size: 13px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  text-decoration: none; transition: background 0.2s;
+  border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 10px;
+}
+.btn-blue:hover { background: var(--blue-dark); }
+.btn-outline {
+  color: rgba(255,255,255,0.65); text-decoration: none;
+  font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  border: 1px solid rgba(255,255,255,0.2); padding: 14px 28px;
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-outline:hover { border-color: rgba(255,255,255,0.5); color: #fff; }
+
+/* Hero circuit decoration */
+.hero-circuit {
+  position: absolute; right: 0; top: 0; bottom: 0; width: 50%;
+  opacity: 0.07; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(65,105,225,1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(65,105,225,1) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+
+/* ── ACCRED STRIP ── */
+.accred-strip {
+  background: rgba(255,255,255,0.04);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 14px 5vw;
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  position: relative; z-index: 2;
+}
+.accred-strip-label { font-size: 9px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.3); white-space: nowrap; }
+.accred-strip-items { display: flex; align-items: center; gap: 0; flex-wrap: wrap; }
+.accred-strip-item {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(255,255,255,0.45); padding: 6px 20px;
+  border-left: 1px solid rgba(255,255,255,0.1);
+  display: flex; align-items: center; gap: 8px;
+}
+.accred-strip-item img { height: 20px; filter: brightness(0) invert(1); opacity: 0.5; }
+
+/* ── STATS BAND ── */
+.stats-band {
+  background: var(--blue);
+  display: grid; grid-template-columns: repeat(4, 1fr);
+}
+.stats-cell {
+  padding: 28px 0; border-right: 1px solid rgba(255,255,255,0.15);
+  text-align: center;
+}
+.stats-cell:last-child { border-right: none; }
+.stats-num { font-family: 'Barlow Condensed', sans-serif; font-size: 44px; font-weight: 900; color: #fff; line-height: 1; }
+.stats-lbl { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.65); margin-top: 4px; }
+
+/* ── SHARED ── */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 5vw; }
+section { padding: 96px 0; }
+.section-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--blue); margin-bottom: 16px;
+  display: flex; align-items: center; gap: 12px;
+}
+.section-label::before { content: ''; width: 28px; height: 2px; background: var(--blue); }
+.section-label.center { justify-content: center; }
+.section-label.center::before { display: none; }
+h2.section-heading {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: clamp(40px, 5vw, 72px);
+  line-height: 0.95; text-transform: uppercase; color: var(--navy); letter-spacing: -0.01em;
+}
+h2.section-heading .accent { color: var(--blue); }
+h2.section-heading .ml { font-weight: 900; color: var(--blue); }
+h2.section-heading.on-dark { color: #fff; }
+h2.section-heading.on-dark .accent { color: var(--blue); }
+.section-sub { font-size: 15px; color: var(--body); line-height: 1.8; max-width: 580px; margin-top: 16px; }
+
+/* ── WHY ITI ── */
+.why-section { background: var(--white); }
+.why-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; margin-top: 56px; align-items: start; }
+.compare-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.compare-table th { padding: 12px 16px; text-align: left; font-weight: 700; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; border-bottom: 2px solid var(--border-dark); }
+.compare-table th.iti-col { color: var(--navy); background: var(--blue-light); }
+.compare-table th.other-col { color: var(--muted); }
+.compare-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); vertical-align: middle; color: var(--body); }
+.compare-table td:first-child { font-weight: 700; color: var(--ink); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; }
+.compare-table td.iti-col { background: var(--blue-light); font-weight: 600; color: var(--navy); }
+.chk { color: var(--blue); font-weight: 700; }
+.crs { color: #b02020; }
+.why-points { display: flex; flex-direction: column; gap: 0; }
+.why-point { padding: 28px 0; border-bottom: 1px solid var(--border); display: flex; gap: 20px; }
+.why-point:last-child { border-bottom: none; }
+.wp-num { font-family: 'Barlow Condensed', sans-serif; font-size: 48px; font-weight: 900; color: var(--border-dark); min-width: 48px; line-height: 1; }
+.wp-title { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.02em; color: var(--navy); margin-bottom: 6px; }
+.wp-desc { font-size: 13px; color: var(--body); line-height: 1.7; }
+
+/* ── COURSES ── */
+.courses-section { background: var(--off-white); }
+.courses-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); margin-top: 52px; border: 1px solid var(--border); }
+.course-card { padding: 36px 28px 40px; background: var(--white); position: relative; cursor: pointer; text-decoration: none; color: var(--ink); display: block; transition: background 0.2s; }
+.course-card:hover { background: var(--blue-light); }
+.course-card:hover .cc-arrow { opacity: 1; transform: translateX(4px); }
+.cc-icon { font-size: 28px; margin-bottom: 16px; display: block; }
+.cc-duration { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blue); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.cc-duration::before { content: ''; width: 14px; height: 2px; background: var(--blue); }
+.cc-name { font-family: 'Barlow Condensed', sans-serif; font-size: 24px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.02em; color: var(--navy); margin-bottom: 10px; line-height: 1.1; }
+.cc-desc { font-size: 13px; color: var(--body); line-height: 1.7; margin-bottom: 16px; }
+.cc-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.cc-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue); border: 1px solid rgba(65,105,225,0.3); padding: 3px 10px; background: rgba(65,105,225,0.06); }
+.cc-arrow { position: absolute; bottom: 24px; right: 24px; color: var(--blue); font-size: 18px; opacity: 0; transition: opacity 0.2s, transform 0.2s; }
+
+/* ── PATHWAY ── */
+.pathway-section { background: var(--navy); padding: 96px 0; }
+.pathway-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 56px; border: 1px solid rgba(255,255,255,0.08); }
+.pw-step { padding: 36px 24px; border-right: 1px solid rgba(255,255,255,0.08); position: relative; }
+.pw-step:last-child { border-right: none; }
+.pw-step-num { font-family: 'Barlow Condensed', sans-serif; font-size: 64px; font-weight: 900; color: rgba(255,255,255,0.05); line-height: 1; margin-bottom: 12px; }
+.pw-step-title { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: #fff; margin-bottom: 8px; }
+.pw-step-desc { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.7; }
+.pw-arrow { position: absolute; top: 50%; right: -12px; transform: translateY(-50%); color: rgba(65,105,225,0.5); font-size: 20px; z-index: 1; }
+.pw-highlight { background: rgba(65,105,225,0.1); border-left: 3px solid var(--blue); }
+.pw-benefits-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 40px; padding-top: 36px; border-top: 1px solid rgba(255,255,255,0.07); }
+.pw-benefit { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.55); background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); padding: 8px 16px; display: flex; align-items: center; gap: 8px; }
+.pw-benefit::before { content: attr(data-icon); font-size: 14px; }
+
+/* ── ABOUT ── */
+.about-section { background: var(--white); }
+.about-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; margin-top: 56px; }
+.about-visual { position: relative; }
+.about-img-wrap { width: 100%; aspect-ratio: 4/3; background: var(--off-white); border: 1px solid var(--border); overflow: hidden; position: relative; }
+.about-img { width: 100%; height: 100%; object-fit: cover; }
+.about-year { position: absolute; bottom: 0; right: 0; background: var(--blue); color: #fff; padding: 16px 24px; font-family: 'Barlow Condensed', sans-serif; font-size: 32px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.04em; }
+.blockquote { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(20px, 2.2vw, 26px); font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; color: var(--navy); line-height: 1.3; border-left: 3px solid var(--blue); padding-left: 20px; margin: 24px 0 28px; }
+.about-body { font-size: 14px; color: var(--body); line-height: 1.85; margin-bottom: 14px; }
+.founder-strip { display: flex; align-items: center; gap: 16px; padding: 20px; background: var(--off-white); border: 1px solid var(--border); margin-top: 28px; }
+.founder-initial { width: 48px; height: 48px; background: var(--navy); display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 900; color: #fff; flex-shrink: 0; }
+.founder-name { font-size: 14px; font-weight: 700; color: var(--navy); }
+.founder-role { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
+
+/* ── ACCREDITATION ── */
+.accred-section { background: var(--off-white); padding: 72px 0; border-top: 1px solid var(--border); }
+.accred-row { display: flex; align-items: stretch; gap: 0; margin-top: 40px; border: 1px solid var(--border); background: var(--white); }
+.accred-item-box { flex: 1; padding: 32px 24px; text-align: center; border-right: 1px solid var(--border); text-decoration: none; transition: background 0.2s; }
+.accred-item-box:hover { background: var(--blue-light); }
+.accred-item-box:hover .accred-name { color: var(--blue); }
+.accred-item-box:last-child { border-right: none; }
+.accred-item-box svg { display: block; margin: 0 auto 12px; }
+.accred-name { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.04em; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; }
+.accred-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+/* ── CONTACT ── */
+.contact-section { background: var(--navy); padding: 96px 0; }
+.contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-top: 56px; align-items: start; }
+.contact-info-list { display: flex; flex-direction: column; gap: 0; }
+.ci-row { display: flex; gap: 20px; padding: 22px 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
+.ci-row:first-child { border-top: 1px solid rgba(255,255,255,0.07); }
+.ci-label { font-size: 9px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--blue); margin-bottom: 6px; }
+.ci-val { font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.6; }
+.ci-val a { color: rgba(255,255,255,0.7); text-decoration: none; }
+.ci-val a:hover { color: #fff; }
+.elig-list { margin-top: 36px; }
+.elig-list-title { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blue); margin-bottom: 16px; }
+.elig-item { font-size: 13px; color: rgba(255,255,255,0.6); padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; gap: 10px; }
+.elig-item::before { content: '✓'; color: var(--blue); font-weight: 700; font-size: 12px; flex-shrink: 0; }
+
+/* FORM */
+.form-wrap { background: var(--white); padding: 40px; }
+.form-wrap h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 28px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.02em; color: var(--navy); margin-bottom: 6px; }
+.form-wrap p { font-size: 13px; color: var(--body); margin-bottom: 28px; line-height: 1.6; }
+.form-group { margin-bottom: 16px; }
+.form-label { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 6px; }
+.form-input, .form-select, .form-textarea { width: 100%; border: 1px solid var(--border); padding: 12px 14px; font-family: 'Barlow', sans-serif; font-size: 14px; color: var(--ink); outline: none; background: var(--white); transition: border-color 0.2s; appearance: none; }
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--blue); }
+.form-input::placeholder, .form-textarea::placeholder { color: var(--muted); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.form-textarea { resize: vertical; min-height: 90px; }
+.form-submit { width: 100%; background: var(--blue); color: #fff; border: none; padding: 15px; font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; margin-top: 8px; transition: background 0.2s; }
+.form-submit:hover { background: var(--blue-dark); }
+#success-msg { display: none; background: #f0faf4; border: 1px solid #c3e6cb; color: #1a5c35; padding: 14px 18px; font-size: 13px; font-weight: 500; margin-bottom: 18px; line-height: 1.6; }
+
+/* ── FOOTER ── */
+footer { background: #060c24; padding: 56px 0 24px; }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+.footer-brand-name { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.04em; color: rgba(255,255,255,0.8); margin-bottom: 4px; }
+.footer-brand-sub { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 14px; }
+.footer-brand-desc { font-size: 12px; color: rgba(255,255,255,0.3); line-height: 1.7; max-width: 240px; }
+.footer-col h4 { font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--blue); margin-bottom: 18px; }
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-col ul li a { font-size: 12px; color: rgba(255,255,255,0.35); text-decoration: none; transition: color 0.2s; }
+.footer-col ul li a:hover { color: rgba(255,255,255,0.7); }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.06); padding-top: 24px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.footer-bottom p { font-size: 11px; color: rgba(255,255,255,0.2); }
+.footer-bottom strong { color: rgba(255,255,255,0.4); }
+
+/* WhatsApp */
+.wa-btn { position: fixed; bottom: 28px; right: 28px; z-index: 999; background: #25D366; color: #fff; width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(37,211,102,0.35); text-decoration: none; transition: transform 0.2s; }
+.wa-btn:hover { transform: scale(1.08); }
+
+/* RESPONSIVE */
+@media(max-width: 1024px) {
+  .why-layout, .about-layout, .contact-layout { grid-template-columns: 1fr; gap: 48px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .pathway-grid { grid-template-columns: 1fr 1fr; }
+}
+@media(max-width: 768px) {
+  .stats-band { grid-template-columns: 1fr 1fr; }
+  .courses-grid { grid-template-columns: 1fr; }
+  .accred-row { flex-direction: column; }
+  .accred-item-box { border-right: none; border-bottom: 1px solid var(--border); }
+  nav .nav-links, .nav-apply { display: none; }
+  .hamburger { display: flex; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .pathway-grid { grid-template-columns: 1fr; }
+  .pw-arrow { display: none; }
+}
+@media(max-width: 560px) {
+  .form-row { grid-template-columns: 1fr; }
+  .accred-strip-items { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#home">
+      <img src="https://www.bluetronixiti.com/img/logo.jpg" alt="Bluetronix" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'"/>
+      <div class="nav-logo-text">
+        <span class="nav-logo-name">Bluetronix</span>
+        <span class="nav-logo-sub">College of Engineering &amp; Private ITI</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#why">Why ITI</a></li>
+      <li><a href="#courses">Courses</a></li>
+      <li><a href="#pathway">Career Path</a></li>
+      <li><a href="#about">Our Story</a></li>
+    </ul>
+    <a href="#contact" class="nav-apply">Apply Now</a>
+    <div class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" role="button" tabindex="0">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+<div class="nav-mobile" id="mnav" role="navigation" aria-label="Mobile menu">
+  <a href="#why">Why ITI</a>
+  <a href="#courses">Courses</a>
+  <a href="#pathway">Career Path</a>
+  <a href="#about">Our Story</a>
+  <a href="#contact" style="color:var(--blue);font-weight:700;">Apply Now →</a>
+</div>
+
+<!-- HERO -->
+<div id="home" class="hero">
+  <div class="hero-circuit" aria-hidden="true"></div>
+  <div class="hero-badge">Kerala's Oldest ITI · Since 1968 · Kochi</div>
+  <h1>
+    Marks<br/>
+    <span class="accent">Doesn't</span><br/>
+    Matter.<br/>
+    Skills Do.
+  </h1>
+  <p class="hero-tagline">ഒരു തൊഴിൽ. ഒരു ഭാവി. ഇവിടെ നിന്ന് തുടങ്ങാം.</p>
+  <p class="hero-desc">പഠനത്തിൽ പിന്നിലായോ? വേവലാതിപ്പേടണ്ട. Bluetronix-ൽ 1–2 വർഷം practical training എടുക്കൂ — നല്ല ജോലി, നല്ല ശമ്പളം, ഉറപ്പ്. 1968 മുതൽ Kerala-ൽ ഏറ്റവും trusted ITI.</p>
+  <div class="hero-actions">
+    <a href="#contact" class="btn-blue">Admission Enquiry →</a>
+    <a href="#courses" class="btn-outline">Which course suits me? ↓</a>
+  </div>
+  <div class="accred-strip">
+    <span class="accred-strip-label">Recognized &amp; Affiliated By</span>
+    <div class="accred-strip-items">
+      <div class="accred-strip-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2L9.5 8H3l5 4-2 7 6-4 6 4-2-7 5-4h-6.5L12 2z" fill="rgba(255,255,255,0.5)"/></svg>
+        Skill India
+      </div>
+      <div class="accred-strip-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm0 3a2 2 0 110 4 2 2 0 010-4zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08a7.2 7.2 0 01-6 3.22z" fill="rgba(255,255,255,0.5)"/></svg>
+        Industrial Training Institute
+      </div>
+      <div class="accred-strip-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/><path d="M8 12h8M12 8v8" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" stroke-linecap="round"/></svg>
+        NCVET · DGT · Govt. of India
+      </div>
+      <div class="accred-strip-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/></svg>
+        Govt. of Kerala · DTE
+      </div>
+      <div class="accred-strip-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="7" height="7" fill="rgba(255,255,255,0.5)"/><rect x="14" y="3" width="7" height="7" fill="rgba(255,255,255,0.5)"/><rect x="3" y="14" width="7" height="7" fill="rgba(255,255,255,0.5)"/><rect x="14" y="14" width="3" height="3" fill="rgba(255,255,255,0.5)"/><rect x="19" y="19" width="2" height="2" fill="rgba(255,255,255,0.5)"/></svg>
+        NCVT MIS: PU32000240
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS BAND -->
+<div class="stats-band">
+  <div class="stats-cell"><div class="stats-num">1968</div><div class="stats-lbl">Year Established</div></div>
+  <div class="stats-cell"><div class="stats-num">5</div><div class="stats-lbl">Certified Trades</div></div>
+  <div class="stats-cell"><div class="stats-num">100%</div><div class="stats-lbl">Practical Training</div></div>
+  <div class="stats-cell"><div class="stats-num">100+</div><div class="stats-lbl">Hiring Companies</div></div>
+</div>
+
+<!-- WHY ITI -->
+<section id="why" class="why-section">
+  <div class="container">
+    <div class="section-label">Why ITI</div>
+    <h2 class="section-heading">
+      Your <span class="accent">Fastest</span> Path<br/>
+      to a Real Career
+    </h2>
+    <div class="why-layout">
+      <div>
+        <p style="font-size:14px;color:var(--body);line-height:1.8;margin-bottom:28px;">An ITI qualification is not a consolation prize — it is a direct, government-certified route to skilled employment. While a four-year college degree offers theory, an ITI gives you practice, a nationally-recognized certificate, and a job on day one.</p>
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th style="width:30%"></th>
+              <th class="iti-col">ITI — Bluetronix</th>
+              <th class="other-col">Traditional College</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Duration</td><td class="iti-col">1 – 2 Years</td><td>3 – 4 Years</td></tr>
+            <tr><td>Employment</td><td class="iti-col"><span class="chk">✓</span> Upon Completion</td><td><span class="crs">✗</span> Not Guaranteed</td></tr>
+            <tr><td>Practical Focus</td><td class="iti-col"><span class="chk">✓</span> 80% Hands-On</td><td>Primarily Theory</td></tr>
+            <tr><td>Certification</td><td class="iti-col"><span class="chk">✓</span> National Trade Cert.</td><td>Degree Only</td></tr>
+            <tr><td>Gulf / Abroad</td><td class="iti-col"><span class="chk">✓</span> Internationally Valid</td><td>Varies</td></tr>
+            <tr><td>Cost</td><td class="iti-col"><span class="chk">✓</span> Significantly Lower</td><td><span class="crs">✗</span> High</td></tr>
+            <tr><td>Govt. Job Eligibility</td><td class="iti-col"><span class="chk">✓</span> Railway · Army · ISRO</td><td>Limited</td></tr>
+            <tr><td>Path to Degree</td><td class="iti-col"><span class="chk">✓</span> B.Tech Lateral Entry</td><td>Standard Route</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="why-points">
+        <div class="why-point">
+          <div class="wp-num">01</div>
+          <div>
+            <div class="wp-title">Practical Training on Real Equipment</div>
+            <p class="wp-desc">At Bluetronix, students work on actual diesel engines, AC compressors and electrical installations — not textbook diagrams. This hands-on approach builds genuine competence that employers recognise and value.</p>
+          </div>
+        </div>
+        <div class="why-point">
+          <div class="wp-num">02</div>
+          <div>
+            <div class="wp-title">Direct Employment Connections</div>
+            <p class="wp-desc">Companies contact Bluetronix directly seeking our graduates. Our placement record speaks to the quality of training we provide. Students are job-ready from the day they complete their course.</p>
+          </div>
+        </div>
+        <div class="why-point">
+          <div class="wp-num">03</div>
+          <div>
+            <div class="wp-title">Government &amp; Defence Sector Eligibility</div>
+            <p class="wp-desc">Holders of the National Trade Certificate are eligible to apply for positions in Indian Railways, the Army, Airforce, PWD, ISRO, and ONGC — opportunities unavailable to many degree holders.</p>
+          </div>
+        </div>
+        <div class="why-point">
+          <div class="wp-num">04</div>
+          <div>
+            <div class="wp-title">Open to All — No Age Limit</div>
+            <p class="wp-desc">SSLC pass required. There is no upper age limit. Bluetronix welcomes anyone committed to learning a skilled trade, regardless of their academic history.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COURSES -->
+<section id="courses" class="courses-section">
+  <div class="container">
+    <div class="section-label">നിങ്ങൾക്ക് ഇഷ്ടമുള്ള TRADE തിരഞ്ഞെടുക്കൂ</div>
+    <h2 class="section-heading">
+      ഒരു <span class="accent">Trade.</span> ഒരു Career.<br/>
+      ഒരു പുതിയ തുടക്കം.
+    </h2>
+  </div>
+  <div style="max-width:1200px;margin:52px auto 0;padding:0 5vw;">
+    <div class="courses-grid">
+      <a class="course-card" href="#contact">
+        <span class="cc-icon">❄️</span>
+        <div class="cc-duration">2 വർഷം · NCVT · ഏറ്റവും കൂടുതൽ DEMAND</div>
+        <div class="cc-name">AC &amp; Refrigeration Technician</div>
+        <p class="cc-desc">Domestic, commercial and industrial cooling systems. AC installation, cold storage, HVAC and refrigeration repair. High demand across Kerala and Gulf countries.</p>
+        <div class="cc-tags"><span class="cc-tag">AC Systems</span><span class="cc-tag">Cold Storage</span><span class="cc-tag">Gulf Eligible</span></div>
+        <div class="cc-arrow">→</div>
+      </a>
+      <a class="course-card" href="#contact">
+        <span class="cc-icon">⚡</span>
+        <div class="cc-duration">2 വർഷം · NCVT · SOLAR &amp; EV</div>
+        <div class="cc-name">Electrician</div>
+        <p class="cc-desc">Industrial and domestic electrical systems, motor drives, solar power, EV charging and substation operations. Wireman License eligible upon completion.</p>
+        <div class="cc-tags"><span class="cc-tag">Industrial Wiring</span><span class="cc-tag">Solar &amp; EV</span><span class="cc-tag">Wireman License</span></div>
+        <div class="cc-arrow">→</div>
+      </a>
+      <a class="course-card" href="#contact">
+        <span class="cc-icon">🔧</span>
+        <div class="cc-duration">1 വർഷം · NCVT · വേഗം JOB</div>
+        <div class="cc-name">Diesel Mechanic</div>
+        <p class="cc-desc">Full diesel engine overhauling, fuel systems, emission control and vehicle diagnostics for LMV and HMV. Marine and heavy industry sectors.</p>
+        <div class="cc-tags"><span class="cc-tag">Engine Overhaul</span><span class="cc-tag">Marine &amp; Rail</span><span class="cc-tag">1-Year Course</span></div>
+        <div class="cc-arrow">→</div>
+      </a>
+      <a class="course-card" href="#contact">
+        <span class="cc-icon">📐</span>
+        <div class="cc-duration">2 വർഷം · NCVT · LBS LICENSE</div>
+        <div class="cc-name">Draughtsman (Civil)</div>
+        <p class="cc-desc">Technical drawing, AutoCAD, 3D modelling, structural and topographical surveying. LBS Supervisor License eligible for licensed construction projects in Kerala.</p>
+        <div class="cc-tags"><span class="cc-tag">AutoCAD</span><span class="cc-tag">LBS License</span><span class="cc-tag">Surveying</span></div>
+        <div class="cc-arrow">→</div>
+      </a>
+      <a class="course-card" href="#contact">
+        <span class="cc-icon">⚙️</span>
+        <div class="cc-duration">2 വർഷം · NCVT · NAVY &amp; ISRO</div>
+        <div class="cc-name">Fitter</div>
+        <p class="cc-desc">Precision metal fitting to ±0.02mm tolerance, hydraulics, pneumatics, machine assembly and maintenance. Indian Navy, ISRO and Railway recruitment eligible.</p>
+        <div class="cc-tags"><span class="cc-tag">Precision Fitting</span><span class="cc-tag">Navy · ISRO</span><span class="cc-tag">Railways</span></div>
+        <div class="cc-arrow">→</div>
+      </a>
+      <a class="course-card" href="#contact">
+        <span class="cc-icon">🎓</span>
+        <div class="cc-duration">Short Term · ITES · MUMBAI</div>
+        <div class="cc-name">Certificate Courses</div>
+        <p class="cc-desc">Short-term programmes in Automobile, Civil, Electrical, Refrigeration &amp; AC, Welding, Electronics and Plumbing. Issued by Indian Technical Education Society, Mumbai.</p>
+        <div class="cc-tags"><span class="cc-tag">Welding</span><span class="cc-tag">Automobile</span><span class="cc-tag">Electronics</span><span class="cc-tag">Plumbing</span></div>
+        <div class="cc-arrow">→</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- PATHWAY -->
+<section id="pathway" class="pathway-section">
+  <div class="container">
+    <div class="section-label" style="color:rgba(65,105,225,0.8);">After 10th — Why ITI</div>
+    <h2 class="section-heading on-dark">
+      Your <span class="accent">Fastest</span> Path<br/>
+      to a Real Career
+    </h2>
+    <p class="section-sub" style="color:rgba(255,255,255,0.45);">10th കഴിഞ്ഞ് ITI ചെയ്താൽ — ഉടൻ ജോലി, Gulf opportunity, Degree, Army, Navy, സ്വന്തം business — ഇതൊക്കെ സാദ്ധ്യമാണ്. Plus 2 route-നേക്കാൾ വേഗം, ചെലവ് കുറവ്, ഫലം കൂടുതൽ.</p>
+    <div class="pathway-grid">
+      <div class="pw-step">
+        <div class="pw-step-num">01</div>
+        <div class="pw-step-title">10th Standard</div>
+        <p class="pw-step-desc">SSLC Pass. Minimum age 14 years. No upper age limit. Admission begins August each year.</p>
+        <div class="pw-arrow">›</div>
+      </div>
+      <div class="pw-step pw-highlight">
+        <div class="pw-step-num">02</div>
+        <div class="pw-step-title">ITI at Bluetronix</div>
+        <p class="pw-step-desc">1–2 years of government-certified, hands-on technical training. National Trade Certificate awarded by DGT, Ministry of Labour, Government of India.</p>
+        <div class="pw-arrow">›</div>
+      </div>
+      <div class="pw-step">
+        <div class="pw-step-num">03</div>
+        <div class="pw-step-title">Employment or Diploma</div>
+        <p class="pw-step-desc">Enter the workforce immediately, or pursue a Polytechnic Diploma via lateral entry (2 years). Government jobs, Gulf placements and private sector roles all become accessible.</p>
+        <div class="pw-arrow">›</div>
+      </div>
+      <div class="pw-step">
+        <div class="pw-step-num">04</div>
+        <div class="pw-step-title">B.Tech Degree</div>
+        <p class="pw-step-desc">After Diploma, lateral entry to B.Tech (3 years) is available. A full engineering degree in 5–6 years total from 10th standard — at a fraction of the cost.</p>
+      </div>
+    </div>
+    <div class="pw-benefits-row">
+      <div class="pw-benefit" data-icon="🌐">Gulf &amp; Abroad Jobs</div>
+      <div class="pw-benefit" data-icon="🏛">Govt. Sector Eligible</div>
+      <div class="pw-benefit" data-icon="↑">Path to B.Tech Degree</div>
+      <div class="pw-benefit" data-icon="🚀">Self Employment</div>
+      <div class="pw-benefit" data-icon="✅">Worldwide Certificate</div>
+      <div class="pw-benefit" data-icon="⚓">Navy / Army / ISRO</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="about-section">
+  <div class="container">
+    <div class="section-label">ഞങ്ങളുടെ കഥ</div>
+    <h2 class="section-heading">
+      56 വർഷമായി<br/>
+      <span class="accent">Kerala</span>-യെ<br/>
+      Skilled ആക്കുന്നു
+    </h2>
+    <div class="about-layout">
+      <div class="about-visual">
+        <div class="about-img-wrap">
+          <img class="about-img" src="https://www.bluetronixiti.com/img/banner.jpg" alt="Bluetronix Campus" onerror="this.style.display='none'"/>
+        </div>
+        <div class="about-year">Est. 1968</div>
+      </div>
+      <div>
+        <div class="blockquote">"Where ever you go — tell that you are a Bluetronix product, and feel the change of gravity in your personality."</div>
+        <p class="about-body">Bluetronix was founded in 1968 by M.S. Prakash Panicker on ESI Road, Palluruthy, Kochi. From its earliest days, the institution held a singular conviction: that a young person equipped with genuine practical skill will always find their place in the world, regardless of their academic record.</p>
+        <p class="about-body">Over five decades later, that conviction has been vindicated thousands of times over. Bluetronix graduates work in the Gulf, in Indian Railways, in ISRO, in shipyards and in their own businesses across Kerala. Today, the institution is led by <strong>Mrs. Usha P. Panicker</strong>, who continues to build on a foundation of rigorous, practical, employment-focused training.</p>
+        <div class="founder-strip">
+          <div class="founder-initial">UP</div>
+          <div>
+            <div class="founder-name">Mrs. Usha P. Panicker</div>
+            <div class="founder-role">Managing Director &amp; Proprietrix</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACCREDITATION -->
+<section class="accred-section">
+  <div class="container">
+    <div class="section-label center">Recognized &amp; Affiliated By</div>
+    <div class="accred-row">
+      <a class="accred-item-box" href="https://www.ncvet.gov.in" target="_blank" rel="noopener">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" style="margin-bottom:12px" aria-hidden="true"><path d="M12 2L9.5 8H3l5 4-2 7 6-4 6 4-2-7 5-4h-6.5L12 2z" fill="#4169E1"/><circle cx="12" cy="12" r="3" fill="#0D1B4E"/></svg>
+        <div class="accred-name">NCVET · DGT</div>
+        <p class="accred-desc">National Council for Vocational Education &amp; Training · Ministry of Skill Development, Govt. of India</p>
+      </a>
+      <a class="accred-item-box" href="https://www.dgt.gov.in" target="_blank" rel="noopener">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" style="margin-bottom:12px" aria-hidden="true"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2z" fill="#0D1B4E"/><path d="M12 6a3 3 0 110 6 3 3 0 010-6zm0 8c-3 0-5.5 1.5-5.5 2.5S9 19 12 19s5.5-1 5.5-2.5S15 14 12 14z" fill="#4169E1"/></svg>
+        <div class="accred-name">Directorate General of Training</div>
+        <p class="accred-desc">All India Trade Tests and National Trade Certificates since 1956</p>
+      </a>
+      <a class="accred-item-box" href="https://www.dtekerala.gov.in" target="_blank" rel="noopener">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" style="margin-bottom:12px" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5V21a1 1 0 01-1 1H5a1 1 0 01-1-1V10.5z" fill="#0D1B4E"/><path d="M9 21V13h6v8" fill="#4169E1"/></svg>
+        <div class="accred-name">Government of Kerala</div>
+        <p class="accred-desc">Higher Education Dept. (Technical) · Directorate of Technical Education · Recognized since 1978</p>
+      </a>
+      <a class="accred-item-box" href="https://ncvtmis.gov.in" target="_blank" rel="noopener">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" style="margin-bottom:12px" aria-hidden="true"><rect x="2" y="2" width="9" height="9" rx="1" fill="#0D1B4E"/><rect x="4" y="4" width="5" height="5" fill="#4169E1"/><rect x="13" y="2" width="9" height="9" rx="1" fill="#0D1B4E"/><rect x="15" y="4" width="5" height="5" fill="#4169E1"/><rect x="2" y="13" width="9" height="9" rx="1" fill="#0D1B4E"/><rect x="4" y="15" width="5" height="5" fill="#4169E1"/><rect x="13" y="13" width="4" height="4" rx="0.5" fill="#0D1B4E"/><rect x="19" y="13" width="3" height="3" rx="0.5" fill="#4169E1"/><rect x="13" y="19" width="3" height="3" rx="0.5" fill="#4169E1"/><rect x="18" y="18" width="4" height="4" rx="0.5" fill="#0D1B4E"/></svg>
+        <div class="accred-name">NCVT MIS Portal</div>
+        <p class="accred-desc">Institute Code: PU32000240 · All certificates QR-verifiable and nationally traceable</p>
+      </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact-section">
+  <div class="container">
+    <div class="section-label" style="color:rgba(65,105,225,0.8);">Admission 2025 — August Start</div>
+    <h2 class="section-heading on-dark">
+      ഒരു <span class="accent">Enquiry</span> മതി!<br/>
+      ബാക്കി ഞങ്ങൾ ചെയ്തോളാം.
+    </h2>
+    <div class="contact-layout">
+      <div>
+        <div class="contact-info-list">
+          <div class="ci-row">
+            <div>
+              <div class="ci-label">Address</div>
+              <div class="ci-val">Vadakkumthodam Lane, ESI Road<br/>Palluruthy, Kochi – 682006, Ernakulam, Kerala</div>
+            </div>
+          </div>
+          <div class="ci-row">
+            <div>
+              <div class="ci-label">Telephone</div>
+              <div class="ci-val">
+                <a href="tel:04842231926">0484-2231926</a> &nbsp;·&nbsp;
+                <a href="tel:9746835055">97468 35055</a> &nbsp;·&nbsp;
+                <a href="tel:6238607424">62386 07424</a>
+              </div>
+            </div>
+          </div>
+          <div class="ci-row">
+            <div>
+              <div class="ci-label">Email</div>
+              <div class="ci-val"><a href="mailto:bluetronix7@gmail.com">bluetronix7@gmail.com</a></div>
+            </div>
+          </div>
+          <div class="ci-row">
+            <div>
+              <div class="ci-label">Office Hours</div>
+              <div class="ci-val">Monday – Saturday · 9am – 5pm</div>
+            </div>
+          </div>
+        </div>
+        <div class="elig-list">
+          <div class="elig-list-title">Admission Eligibility</div>
+          <div class="elig-item">SSLC Pass (10th Standard) — all trades</div>
+          <div class="elig-item">Boys and Girls — all trades open to both</div>
+          <div class="elig-item">No upper age limit · Minimum age 14 years</div>
+          <div class="elig-item">New session commences August 2025</div>
+          <div class="elig-item">21 seats per trade — early application advised</div>
+        </div>
+        <div style="margin-top:32px;padding:20px;border:1px solid rgba(255,255,255,0.07);border-left:3px solid var(--blue);">
+          <div class="ci-label" style="margin-bottom:8px;">Sister Institution</div>
+          <div style="font-size:14px;font-weight:600;color:rgba(255,255,255,0.7);margin-bottom:4px;">S.B. College of Engineering &amp; Private ITI</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.35);">Court Jn., Cherthala, Alappuzha · 0478-2812215 · <a href="https://www.sbitccherthala.com" target="_blank" rel="noopener" style="color:rgba(65,105,225,0.7);text-decoration:none;">sbitccherthala.com</a></div>
+        </div>
+      </div>
+      <div class="form-wrap">
+        <h3>Admission Enquiry</h3>
+        <p>Fill in your details and we will contact you within 24 hours. Our staff are available to speak in Malayalam.</p>
+        <div id="success-msg" role="alert">Thank you for your enquiry. We will contact you within 24 hours.<br/><strong>ഞങ്ങൾ ഉടൻ ബന്ധപ്പെടുന്നതാണ്.</strong></div>
+        <form id="enquiry-form" novalidate>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label" for="f-name">Full Name</label><input id="f-name" class="form-input" type="text" placeholder="Your full name" required/></div>
+            <div class="form-group"><label class="form-label" for="f-mobile">Mobile Number</label><input id="f-mobile" class="form-input" type="tel" placeholder="Mobile number" required/></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-course">Course of Interest</label>
+            <select id="f-course" class="form-select" required>
+              <option value="" disabled selected>Select a course</option>
+              <option>Refrigeration &amp; Air Conditioning (2 Year)</option>
+              <option>Electrician (2 Year)</option>
+              <option>Mechanic Diesel (1 Year)</option>
+              <option>Draughtsman Civil (2 Year)</option>
+              <option>Fitter (2 Year)</option>
+              <option>Short Term Certificate Course</option>
+              <option>Not yet decided — please advise</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="f-qual">Education / വിദ്യാഭ്യാസം</label>
+              <select id="f-qual" class="form-select">
+                <option>SSLC Passed</option>
+                <option>Plus Two or Higher</option>
+              </select>
+            </div>
+            <div class="form-group"><label class="form-label" for="f-age">Age / പ്രായം</label><input id="f-age" class="form-input" type="number" placeholder="Your age" min="14"/></div>
+          </div>
+          <div class="form-group"><label class="form-label" for="f-district">Location / സ്ഥലം</label><input id="f-district" class="form-input" type="text" placeholder="Which area? e.g. Ernakulam, Alappuzha"/></div>
+          <div class="form-group"><label class="form-label" for="f-msg">Message (Optional)</label><textarea id="f-msg" class="form-textarea" placeholder="Any questions or specific requirements?"></textarea></div>
+          <button type="submit" class="form-submit">Submit Enquiry →</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-name">Bluetronix ITI</div>
+        <div class="footer-brand-sub">College of Engineering &amp; Private ITI</div>
+        <p class="footer-brand-desc">Kerala's oldest and most trusted Industrial Training Institute. Government-recognized and affiliated with NCVET, DGT and the Directorate of Technical Education, Kerala. Established 1968.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Courses</h4>
+        <ul>
+          <li><a href="#courses">AC &amp; Refrigeration</a></li>
+          <li><a href="#courses">Electrician</a></li>
+          <li><a href="#courses">Diesel Mechanic</a></li>
+          <li><a href="#courses">Draughtsman Civil</a></li>
+          <li><a href="#courses">Fitter</a></li>
+          <li><a href="#courses">Certificate Courses</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Institution</h4>
+        <ul>
+          <li><a href="#why">Why ITI</a></li>
+          <li><a href="#pathway">Career Pathway</a></li>
+          <li><a href="#about">Our Story</a></li>
+          <li><a href="#contact">Admissions 2025</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="https://maps.google.com/?q=Palluruthy,+Kochi+682006" target="_blank" rel="noopener">Palluruthy, Kochi – 682006</a></li>
+          <li><a href="tel:04842231926">0484-2231926</a></li>
+          <li><a href="tel:9746835055">97468 35055</a></li>
+          <li><a href="mailto:bluetronix7@gmail.com">bluetronix7@gmail.com</a></li>
+          <li><a href="https://www.bluetronixiti.com" target="_blank" rel="noopener">www.bluetronixiti.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 <strong>Bluetronix</strong> College of Engineering &amp; Private ITI · All rights reserved</p>
+      <p>NCVT MIS Code: <strong>PU32000240</strong></p>
+    </div>
+  </div>
+</footer>
+
+<!-- WhatsApp -->
+<a class="wa-btn" href="https://wa.me/919746835055?text=Hello%2C%20I%20would%20like%20to%20enquire%20about%20admission%20at%20Bluetronix%20ITI." target="_blank" rel="noopener" title="WhatsApp Enquiry" aria-label="WhatsApp Enquiry">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="white" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+</a>
+
+<script>
+// Mobile nav
+const hamburger = document.getElementById('hamburger');
+const mnav = document.getElementById('mnav');
+function toggleMobileNav() {
+  const isOpen = mnav.classList.toggle('open');
+  hamburger.setAttribute('aria-expanded', String(isOpen));
+}
+hamburger.addEventListener('click', toggleMobileNav);
+hamburger.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleMobileNav(); } });
+mnav.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => { mnav.classList.remove('open'); hamburger.setAttribute('aria-expanded', 'false'); });
+});
+
+// Enquiry form
+document.getElementById('enquiry-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  this.style.display = 'none';
+  document.getElementById('success-msg').style.display = 'block';
+});
+
+// Active nav on scroll
+const sections = ['home','why','courses','pathway','about','contact'];
+const navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  const y = window.scrollY + 100;
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (y >= el.offsetTop && y < el.offsetTop + el.offsetHeight) {
+      navLinks.forEach(a => a.classList.remove('active'));
+      const lnk = document.querySelector(`.nav-links a[href="#${id}"]`);
+      if (lnk) lnk.classList.add('active');
+    }
+  });
+}, { passive: true });
+</script>
+</body>
+</html>

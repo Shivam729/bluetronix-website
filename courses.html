@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Courses — Bluetronix ITI Kochi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#F2F0EB;--paper:#FDFCF9;--navy:#0B1D3A;--orange:#FF5500;--orange-light:#FFF0E8;--white:#FFFFFF;--ink:#1A1A2E;--muted:#6B6877;--border:#DDD9CF;--border-light:#EAE7E0;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--ink);font-family:'Barlow',sans-serif;overflow-x:hidden;}
+.eng-grid{background-image:linear-gradient(rgba(11,29,58,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(11,29,58,0.04) 1px,transparent 1px);background-size:40px 40px;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 5vw;height:72px;background:rgba(253,252,249,0.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);box-shadow:0 1px 20px rgba(11,29,58,0.06);}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.nav-logo img{height:44px;width:auto;object-fit:contain;}
+.nav-wordmark{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:22px;letter-spacing:0.05em;color:var(--navy);display:flex;flex-direction:column;line-height:1;}
+.nav-wordmark span{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;}
+.nav-links{display:flex;align-items:center;gap:36px;list-style:none;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;transition:color 0.2s;}
+.nav-links a:hover{color:var(--navy);}
+.nav-links a.active{color:var(--navy);border-bottom:2px solid var(--orange);padding-bottom:2px;}
+.nav-cta{background:var(--orange)!important;color:#fff!important;padding:10px 24px;clip-path:polygon(0 0,92% 0,100% 25%,100% 100%,8% 100%,0 75%);}
+
+/* PAGE HERO */
+.page-hero{padding:120px 5vw 64px;background:var(--navy);position:relative;overflow:hidden;border-bottom:1px solid var(--border);}
+.page-hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:48px 48px;}
+.page-hero::after{content:'';position:absolute;top:-30%;right:-5%;width:60vw;height:160%;background:radial-gradient(ellipse,rgba(255,85,0,0.1) 0%,transparent 65%);pointer-events:none;}
+.eyebrow{font-size:11px;font-weight:800;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,85,0,0.8);margin-bottom:14px;display:flex;align-items:center;gap:10px;position:relative;z-index:1;}
+.eyebrow::before{content:'';width:24px;height:2px;background:var(--orange);}
+.page-hero h1{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(44px,7vw,96px);line-height:0.92;text-transform:uppercase;color:#fff;position:relative;z-index:1;}
+.page-hero h1 em{font-style:normal;color:var(--orange);}
+.page-hero p{font-size:16px;color:rgba(255,255,255,0.55);max-width:560px;margin-top:18px;line-height:1.65;position:relative;z-index:1;}
+
+/* COURSE TAB NAV */
+.course-nav{display:flex;gap:0;background:var(--paper);border-bottom:2px solid var(--border);padding:0 5vw;overflow-x:auto;}
+.course-tab{padding:18px 22px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:14px;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted);cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:color 0.2s,border-color 0.2s;}
+.course-tab:hover{color:var(--navy);}
+.course-tab.active{color:var(--orange);border-bottom-color:var(--orange);}
+
+/* PANELS */
+.course-panels{padding:0;}
+.course-panel{display:none;}
+.course-panel.active{display:block;}
+
+/* COURSE HEADER */
+.c-header{display:grid;grid-template-columns:1fr 360px;gap:64px;padding:64px 5vw 0;align-items:start;}
+.c-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--orange-light);border:1px solid rgba(255,85,0,0.2);padding:6px 16px;font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--orange);margin-bottom:18px;}
+.c-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(42px,6vw,80px);line-height:0.9;text-transform:uppercase;color:var(--navy);margin-bottom:18px;}
+.c-title em{font-style:normal;color:var(--orange);}
+.c-desc{font-size:15px;color:var(--muted);line-height:1.75;margin-bottom:24px;}
+.c-outcomes{display:flex;flex-direction:column;gap:9px;margin-bottom:28px;}
+.c-outcome{display:flex;align-items:baseline;gap:10px;font-size:14px;font-weight:600;color:var(--ink);}
+.c-outcome::before{content:'';width:6px;height:6px;background:var(--orange);min-width:6px;flex-shrink:0;margin-top:4px;}
+
+/* META CARD */
+.meta-card{background:var(--white);border:1px solid var(--border);border-top:4px solid var(--orange);padding:32px;position:sticky;top:88px;}
+.meta-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border-light);}
+.meta-row:last-of-type{border-bottom:none;}
+.meta-k{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);}
+.meta-v{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:17px;color:var(--navy);}
+.meta-v.hi{color:var(--orange);}
+.apply-btn{display:block;text-align:center;background:var(--orange);color:#fff;padding:16px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:18px;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;margin-top:22px;clip-path:polygon(0 0,92% 0,100% 25%,100% 100%,8% 100%,0 75%);transition:background 0.2s;}
+.apply-btn:hover{background:#e04400;}
+
+/* CURRICULUM */
+.curriculum{padding:48px 5vw;}
+.sec-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(28px,3.5vw,44px);text-transform:uppercase;color:var(--navy);margin-bottom:32px;letter-spacing:-0.01em;}
+.sec-title em{font-style:normal;color:var(--orange);}
+.cur-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.cur-year{background:var(--paper);border:1px solid var(--border);padding:32px;}
+.cur-label{font-size:10px;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:var(--orange);margin-bottom:20px;display:flex;align-items:center;gap:8px;}
+.cur-label::before{content:'';width:16px;height:2px;background:var(--orange);}
+.mod-list{display:flex;flex-direction:column;}
+.mod-item{display:flex;gap:12px;align-items:center;font-size:13px;color:var(--muted);padding:9px 0;border-bottom:1px solid var(--border-light);}
+.mod-item:last-child{border-bottom:none;}
+.mod-num{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:11px;color:var(--orange);min-width:24px;letter-spacing:0.04em;}
+
+/* CAREERS */
+.careers{padding:0 5vw 80px;}
+.careers-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:28px;}
+.career-tile{background:var(--paper);border:1px solid var(--border);padding:20px 16px;text-align:center;font-size:13px;font-weight:700;color:var(--navy);transition:border-color 0.2s,background 0.2s;}
+.career-tile:hover{border-color:var(--orange);background:var(--orange-light);}
+
+/* DIVIDER */
+.panel-divider{height:1px;background:var(--border);margin:0 5vw;}
+
+/* SHORT TERM GRID */
+.st-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:0 5vw 80px;margin-top:48px;}
+.st-card{background:var(--paper);border:1px solid var(--border);border-top:4px solid var(--orange);padding:32px 28px;}
+.st-name{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:22px;text-transform:uppercase;color:var(--navy);margin-bottom:10px;}
+.st-desc{font-size:13px;color:var(--muted);line-height:1.65;}
+
+@media(max-width:1024px){.c-header{grid-template-columns:1fr;}.meta-card{position:static;}}
+@media(max-width:768px){.cur-grid{grid-template-columns:1fr;}.careers-grid{grid-template-columns:repeat(2,1fr);}.st-grid{grid-template-columns:1fr 1fr;}.nav-links{display:none;}}
+@media(max-width:480px){.st-grid{grid-template-columns:1fr;}.careers-grid{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">
+    <img src="https://www.bluetronixiti.com/img/logo.jpg" alt="Bluetronix" onerror="this.style.display='none'"/>
+    <div class="nav-wordmark">BLUETRONIX<span>College of Engineering & Private ITI</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="courses.html" class="active">Courses</a></li>
+    <li><a href="about.html">Our Story</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="contact.html" class="nav-cta">Apply Now</a></li>
+  </ul>
+</nav>
+
+<div class="page-hero">
+  <!-- Blueprint circuit decoration -->
+  <svg style="position:absolute;right:5vw;bottom:20px;opacity:0.06;z-index:0" width="340" height="200" viewBox="0 0 340 200">
+    <rect x="10" y="10" width="320" height="180" stroke="white" stroke-width="0.8" stroke-dasharray="5 3" fill="none"/>
+    <circle cx="10" cy="10" r="3" fill="white"/><circle cx="330" cy="10" r="3" fill="white"/>
+    <circle cx="10" cy="190" r="3" fill="white"/><circle cx="330" cy="190" r="3" fill="white"/>
+    <line x1="80" y1="10" x2="80" y2="60" stroke="white" stroke-width="0.6"/>
+    <rect x="60" y="60" width="40" height="20" stroke="#FF5500" stroke-width="1" fill="none"/>
+    <line x1="80" y1="80" x2="80" y2="130" stroke="white" stroke-width="0.6"/>
+    <circle cx="80" cy="130" r="4" fill="#FF5500"/>
+    <line x1="80" y1="130" x2="180" y2="130" stroke="white" stroke-width="0.6"/>
+    <line x1="180" y1="10" x2="180" y2="80" stroke="white" stroke-width="0.6"/>
+    <circle cx="180" cy="80" r="3" fill="white"/>
+    <line x1="180" y1="80" x2="260" y2="80" stroke="white" stroke-width="0.6"/>
+    <rect x="260" y="65" width="50" height="30" stroke="white" stroke-width="0.8" fill="none"/>
+    <line x1="280" y1="80" x2="280" y2="130" stroke="white" stroke-width="0.6" stroke-dasharray="3 2"/>
+    <circle cx="280" cy="130" r="5" fill="none" stroke="#FF5500" stroke-width="1.5"/>
+    <circle cx="280" cy="130" r="2" fill="white"/>
+  </svg>
+  <div class="eyebrow">Government Certified Trades</div>
+  <h1>Pick Your<br/><em>Trade.</em> Own<br/>Your Future.</h1>
+  <p>5 NCVT-certified ITI trades + short-term courses. All fully hands-on. Government of India certificates recognized worldwide.</p>
+</div>
+
+<!-- TAB NAV -->
+<div class="course-nav" id="course-nav">
+  <button class="course-tab active" onclick="showCourse('rac',this)">AC &amp; Refrigeration</button>
+  <button class="course-tab" onclick="showCourse('elec',this)">Electrician</button>
+  <button class="course-tab" onclick="showCourse('diesel',this)">Diesel Mechanic</button>
+  <button class="course-tab" onclick="showCourse('civil',this)">Draughtsman Civil</button>
+  <button class="course-tab" onclick="showCourse('fitter',this)">Fitter</button>
+  <button class="course-tab" onclick="showCourse('short',this)">Short Term</button>
+</div>
+
+<div class="course-panels">
+
+<!-- RAC -->
+<div id="panel-rac" class="course-panel active">
+  <div class="c-header">
+    <div>
+      <div class="c-eyebrow">⚡ 2 Years · NCVT · Most In-Demand · Gulf-Ready</div>
+      <div class="c-title">Refrigeration &amp;<br/><em>Air Conditioning</em><br/>Technician</div>
+      <p class="c-desc">From your home fridge to a 10,000 sq.ft industrial cold storage — a Bluetronix RAC technician handles it all. We train you on real compressors, real chillers, real HVAC systems. The actual machines, not simulations.</p>
+      <div class="c-outcomes">
+        <div class="c-outcome">Install, service and repair split AC, window AC, central AC, package units</div>
+        <div class="c-outcome">Repair refrigerators, deep freezers, Visi Coolers, Walk-In Coolers, ice plants</div>
+        <div class="c-outcome">Work on industrial HVAC, cold storage, cooling towers</div>
+        <div class="c-outcome">Mobile AC servicing for vehicles and marine applications</div>
+        <div class="c-outcome">National Trade Certificate — valid for Gulf jobs worldwide</div>
+        <div class="c-outcome">Path to Diploma (lateral entry, 2 yrs) → B.Tech (3 yrs)</div>
+      </div>
+    </div>
+    <div class="meta-card">
+      <div class="meta-row"><span class="meta-k">Duration</span><span class="meta-v hi">2 Years</span></div>
+      <div class="meta-row"><span class="meta-k">Qualification</span><span class="meta-v">SSLC Pass</span></div>
+      <div class="meta-row"><span class="meta-k">Age Limit</span><span class="meta-v">None</span></div>
+      <div class="meta-row"><span class="meta-k">Gender</span><span class="meta-v">Boys &amp; Girls</span></div>
+      <div class="meta-row"><span class="meta-k">Seats</span><span class="meta-v">21 per Trade</span></div>
+      <div class="meta-row"><span class="meta-k">Certificate</span><span class="meta-v hi">NCVT National Trade Cert</span></div>
+      <div class="meta-row"><span class="meta-k">Session Starts</span><span class="meta-v">August 2025</span></div>
+      <a href="contact.html" class="apply-btn">Apply for This Course →</a>
+    </div>
+  </div>
+  <div class="curriculum eng-grid">
+    <div style="padding:48px 5vw 0">
+      <div class="sec-title">What You'll <em>Learn</em></div>
+    </div>
+    <div class="cur-grid" style="padding:0 5vw 40px">
+      <div class="cur-year">
+        <div class="cur-label">Year 1 — Foundations</div>
+        <div class="mod-list">
+          <div class="mod-item"><span class="mod-num">M1</span>Fitting</div>
+          <div class="mod-item"><span class="mod-num">M2</span>Sheet Metal Work</div>
+          <div class="mod-item"><span class="mod-num">M3</span>Electrical Systems</div>
+          <div class="mod-item"><span class="mod-num">M4</span>Electronics</div>
+          <div class="mod-item"><span class="mod-num">M5</span>Welding</div>
+          <div class="mod-item"><span class="mod-num">M6</span>Basic Refrigeration</div>
+          <div class="mod-item"><span class="mod-num">M7</span>Refrigerator — Direct Cool</div>
+          <div class="mod-item"><span class="mod-num">M8</span>Frost Free Refrigerator</div>
+          <div class="mod-item"><span class="mod-num">M9</span>Refrigerator Inverter Technology</div>
+          <div class="mod-item"><span class="mod-num">M10</span>Compressor &amp; Motor</div>
+          <div class="mod-item"><span class="mod-num">M11</span>Condenser</div>
+          <div class="mod-item"><span class="mod-num">M12</span>Drier &amp; Expansion Valve</div>
+          <div class="mod-item"><span class="mod-num">M13</span>Evaporator</div>
+          <div class="mod-item"><span class="mod-num">M14</span>Refrigerant Handling</div>
+          <div class="mod-item"><span class="mod-num">M15</span>Thermal Insulation</div>
+          <div class="mod-item"><span class="mod-num">M16</span>Window Air Conditioner</div>
+          <div class="mod-item"><span class="mod-num">M17</span>Split Air Conditioner</div>
+        </div>
+      </div>
+      <div class="cur-year">
+        <div class="cur-label">Year 2 — Advanced &amp; Industrial</div>
+        <div class="mod-list">
+          <div class="mod-item"><span class="mod-num">M1</span>Commercial Compressors</div>
+          <div class="mod-item"><span class="mod-num">M2</span>Water Cooled Condenser &amp; Cooling Tower</div>
+          <div class="mod-item"><span class="mod-num">M3</span>Expansion Valve (Advanced)</div>
+          <div class="mod-item"><span class="mod-num">M4</span>Evaporator &amp; Chillers</div>
+          <div class="mod-item"><span class="mod-num">M5</span>Cooler &amp; Freezer Systems</div>
+          <div class="mod-item"><span class="mod-num">M6</span>Ice Cube Machine, Ice Candy, Ice Plant, Cold Storage</div>
+          <div class="mod-item"><span class="mod-num">M7</span>HVAC Systems</div>
+          <div class="mod-item"><span class="mod-num">M8</span>Central &amp; Industrial AC</div>
+          <div class="mod-item"><span class="mod-num">M9</span>Mobile Air Conditioning</div>
+          <div class="mod-item"><span class="mod-num">M10</span>Commercial Plant Execution</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="careers">
+    <div class="sec-title">Possible <em>Careers</em></div>
+    <div class="careers-grid">
+      <div class="career-tile">AC Technician</div><div class="career-tile">Chiller Mechanic</div>
+      <div class="career-tile">Marine AC Tech</div><div class="career-tile">Cold Storage Eng.</div>
+      <div class="career-tile">HVAC Supervisor</div><div class="career-tile">Gulf Service Tech</div>
+      <div class="career-tile">Retail AC Manager</div><div class="career-tile">Own AC Business</div>
+    </div>
+  </div>
+</div>
+
+<!-- ELECTRICIAN -->
+<div id="panel-elec" class="course-panel">
+  <div class="c-header">
+    <div>
+      <div class="c-eyebrow">⚡ 2 Years · NCVT · Wireman License · EV Ready</div>
+      <div class="c-title">Electrician</div>
+      <p class="c-desc">Electricians power the world. From residential wiring to industrial motor drives, solar panels and electric vehicles — our Electrician course makes you essential to every project. The demand never stops.</p>
+      <div class="c-outcomes">
+        <div class="c-outcome">Wire homes, factories, commercial buildings and substations</div>
+        <div class="c-outcome">Work on solar power, EV charging systems, UPS and inverters</div>
+        <div class="c-outcome">Eligible for Wireman License via <a href="https://samraksha.ceikerala.gov.in" target="_blank" style="color:var(--orange)">Kerala Govt. portal</a></div>
+        <div class="c-outcome">Additional skills: CCTV, Fire Alarm, BMS, Solar, Mobile Servicing</div>
+        <div class="c-outcome">Jobs in construction, manufacturing, maintenance, Indian Railways</div>
+        <div class="c-outcome">Electrical Machine Operator, Supervisor, Sales Engineer roles</div>
+      </div>
+    </div>
+    <div class="meta-card">
+      <div class="meta-row"><span class="meta-k">Duration</span><span class="meta-v hi">2 Years</span></div>
+      <div class="meta-row"><span class="meta-k">Qualification</span><span class="meta-v">SSLC Pass</span></div>
+      <div class="meta-row"><span class="meta-k">Age Limit</span><span class="meta-v">None</span></div>
+      <div class="meta-row"><span class="meta-k">Gender</span><span class="meta-v">Boys &amp; Girls</span></div>
+      <div class="meta-row"><span class="meta-k">Seats</span><span class="meta-v">21 per Trade</span></div>
+      <div class="meta-row"><span class="meta-k">Certificate</span><span class="meta-v hi">NCVT National Trade Cert</span></div>
+      <div class="meta-row"><span class="meta-k">Session Starts</span><span class="meta-v">August 2025</span></div>
+      <a href="contact.html" class="apply-btn">Apply for This Course →</a>
+    </div>
+  </div>
+  <div class="curriculum eng-grid">
+    <div style="padding:48px 5vw 0"><div class="sec-title">What You'll <em>Learn</em></div></div>
+    <div class="cur-grid" style="padding:0 5vw 40px">
+      <div class="cur-year">
+        <div class="cur-label">Year 1 — Core Electrical</div>
+        <div class="mod-list">
+          <div class="mod-item"><span class="mod-num">M1</span>Safety Practice &amp; Hand Tools</div>
+          <div class="mod-item"><span class="mod-num">M2</span>Wires, Joints, Soldering, UG Cables</div>
+          <div class="mod-item"><span class="mod-num">M3</span>Basic Electrical Practice</div>
+          <div class="mod-item"><span class="mod-num">M4</span>Magnetism &amp; Capacitors</div>
+          <div class="mod-item"><span class="mod-num">M5</span>DC Circuits</div>
+          <div class="mod-item"><span class="mod-num">M6</span>Cells &amp; Batteries</div>
+          <div class="mod-item"><span class="mod-num">M7</span>Basic Wiring Practice</div>
+          <div class="mod-item"><span class="mod-num">M8</span>Wiring Installation &amp; Earthing</div>
+          <div class="mod-item"><span class="mod-num">M9</span>Illumination Systems</div>
+          <div class="mod-item"><span class="mod-num">M10</span>Measuring Instruments</div>
+          <div class="mod-item"><span class="mod-num">M11</span>Domestic Appliances</div>
+          <div class="mod-item"><span class="mod-num">M12</span>Transformers</div>
+          <div class="mod-item"><span class="mod-num">M13</span>Circuit Breakers &amp; Relays</div>
+          <div class="mod-item"><span class="mod-num">M14</span>Electric Vehicle Systems</div>
+        </div>
+      </div>
+      <div class="cur-year">
+        <div class="cur-label">Year 2 — Industrial &amp; Advanced</div>
+        <div class="mod-list">
+          <div class="mod-item"><span class="mod-num">M1</span>DC Generator</div>
+          <div class="mod-item"><span class="mod-num">M2</span>DC Motor</div>
+          <div class="mod-item"><span class="mod-num">M3</span>AC Three Phase Motor</div>
+          <div class="mod-item"><span class="mod-num">M4</span>AC Single Phase Motor</div>
+          <div class="mod-item"><span class="mod-num">M5</span>Alternator</div>
+          <div class="mod-item"><span class="mod-num">M6</span>Synchronous Motor &amp; MG Set</div>
+          <div class="mod-item"><span class="mod-num">M7</span>Electronic Practice</div>
+          <div class="mod-item"><span class="mod-num">M8</span>Control Panel Wiring</div>
+          <div class="mod-item"><span class="mod-num">M9</span>AC/DC Motor Drives</div>
+          <div class="mod-item"><span class="mod-num">M10</span>Inverter &amp; UPS</div>
+          <div class="mod-item"><span class="mod-num">M11</span>Power Generation &amp; Substation</div>
+          <div class="mod-item"><span class="mod-num">M12</span>Transmission &amp; Distribution</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="careers">
+    <div class="sec-title">Possible <em>Careers</em></div>
+    <div class="careers-grid">
+      <div class="career-tile">Maintenance Electrician</div><div class="career-tile">Electrical Supervisor</div>
+      <div class="career-tile">Solar Installer</div><div class="career-tile">EV Technician</div>
+      <div class="career-tile">Field Service Eng.</div><div class="career-tile">Substation Operator</div>
+      <div class="career-tile">Indian Railways</div><div class="career-tile">Own Electrical Shop</div>
+    </div>
+  </div>
+</div>
+
+<!-- DIESEL -->
+<div id="panel-diesel" class="course-panel">
+  <div class="c-header">
+    <div>
+      <div class="c-eyebrow">🔧 1 Year Fast Track · NCVT · Railway &amp; Army Eligible</div>
+      <div class="c-title">Mechanic<br/><em>(Diesel)</em></div>
+      <p class="c-desc">In just one year, you'll learn to fully dismantle, diagnose and overhaul diesel engines — the power behind trucks, buses, ships, generators and trains. A Bluetronix Diesel Mechanic doesn't just read about engines. They rebuild them.</p>
+      <div class="c-outcomes">
+        <div class="c-outcome">Fully overhaul diesel engines for LMV and HMV vehicles</div>
+        <div class="c-outcome">Service fuel injection pumps, governors and emission control systems</div>
+        <div class="c-outcome">Hydraulic and pneumatic brake systems, cooling and lubrication</div>
+        <div class="c-outcome">Prepare for Indian Railways Loco Pilot examinations</div>
+        <div class="c-outcome">Eligible for Army, Navy, ONGC, marine and railway sectors</div>
+        <div class="c-outcome">Open your own diesel repair workshop or driving school</div>
+      </div>
+    </div>
+    <div class="meta-card">
+      <div class="meta-row"><span class="meta-k">Duration</span><span class="meta-v hi">1 Year</span></div>
+      <div class="meta-row"><span class="meta-k">Qualification</span><span class="meta-v">SSLC Pass</span></div>
+      <div class="meta-row"><span class="meta-k">Age Limit</span><span class="meta-v">None</span></div>
+      <div class="meta-row"><span class="meta-k">Gender</span><span class="meta-v">Boys &amp; Girls</span></div>
+      <div class="meta-row"><span class="meta-k">Seats</span><span class="meta-v">21 per Trade</span></div>
+      <div class="meta-row"><span class="meta-k">Certificate</span><span class="meta-v hi">NCVT National Trade Cert</span></div>
+      <div class="meta-row"><span class="meta-k">Session Starts</span><span class="meta-v">August 2025</span></div>
+      <a href="contact.html" class="apply-btn">Apply for This Course →</a>
+    </div>
+  </div>
+  <div class="curriculum eng-grid">
+    <div style="padding:48px 5vw 0"><div class="sec-title">What You'll <em>Learn</em></div></div>
+    <div class="cur-grid" style="padding:0 5vw 40px">
+      <div class="cur-year">
+        <div class="cur-label">Year 1 — Full Engine Mastery</div>
+        <div class="mod-list">
+          <div class="mod-item"><span class="mod-num">M1</span>Safety &amp; Workshop Practices</div>
+          <div class="mod-item"><span class="mod-num">M2</span>Measuring &amp; Marking</div>
+          <div class="mod-item"><span class="mod-num">M3</span>Fastening &amp; Fitting</div>
+          <div class="mod-item"><span class="mod-num">M4</span>Electrical &amp; Electronics</div>
+          <div class="mod-item"><span class="mod-num">M5</span>Hydraulics &amp; Pneumatics</div>
+          <div class="mod-item"><span class="mod-num">M6</span>Specifications &amp; Service Equipment</div>
+          <div class="mod-item"><span class="mod-num">M7</span>Diesel Engine Overview</div>
+          <div class="mod-item"><span class="mod-num">M8</span>Diesel Engine Components</div>
+          <div class="mod-item"><span class="mod-num">M9</span>Cooling &amp; Lubrication System</div>
+          <div class="mod-item"><span class="mod-num">M10</span>Intake &amp; Exhaust System</div>
+          <div class="mod-item"><span class="mod-num">M11</span>Diesel Fuel System</div>
+          <div class="mod-item"><span class="mod-num">M12</span>Emission Control System</div>
+          <div class="mod-item"><span class="mod-num">M13</span>Charging &amp; Starting System</div>
+          <div class="mod-item"><span class="mod-num">M14</span>Troubleshooting</div>
+        </div>
+      </div>
+      <div class="cur-year" style="background:rgba(255,85,0,0.03);border-color:rgba(255,85,0,0.15);">
+        <div class="cur-label" style="color:var(--navy)">The Bluetronix Difference</div>
+        <p style="font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:16px;">Unlike most institutes that teach diesel mechanics on paper, at Bluetronix you work on real engines every single day.</p>
+        <p style="font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:16px;">Students actually dismantle, inspect and reassemble live diesel engines. The intuition you develop — recognising faults by sound, touch and smell — cannot be taught any other way.</p>
+        <p style="font-size:14px;color:var(--muted);line-height:1.8;">That takes 1,000 hours of real work. That's exactly what we give you.</p>
+      </div>
+    </div>
+  </div>
+  <div class="careers">
+    <div class="sec-title">Possible <em>Careers</em></div>
+    <div class="careers-grid">
+      <div class="career-tile">Diesel Mechanic</div><div class="career-tile">Fleet Supervisor</div>
+      <div class="career-tile">Marine Engineer</div><div class="career-tile">Railway Loco Pilot</div>
+      <div class="career-tile">ONGC Technician</div><div class="career-tile">Bus &amp; Transport Co.</div>
+      <div class="career-tile">Own Repair Shop</div><div class="career-tile">Army / Navy</div>
+    </div>
+  </div>
+</div>
+
+<!-- CIVIL -->
+<div id="panel-civil" class="course-panel">
+  <div class="c-header">
+    <div>
+      <div class="c-eyebrow">📐 2 Years · NCVT · AutoCAD · LBS License Path</div>
+      <div class="c-title">Draughtsman<br/><em>(Civil)</em></div>
+      <p class="c-desc">Kerala is building — roads, bridges, metro lines, apartments. Every project needs skilled draughtsmen. Learn AutoCAD, 3D modelling, surveying and structural drawing. Unlock the LBS Supervisor License to certify buildings across Kerala.</p>
+      <div class="c-outcomes">
+        <div class="c-outcome">Create engineering drawings for buildings, roads, dams and bridges</div>
+        <div class="c-outcome">Master AutoCAD 2D drafting and 3D modelling</div>
+        <div class="c-outcome">Conduct chain, compass, plane table, GPS and total station surveying</div>
+        <div class="c-outcome">Path to LBS Supervisor License (B → A → Senior → Engineer B)</div>
+        <div class="c-outcome">Work with PWD, Urban Development Authorities, Railways, construction firms</div>
+        <div class="c-outcome">Public Health, Road, Bridge and Railway Engineering specialisations</div>
+      </div>
+    </div>
+    <div class="meta-card">
+      <div class="meta-row"><span class="meta-k">Duration</span><span class="meta-v hi">2 Years</span></div>
+      <div class="meta-row"><span class="meta-k">Qualification</span><span class="meta-v">SSLC Pass</span></div>
+      <div class="meta-row"><span class="meta-k">Age Limit</span><span class="meta-v">None</span></div>
+      <div class="meta-row"><span class="meta-k">Gender</span><span class="meta-v">Boys &amp; Girls</span></div>
+      <div class="meta-row"><span class="meta-k">Certificate</span><span class="meta-v hi">NCVT National Trade Cert</span></div>
+      <div class="meta-row"><span class="meta-k">Session Starts</span><span class="meta-v">August 2025</span></div>
+      <a href="contact.html" class="apply-btn">Apply for This Course →</a>
+    </div>
+  </div>
+  <div class="careers" style="margin-top:48px;">
+    <div class="sec-title">Possible <em>Careers</em></div>
+    <div class="careers-grid">
+      <div class="career-tile">Civil Draughtsman</div><div class="career-tile">Site Supervisor</div>
+      <div class="career-tile">CAD Technician</div><div class="career-tile">Surveyor</div>
+      <div class="career-tile">PWD / CPWD</div><div class="career-tile">Railway Engineering</div>
+      <div class="career-tile">Architectural Firm</div><div class="career-tile">Urban Development</div>
+    </div>
+  </div>
+</div>
+
+<!-- FITTER -->
+<div id="panel-fitter" class="course-panel">
+  <div class="c-header">
+    <div>
+      <div class="c-eyebrow">⚙️ 2 Years · NCVT · Navy · Army · ISRO Eligible</div>
+      <div class="c-title">Fitter</div>
+      <p class="c-desc">Precision is everything in engineering. Fitters make machines work to exact tolerances — down to ±0.02mm accuracy. At Bluetronix, you start at ±0.5mm and graduate to defence-grade precision, mastering every tool India's top employers demand.</p>
+      <div class="c-outcomes">
+        <div class="c-outcome">Precision fitting to ±0.02mm tolerance — defence-grade accuracy</div>
+        <div class="c-outcome">Assembly, hydraulics, pneumatics and preventive maintenance</div>
+        <div class="c-outcome">Eligible for Indian Navy Artificer Apprentice (AA) programme</div>
+        <div class="c-outcome">ISRO Technician B recruitment eligible</div>
+        <div class="c-outcome">Work in shipyards, railways, aerospace and heavy manufacturing</div>
+        <div class="c-outcome">Pipe fitting, drill jig work, erection and testing of machinery</div>
+      </div>
+    </div>
+    <div class="meta-card">
+      <div class="meta-row"><span class="meta-k">Duration</span><span class="meta-v hi">2 Years</span></div>
+      <div class="meta-row"><span class="meta-k">Qualification</span><span class="meta-v">SSLC Pass</span></div>
+      <div class="meta-row"><span class="meta-k">Age Limit</span><span class="meta-v">None</span></div>
+      <div class="meta-row"><span class="meta-k">Gender</span><span class="meta-v">Boys &amp; Girls</span></div>
+      <div class="meta-row"><span class="meta-k">Certificate</span><span class="meta-v hi">NCVT National Trade Cert</span></div>
+      <div class="meta-row"><span class="meta-k">Session Starts</span><span class="meta-v">August 2025</span></div>
+      <a href="contact.html" class="apply-btn">Apply for This Course →</a>
+    </div>
+  </div>
+  <div class="careers" style="margin-top:48px;">
+    <div class="sec-title">Possible <em>Careers</em></div>
+    <div class="careers-grid">
+      <div class="career-tile">Machine Operator</div><div class="career-tile">Millwright</div>
+      <div class="career-tile">Indian Navy AA</div><div class="career-tile">ISRO Technician B</div>
+      <div class="career-tile">Railway Fitter</div><div class="career-tile">Shipyard Fitter</div>
+      <div class="career-tile">Aerospace Mfg.</div><div class="career-tile">ITI Apprentice</div>
+    </div>
+  </div>
+</div>
+
+<!-- SHORT TERM -->
+<div id="panel-short" class="course-panel">
+  <div style="padding:64px 5vw 0;">
+    <div class="c-eyebrow">ITES Diploma &amp; Certificate Courses · Fast Track</div>
+    <div class="c-title">Short Term<br/><em>Certificate</em> Courses</div>
+    <p class="c-desc" style="max-width:640px;">Already working? Want to upgrade fast? Our ITES short-term courses give you a recognized qualification in weeks. Perfect for quick starts or working professionals adding a new skill. Issued by the Indian Technical Education Society, Mumbai.</p>
+  </div>
+  <div class="st-grid">
+    <div class="st-card"><div class="st-name">Automobile Engineering</div><p class="st-desc">Engine, transmission, braking and electronics — complete vehicle service and repair training for modern automobiles.</p></div>
+    <div class="st-card"><div class="st-name">Mechanical Engineering</div><p class="st-desc">Core mechanical principles, machine tools and workshop practice for entry-level manufacturing and maintenance roles.</p></div>
+    <div class="st-card"><div class="st-name">Civil Engineering</div><p class="st-desc">Basic construction drawing, site supervision, masonry and material estimation for construction industry entry.</p></div>
+    <div class="st-card"><div class="st-name">Electrical Engineering</div><p class="st-desc">Practical wiring, installations and safe electrical working practices for domestic and commercial projects.</p></div>
+    <div class="st-card"><div class="st-name">Refrigeration &amp; AC</div><p class="st-desc">Certificate-level AC and refrigerator servicing basics — ideal for a fast start in the cooling and HVAC industry.</p></div>
+    <div class="st-card"><div class="st-name">Welding Technology</div><p class="st-desc">Arc, gas and MIG/TIG welding techniques for industrial fabrication, construction and repair work.</p></div>
+    <div class="st-card"><div class="st-name">Electronics</div><p class="st-desc">Circuit theory, component identification, testing and basic servicing of electronic equipment and consumer goods.</p></div>
+    <div class="st-card"><div class="st-name">Plumber</div><p class="st-desc">Domestic and commercial plumbing installation, repair, sanitation systems and pipe fitting.</p></div>
+  </div>
+  <div style="padding:0 5vw 80px;text-align:center;">
+    <a href="contact.html" style="display:inline-flex;background:var(--orange);color:#fff;padding:16px 40px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:18px;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;clip-path:polygon(0 0,92% 0,100% 25%,100% 100%,8% 100%,0 75%);">Enquire About Short Courses →</a>
+  </div>
+</div>
+
+</div><!-- /course-panels -->
+
+<script>
+function showCourse(id, btn) {
+  document.querySelectorAll('.course-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.course-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  history.replaceState(null,'','#'+id);
+  document.getElementById('course-nav').scrollIntoView({block:'nearest'});
+}
+const hash = location.hash.replace('#','');
+if(hash){ const btn=document.querySelector(`[onclick*="'${hash}'"]`); if(btn) showCourse(hash,btn); }
+</script>
+</body>
+</html>
