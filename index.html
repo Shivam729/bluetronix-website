@@ -334,6 +334,56 @@ h2.section-heading.on-dark .accent { color: var(--blue); }
 .accred-name { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.04em; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; }
 .accred-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
 
+/* ── FAQ ── */
+.faq-section { background: var(--off-white); padding: 96px 0; }
+.faq-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 64px;
+  margin-top: 56px;
+  align-items: start;
+}
+.faq-item {
+  border-bottom: 1px solid var(--border);
+}
+.faq-item:first-child { border-top: 1px solid var(--border); }
+.faq-q {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px;
+  padding: 20px 0;
+  cursor: pointer;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 17px; font-weight: 700;
+  color: var(--navy);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  user-select: none;
+  list-style: none;
+}
+.faq-q::-webkit-details-marker { display: none; }
+.faq-icon {
+  width: 24px; height: 24px; flex-shrink: 0;
+  border: 2px solid var(--border-dark);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s, border-color 0.2s, transform 0.3s;
+  font-size: 14px; color: var(--navy); font-weight: 700; line-height: 1;
+}
+details[open] .faq-icon {
+  background: var(--blue); border-color: var(--blue); color: #fff;
+  transform: rotate(45deg);
+}
+.faq-a {
+  padding: 0 24px 20px 0;
+  font-size: 14px; color: var(--body); line-height: 1.8;
+}
+.faq-a strong { color: var(--navy); }
+@media(max-width:860px) {
+  .faq-grid { grid-template-columns: 1fr; gap: 0; }
+  .faq-item:first-child { border-top: none; }
+  .faq-col:first-child .faq-item:first-child { border-top: 1px solid var(--border); }
+}
+
 /* ── CONTACT ── */
 .contact-section { background: var(--navy); padding: 96px 0; }
 .contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-top: 56px; align-items: start; }
@@ -916,6 +966,135 @@ footer { background: #060c24; padding: 56px 0 24px; }
         <div class="accred-name">NCVT MIS Portal</div>
         <p class="accred-desc">Institute Code: PU32000240 · All certificates QR-verifiable and nationally traceable</p>
       </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="container">
+    <div class="section-label">Common Questions</div>
+    <h2 class="section-heading">
+      Parents &amp; Students<br/>
+      <span class="accent">Ask Us Everything</span>
+    </h2>
+    <div class="faq-grid">
+
+      <!-- Column 1 -->
+      <div class="faq-col">
+
+        <details class="faq-item">
+          <summary class="faq-q">
+            10th-ൽ fail ആയാൽ join ചെയ്യാൻ പറ്റുമോ?
+            <span class="faq-icon">+</span>
+          </summary>
+          <p class="faq-a">
+            <strong>Yes — SSLC pass mandatory.</strong> ITI admission requires passing Class 10 (SSLC). However there is <strong>no upper age limit</strong> — whether you're 16 or 35, you are eligible. If you haven't passed SSLC yet, we can advise on options. Call us.
+          </p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-q">
+            Girls-നും join ചെയ്യാൻ പറ്റുമോ?
+            <span class="faq-icon">+</span>
+          </summary>
+          <p class="faq-a">
+            <strong>Yes, absolutely.</strong> All five NCVT trades — AC &amp; Refrigeration, Electrician, Diesel Mechanic, Draughtsman Civil, and Fitter — are open to both boys and girls equally. No restrictions.
+          </p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-q">
+            Certificate-ന് India മൊത്തം valid ആണോ?
+            <span class="faq-icon">+</span>
+          </summary>
+          <p class="faq-a">
+            <strong>Yes — and internationally too.</strong> Bluetronix issues the <strong>National Trade Certificate (NTC)</strong> awarded by DGT, Ministry of Labour, Government of India. It is valid across India and recognised in Gulf countries, Europe, and beyond. Every certificate carries a QR code for instant online verification.
+          </p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-q">
+            Admission എപ്പോൾ തുടങ്ങും?
+            <span class="faq-icon">+</span>
+          </summary>
+          <p class="faq-a">
+            The academic session starts every <strong>August</strong>. Only <strong>21 seats per trade</strong> are available — so applications fill up quickly. Submit your enquiry now to secure your seat for August 2025.
+          </p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-q">
+            Admission-ന് എന്ത് documents വേണം?
+            <span class="faq-icon">+</span>
+          </summary>
+          <p class="faq-a">
+            Bring the following at the time of admission:<br/><br/>
+            • SSLC original + 3 photocopies<br/>
+            • Original Transfer Certificate (TC)<br/>
+            • Caste certificate (SC/ST candidates)<br/>
+            • 3 passport-size photos (white background)<br/>
+            • Copy of Aadhaar card<br/><br/>
+            <strong>Parent or guardian must accompany the candidate.</strong>
+          </p>
+        </details>
+
+      </div>
+
+      <!-- Column 2 -->
+      <div class="faq-col">
+
+        <details class="faq-item" style="border-top:1px solid var(--border);">
+          <summary class="faq-q">
+            Course കഴിഞ്ഞ് ജോലി ഉറപ്പാണോ?
+            <span class="faq-icon">+</span>
+          </summary>
+          <p class="faq-a">
+            <strong>We don't just promise — companies call us.</strong> Bluetronix runs a compulsory On-Job Training (OJT) programme. Our placement partners — Blue Star, Voltas, Crompton, SFO Technologies, Maruti Suzuki and others — contact us directly asking for trained students. Graduates are job-ready from day one.
+          </p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-q">
+            ITI കഴിഞ്ഞ് degree എടുക്കാൻ പറ്റുമോ?
+            <span class="faq-icon">+</span>
+          </summary>
+          <p class="faq-a">
+            <strong>Yes — full B.Tech is possible.</strong> After ITI → Polytechnic Diploma via lateral entry (2 years) → B.Tech via lateral entry (3 years). A full engineering degree in just 5–6 years from 10th, at a fraction of the cost of a private engineering college.
+          </p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-q">
+            Hostel facility ഉണ്ടോ?
+            <span class="faq-icon">+</span>
+          </summary>
+          <p class="faq-a">
+            <strong>Yes — for outstation students.</strong> Hostel accommodation can be arranged for students coming from outside Kochi. All expenses are to be met by the student. Contact the office for current availability and rates.
+          </p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-q">
+            Gulf-ൽ ജോലി കിട്ടുമോ?
+            <span class="faq-icon">+</span>
+          </summary>
+          <p class="faq-a">
+            <strong>Yes — high demand, especially for AC &amp; Electrician.</strong> The National Trade Certificate is internationally recognised. Gulf countries — UAE, Qatar, Saudi Arabia, Kuwait — actively recruit ITI-qualified technicians. AC Refrigeration and Electrician trades have the highest Gulf demand.
+          </p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-q">
+            Army / Navy / ISRO-ൽ apply ചെയ്യാൻ ITI മതിയോ?
+            <span class="faq-icon">+</span>
+          </summary>
+          <p class="faq-a">
+            <strong>Yes — directly eligible.</strong> NTC holders can apply to Indian Railways, Indian Army, Indian Navy (Artificer Apprentice), Indian Air Force, PWD, ISRO Technician-B, and ONGC — positions that are <em>not available</em> to many degree holders. Fitter and Electrician trades have the strongest government recruitment.
+          </p>
+        </details>
+
       </div>
     </div>
   </div>
