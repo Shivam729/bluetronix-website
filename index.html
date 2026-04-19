@@ -203,25 +203,28 @@ nav {
   100% { transform: translateX(-50%); }
 }
 .partner-chip {
-  display: inline-flex; align-items: center; gap: 10px;
-  padding: 12px 28px;
-  margin: 0 8px;
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 16px 32px;
+  margin: 0 10px;
   border: 1.5px solid var(--border);
-  border-radius: 4px;
+  border-radius: 6px;
   background: var(--white);
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 14px; font-weight: 800;
-  letter-spacing: 0.08em; text-transform: uppercase;
-  color: var(--navy);
+  height: 72px;
+  min-width: 160px;
   white-space: nowrap;
-  transition: border-color 0.2s, background 0.2s;
+  transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
   cursor: default;
+  filter: grayscale(1);
+  opacity: 0.55;
 }
-.partner-chip:hover { border-color: var(--blue); background: var(--blue-light); }
-.partner-chip .pc-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--blue); flex-shrink: 0;
+.partner-chip:hover {
+  filter: grayscale(0);
+  opacity: 1;
+  border-color: var(--border-dark);
+  box-shadow: 0 4px 20px rgba(13,27,78,0.10);
+  transform: translateY(-2px);
 }
+.partner-chip svg { display: block; }
 
 /* ── STATS BAND ── */
 .stats-band {
@@ -502,42 +505,175 @@ footer { background: #060c24; padding: 56px 0 24px; }
   </div>
   <div class="marquee-wrap">
     <div class="marquee-track" id="marquee-track">
-      <!-- set 1 -->
-      <div class="partner-chip"><span class="pc-dot"></span>Blue Star</div>
-      <div class="partner-chip"><span class="pc-dot"></span>Voltas</div>
-      <div class="partner-chip"><span class="pc-dot"></span>Crompton Greaves</div>
-      <div class="partner-chip"><span class="pc-dot"></span>Maruti Suzuki</div>
-      <div class="partner-chip"><span class="pc-dot"></span>SFO Technologies</div>
-      <div class="partner-chip"><span class="pc-dot"></span>Amphenol</div>
-      <div class="partner-chip"><span class="pc-dot"></span>Snowline Refrigeration</div>
-      <div class="partner-chip"><span class="pc-dot"></span>Asha Power</div>
-      <div class="partner-chip"><span class="pc-dot"></span>Saraswathi Metal Works</div>
-      <div class="partner-chip"><span class="pc-dot"></span>MNE Tech Pvt. Ltd.</div>
-      <div class="partner-chip"><span class="pc-dot"></span>SEAIMOTO Marine</div>
-      <div class="partner-chip"><span class="pc-dot"></span>Nalcin</div>
-      <div class="partner-chip"><span class="pc-dot"></span>Embrace</div>
-      <div class="partner-chip"><span class="pc-dot"></span>Cochin AC &amp; Refrigeration</div>
-      <div class="partner-chip"><span class="pc-dot"></span>Indian Railways</div>
-      <div class="partner-chip"><span class="pc-dot"></span>ISRO</div>
-      <div class="partner-chip"><span class="pc-dot"></span>Indian Navy</div>
-      <!-- set 2 (duplicate for seamless loop) -->
-      <div class="partner-chip"><span class="pc-dot"></span>Blue Star</div>
-      <div class="partner-chip"><span class="pc-dot"></span>Voltas</div>
-      <div class="partner-chip"><span class="pc-dot"></span>Crompton Greaves</div>
-      <div class="partner-chip"><span class="pc-dot"></span>Maruti Suzuki</div>
-      <div class="partner-chip"><span class="pc-dot"></span>SFO Technologies</div>
-      <div class="partner-chip"><span class="pc-dot"></span>Amphenol</div>
-      <div class="partner-chip"><span class="pc-dot"></span>Snowline Refrigeration</div>
-      <div class="partner-chip"><span class="pc-dot"></span>Asha Power</div>
-      <div class="partner-chip"><span class="pc-dot"></span>Saraswathi Metal Works</div>
-      <div class="partner-chip"><span class="pc-dot"></span>MNE Tech Pvt. Ltd.</div>
-      <div class="partner-chip"><span class="pc-dot"></span>SEAIMOTO Marine</div>
-      <div class="partner-chip"><span class="pc-dot"></span>Nalcin</div>
-      <div class="partner-chip"><span class="pc-dot"></span>Embrace</div>
-      <div class="partner-chip"><span class="pc-dot"></span>Cochin AC &amp; Refrigeration</div>
-      <div class="partner-chip"><span class="pc-dot"></span>Indian Railways</div>
-      <div class="partner-chip"><span class="pc-dot"></span>ISRO</div>
-      <div class="partner-chip"><span class="pc-dot"></span>Indian Navy</div>
+      <!-- SET 1 -->
+
+      <!-- Blue Star: #0066B2 blue with 5-pointed star -->
+      <div class="partner-chip" title="Blue Star">
+        <svg width="130" height="40" viewBox="0 0 130 40" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="12,2 14.5,9 22,9 16,13.5 18.5,20.5 12,16 5.5,20.5 8,13.5 2,9 9.5,9" fill="#0066B2"/>
+          <text x="27" y="15" font-family="Arial,sans-serif" font-size="11" font-weight="900" fill="#0066B2" letter-spacing="1">BLUE</text>
+          <text x="27" y="28" font-family="Arial,sans-serif" font-size="11" font-weight="900" fill="#0066B2" letter-spacing="1">STAR</text>
+        </svg>
+      </div>
+
+      <!-- Voltas: #E2231A red wordmark -->
+      <div class="partner-chip" title="Voltas">
+        <svg width="110" height="40" viewBox="0 0 110 40" xmlns="http://www.w3.org/2000/svg">
+          <text x="55" y="26" font-family="Arial,sans-serif" font-size="22" font-weight="900" fill="#E2231A" text-anchor="middle" letter-spacing="2">VOLTAS</text>
+          <rect x="10" y="31" width="90" height="2.5" fill="#E2231A" rx="1"/>
+        </svg>
+      </div>
+
+      <!-- Crompton: #00843D green -->
+      <div class="partner-chip" title="Crompton">
+        <svg width="140" height="40" viewBox="0 0 140 40" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="18" cy="20" r="10" fill="none" stroke="#00843D" stroke-width="3"/>
+          <circle cx="18" cy="20" r="4" fill="#00843D"/>
+          <text x="33" y="25" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#00843D" letter-spacing="0.5">crompton</text>
+        </svg>
+      </div>
+
+      <!-- Maruti Suzuki: #C8102E red + S mark -->
+      <div class="partner-chip" title="Maruti Suzuki">
+        <svg width="160" height="40" viewBox="0 0 160 40" xmlns="http://www.w3.org/2000/svg">
+          <text x="4" y="17" font-family="Arial,sans-serif" font-size="10" font-weight="900" fill="#C8102E" letter-spacing="1">MARUTI</text>
+          <text x="4" y="30" font-family="Arial,sans-serif" font-size="10" font-weight="900" fill="#1A1A1A" letter-spacing="1">SUZUKI</text>
+          <text x="118" y="32" font-family="Arial,sans-serif" font-size="34" font-weight="900" fill="#C8102E" font-style="italic">S</text>
+        </svg>
+      </div>
+
+      <!-- Amphenol: #003087 dark blue -->
+      <div class="partner-chip" title="Amphenol">
+        <svg width="140" height="40" viewBox="0 0 140 40" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="0" width="8" height="40" fill="#003087" rx="2"/>
+          <text x="16" y="26" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#003087" letter-spacing="0.3">Amphenol</text>
+        </svg>
+      </div>
+
+      <!-- SFO Technologies: #0055A5 blue -->
+      <div class="partner-chip" title="SFO Technologies">
+        <svg width="160" height="40" viewBox="0 0 160 40" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="8" width="36" height="24" fill="#0055A5" rx="3"/>
+          <text x="18" y="25" font-family="Arial,sans-serif" font-size="13" font-weight="900" fill="white" text-anchor="middle">SFO</text>
+          <text x="44" y="19" font-family="Arial,sans-serif" font-size="9" font-weight="700" fill="#0055A5" letter-spacing="0.5">TECHNOLOGIES</text>
+          <text x="44" y="30" font-family="Arial,sans-serif" font-size="8" font-weight="500" fill="#555" letter-spacing="0.3">Kochi, Kerala</text>
+        </svg>
+      </div>
+
+      <!-- ISRO: #003580 navy + orbit ring -->
+      <div class="partner-chip" title="ISRO">
+        <svg width="130" height="40" viewBox="0 0 130 40" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="20" cy="20" rx="16" ry="8" fill="none" stroke="#FF6600" stroke-width="2"/>
+          <ellipse cx="20" cy="20" rx="16" ry="8" fill="none" stroke="#FF6600" stroke-width="2" transform="rotate(60 20 20)"/>
+          <circle cx="20" cy="20" r="4" fill="#003580"/>
+          <text x="42" y="17" font-family="Arial,sans-serif" font-size="14" font-weight="900" fill="#003580" letter-spacing="2">ISRO</text>
+          <text x="42" y="30" font-family="Arial,sans-serif" font-size="7" font-weight="500" fill="#666" letter-spacing="0.3">Govt. of India</text>
+        </svg>
+      </div>
+
+      <!-- Indian Railways: #003087 blue + wheel -->
+      <div class="partner-chip" title="Indian Railways">
+        <svg width="170" height="40" viewBox="0 0 170 40" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20" cy="20" r="14" fill="none" stroke="#003087" stroke-width="2.5"/>
+          <circle cx="20" cy="20" r="4" fill="#003087"/>
+          <line x1="20" y1="6" x2="20" y2="34" stroke="#003087" stroke-width="1.5"/>
+          <line x1="6" y1="20" x2="34" y2="20" stroke="#003087" stroke-width="1.5"/>
+          <line x1="10" y1="10" x2="30" y2="30" stroke="#003087" stroke-width="1.5"/>
+          <line x1="30" y1="10" x2="10" y2="30" stroke="#003087" stroke-width="1.5"/>
+          <text x="40" y="18" font-family="Arial,sans-serif" font-size="10" font-weight="700" fill="#003087" letter-spacing="0.3">INDIAN</text>
+          <text x="40" y="30" font-family="Arial,sans-serif" font-size="10" font-weight="700" fill="#003087" letter-spacing="0.3">RAILWAYS</text>
+        </svg>
+      </div>
+
+      <!-- Indian Navy: #002147 navy + anchor -->
+      <div class="partner-chip" title="Indian Navy">
+        <svg width="160" height="40" viewBox="0 0 160 40" xmlns="http://www.w3.org/2000/svg">
+          <line x1="20" y1="8" x2="20" y2="34" stroke="#002147" stroke-width="2.5"/>
+          <path d="M12,14 Q20,10 28,14" fill="none" stroke="#002147" stroke-width="2.5"/>
+          <circle cx="20" cy="10" r="3" fill="#002147"/>
+          <path d="M11,32 Q15,26 20,28 Q25,26 29,32" fill="none" stroke="#002147" stroke-width="2"/>
+          <line x1="14" y1="22" x2="26" y2="22" stroke="#002147" stroke-width="1.5"/>
+          <text x="38" y="18" font-family="Arial,sans-serif" font-size="10" font-weight="700" fill="#002147" letter-spacing="0.3">INDIAN</text>
+          <text x="38" y="30" font-family="Arial,sans-serif" font-size="10" font-weight="700" fill="#002147" letter-spacing="0.3">NAVY</text>
+        </svg>
+      </div>
+
+      <!-- SET 2 — identical duplicate for seamless loop -->
+
+      <div class="partner-chip" title="Blue Star">
+        <svg width="130" height="40" viewBox="0 0 130 40" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="12,2 14.5,9 22,9 16,13.5 18.5,20.5 12,16 5.5,20.5 8,13.5 2,9 9.5,9" fill="#0066B2"/>
+          <text x="27" y="15" font-family="Arial,sans-serif" font-size="11" font-weight="900" fill="#0066B2" letter-spacing="1">BLUE</text>
+          <text x="27" y="28" font-family="Arial,sans-serif" font-size="11" font-weight="900" fill="#0066B2" letter-spacing="1">STAR</text>
+        </svg>
+      </div>
+      <div class="partner-chip" title="Voltas">
+        <svg width="110" height="40" viewBox="0 0 110 40" xmlns="http://www.w3.org/2000/svg">
+          <text x="55" y="26" font-family="Arial,sans-serif" font-size="22" font-weight="900" fill="#E2231A" text-anchor="middle" letter-spacing="2">VOLTAS</text>
+          <rect x="10" y="31" width="90" height="2.5" fill="#E2231A" rx="1"/>
+        </svg>
+      </div>
+      <div class="partner-chip" title="Crompton">
+        <svg width="140" height="40" viewBox="0 0 140 40" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="18" cy="20" r="10" fill="none" stroke="#00843D" stroke-width="3"/>
+          <circle cx="18" cy="20" r="4" fill="#00843D"/>
+          <text x="33" y="25" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#00843D" letter-spacing="0.5">crompton</text>
+        </svg>
+      </div>
+      <div class="partner-chip" title="Maruti Suzuki">
+        <svg width="160" height="40" viewBox="0 0 160 40" xmlns="http://www.w3.org/2000/svg">
+          <text x="4" y="17" font-family="Arial,sans-serif" font-size="10" font-weight="900" fill="#C8102E" letter-spacing="1">MARUTI</text>
+          <text x="4" y="30" font-family="Arial,sans-serif" font-size="10" font-weight="900" fill="#1A1A1A" letter-spacing="1">SUZUKI</text>
+          <text x="118" y="32" font-family="Arial,sans-serif" font-size="34" font-weight="900" fill="#C8102E" font-style="italic">S</text>
+        </svg>
+      </div>
+      <div class="partner-chip" title="Amphenol">
+        <svg width="140" height="40" viewBox="0 0 140 40" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="0" width="8" height="40" fill="#003087" rx="2"/>
+          <text x="16" y="26" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#003087" letter-spacing="0.3">Amphenol</text>
+        </svg>
+      </div>
+      <div class="partner-chip" title="SFO Technologies">
+        <svg width="160" height="40" viewBox="0 0 160 40" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="8" width="36" height="24" fill="#0055A5" rx="3"/>
+          <text x="18" y="25" font-family="Arial,sans-serif" font-size="13" font-weight="900" fill="white" text-anchor="middle">SFO</text>
+          <text x="44" y="19" font-family="Arial,sans-serif" font-size="9" font-weight="700" fill="#0055A5" letter-spacing="0.5">TECHNOLOGIES</text>
+          <text x="44" y="30" font-family="Arial,sans-serif" font-size="8" font-weight="500" fill="#555" letter-spacing="0.3">Kochi, Kerala</text>
+        </svg>
+      </div>
+      <div class="partner-chip" title="ISRO">
+        <svg width="130" height="40" viewBox="0 0 130 40" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="20" cy="20" rx="16" ry="8" fill="none" stroke="#FF6600" stroke-width="2"/>
+          <ellipse cx="20" cy="20" rx="16" ry="8" fill="none" stroke="#FF6600" stroke-width="2" transform="rotate(60 20 20)"/>
+          <circle cx="20" cy="20" r="4" fill="#003580"/>
+          <text x="42" y="17" font-family="Arial,sans-serif" font-size="14" font-weight="900" fill="#003580" letter-spacing="2">ISRO</text>
+          <text x="42" y="30" font-family="Arial,sans-serif" font-size="7" font-weight="500" fill="#666" letter-spacing="0.3">Govt. of India</text>
+        </svg>
+      </div>
+      <div class="partner-chip" title="Indian Railways">
+        <svg width="170" height="40" viewBox="0 0 170 40" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20" cy="20" r="14" fill="none" stroke="#003087" stroke-width="2.5"/>
+          <circle cx="20" cy="20" r="4" fill="#003087"/>
+          <line x1="20" y1="6" x2="20" y2="34" stroke="#003087" stroke-width="1.5"/>
+          <line x1="6" y1="20" x2="34" y2="20" stroke="#003087" stroke-width="1.5"/>
+          <line x1="10" y1="10" x2="30" y2="30" stroke="#003087" stroke-width="1.5"/>
+          <line x1="30" y1="10" x2="10" y2="30" stroke="#003087" stroke-width="1.5"/>
+          <text x="40" y="18" font-family="Arial,sans-serif" font-size="10" font-weight="700" fill="#003087" letter-spacing="0.3">INDIAN</text>
+          <text x="40" y="30" font-family="Arial,sans-serif" font-size="10" font-weight="700" fill="#003087" letter-spacing="0.3">RAILWAYS</text>
+        </svg>
+      </div>
+      <div class="partner-chip" title="Indian Navy">
+        <svg width="160" height="40" viewBox="0 0 160 40" xmlns="http://www.w3.org/2000/svg">
+          <line x1="20" y1="8" x2="20" y2="34" stroke="#002147" stroke-width="2.5"/>
+          <path d="M12,14 Q20,10 28,14" fill="none" stroke="#002147" stroke-width="2.5"/>
+          <circle cx="20" cy="10" r="3" fill="#002147"/>
+          <path d="M11,32 Q15,26 20,28 Q25,26 29,32" fill="none" stroke="#002147" stroke-width="2"/>
+          <line x1="14" y1="22" x2="26" y2="22" stroke="#002147" stroke-width="1.5"/>
+          <text x="38" y="18" font-family="Arial,sans-serif" font-size="10" font-weight="700" fill="#002147" letter-spacing="0.3">INDIAN</text>
+          <text x="38" y="30" font-family="Arial,sans-serif" font-size="10" font-weight="700" fill="#002147" letter-spacing="0.3">NAVY</text>
+        </svg>
+      </div>
+
     </div>
   </div>
 </section>
