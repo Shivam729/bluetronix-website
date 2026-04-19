@@ -687,14 +687,16 @@ footer { background: #060c24; padding: 56px 0 24px; }
         <h3>Admission Enquiry</h3>
         <p>Fill in your details and we will contact you within 24 hours. Our staff are available to speak in Malayalam.</p>
         <div id="success-msg" role="alert">Thank you for your enquiry. We will contact you within 24 hours.<br/><strong>ഞങ്ങൾ ഉടൻ ബന്ധപ്പെടുന്നതാണ്.</strong></div>
-        <form id="enquiry-form" novalidate>
+        <form id="enquiry-form" name="admission-enquiry" method="POST" data-netlify="true" netlify-honeypot="bot-field" novalidate>
+          <input type="hidden" name="form-name" value="admission-enquiry"/>
+          <p style="display:none;"><input name="bot-field"/></p>
           <div class="form-row">
-            <div class="form-group"><label class="form-label" for="f-name">Full Name</label><input id="f-name" class="form-input" type="text" placeholder="Your full name" required/></div>
-            <div class="form-group"><label class="form-label" for="f-mobile">Mobile Number</label><input id="f-mobile" class="form-input" type="tel" placeholder="Mobile number" required/></div>
+            <div class="form-group"><label class="form-label" for="f-name">Full Name</label><input id="f-name" name="name" class="form-input" type="text" placeholder="Your full name" required/></div>
+            <div class="form-group"><label class="form-label" for="f-mobile">Mobile Number</label><input id="f-mobile" name="mobile" class="form-input" type="tel" placeholder="Mobile number" required/></div>
           </div>
           <div class="form-group">
             <label class="form-label" for="f-course">Course of Interest</label>
-            <select id="f-course" class="form-select" required>
+            <select id="f-course" name="course" class="form-select" required>
               <option value="" disabled selected>Select a course</option>
               <option>Refrigeration &amp; Air Conditioning (2 Year)</option>
               <option>Electrician (2 Year)</option>
@@ -708,15 +710,15 @@ footer { background: #060c24; padding: 56px 0 24px; }
           <div class="form-row">
             <div class="form-group">
               <label class="form-label" for="f-qual">Education / വിദ്യാഭ്യാസം</label>
-              <select id="f-qual" class="form-select">
+              <select id="f-qual" name="education" class="form-select">
                 <option>SSLC Passed</option>
                 <option>Plus Two or Higher</option>
               </select>
             </div>
-            <div class="form-group"><label class="form-label" for="f-age">Age / പ്രായം</label><input id="f-age" class="form-input" type="number" placeholder="Your age" min="14"/></div>
+            <div class="form-group"><label class="form-label" for="f-age">Age / പ്രായം</label><input id="f-age" name="age" class="form-input" type="number" placeholder="Your age" min="14"/></div>
           </div>
-          <div class="form-group"><label class="form-label" for="f-district">Location / സ്ഥലം</label><input id="f-district" class="form-input" type="text" placeholder="Which area? e.g. Ernakulam, Alappuzha"/></div>
-          <div class="form-group"><label class="form-label" for="f-msg">Message (Optional)</label><textarea id="f-msg" class="form-textarea" placeholder="Any questions or specific requirements?"></textarea></div>
+          <div class="form-group"><label class="form-label" for="f-district">Location / സ്ഥലം</label><input id="f-district" name="location" class="form-input" type="text" placeholder="Which area? e.g. Ernakulam, Alappuzha"/></div>
+          <div class="form-group"><label class="form-label" for="f-msg">Message (Optional)</label><textarea id="f-msg" name="message" class="form-textarea" placeholder="Any questions or specific requirements?"></textarea></div>
           <button type="submit" class="form-submit">Submit Enquiry →</button>
         </form>
       </div>
@@ -790,11 +792,26 @@ mnav.querySelectorAll('a').forEach(a => {
   a.addEventListener('click', () => { mnav.classList.remove('open'); hamburger.setAttribute('aria-expanded', 'false'); });
 });
 
-// Enquiry form
-document.getElementById('enquiry-form').addEventListener('submit', function(e) {
+// Enquiry form — submit via fetch so we can show thank-you without page reload
+document.getElementById('enquiry-form').addEventListener('submit', async function(e) {
   e.preventDefault();
-  this.style.display = 'none';
-  document.getElementById('success-msg').style.display = 'block';
+  const form = this;
+  const btn = form.querySelector('.form-submit');
+  btn.textContent = 'Sending…';
+  btn.disabled = true;
+  try {
+    await fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(new FormData(form)).toString()
+    });
+    form.style.display = 'none';
+    document.getElementById('success-msg').style.display = 'block';
+  } catch {
+    btn.textContent = 'Submit Enquiry →';
+    btn.disabled = false;
+    alert('Something went wrong. Please call us directly at 97468 35055.');
+  }
 });
 
 // Active nav on scroll
