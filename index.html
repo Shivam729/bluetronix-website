@@ -666,6 +666,65 @@ footer { background: #060c24; padding: 56px 0 24px; }
   .form-row { grid-template-columns: 1fr; }
   .accred-strip-items { flex-direction: column; }
 }
+
+/* ── CUSTOM CURSOR ── */
+.cursor-dot {
+  position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999;
+  width: 8px; height: 8px; background: var(--blue);
+  border-radius: 50%; transform: translate(-50%,-50%);
+  transition: transform 0.1s, opacity 0.2s;
+}
+.cursor-ring {
+  position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998;
+  width: 36px; height: 36px; border: 1.5px solid var(--blue);
+  border-radius: 50%; transform: translate(-50%,-50%);
+  transition: width 0.25s, height 0.25s, opacity 0.25s, border-color 0.25s;
+  opacity: 0.5;
+}
+.cursor-ring.hovering { width: 56px; height: 56px; opacity: 0.8; border-color: var(--blue-dark); }
+.cursor-ring.clicking { width: 28px; height: 28px; opacity: 1; }
+@media(hover: none) { .cursor-dot, .cursor-ring { display: none; } }
+
+/* ── GRAIN OVERLAY ── */
+.grain-overlay {
+  position: fixed; inset: 0; pointer-events: none; z-index: 9997;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  animation: grain-shift 0.5s steps(1) infinite;
+}
+@keyframes grain-shift {
+  0%  { background-position: 0 0; }
+  20% { background-position: -30px 10px; }
+  40% { background-position: 10px -20px; }
+  60% { background-position: -20px 30px; }
+  80% { background-position: 25px -15px; }
+  100%{ background-position: 0 0; }
+}
+
+/* ── WORD REVEAL ── */
+.reveal-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+.reveal-word span {
+  display: inline-block;
+  transform: translateY(110%);
+  transition: transform 0.65s cubic-bezier(0.16,1,0.3,1);
+}
+.revealed .reveal-word span { transform: translateY(0); }
+
+/* ── COUNTER NUMBERS ── */
+.count-up { display: inline-block; }
+
+/* ── SECTION FADE-IN ── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.fade-up.in-view { opacity: 1; transform: translateY(0); }
 </style>
 <!-- Three.js ES module importmap -->
 <script type="importmap">
@@ -678,6 +737,11 @@ footer { background: #060c24; padding: 56px 0 24px; }
 </script>
 </head>
 <body>
+
+<!-- GRAIN + CURSOR -->
+<div class="grain-overlay" aria-hidden="true"></div>
+<div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
+<div class="cursor-ring" id="cursor-ring" aria-hidden="true"></div>
 
 <!-- NAV -->
 <nav>
@@ -696,7 +760,7 @@ footer { background: #060c24; padding: 56px 0 24px; }
       <li><a href="#about">Our Story</a></li>
       <li><a href="https://share.google/csOz4BtYvj0OCpVeA" target="_blank" rel="noopener">Directions</a></li>
     </ul>
-    <a href="#contact" class="nav-apply">Apply Now</a>
+    <a href="#contact" class="nav-apply magnet-btn">Apply Now</a>
     <div class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" role="button" tabindex="0">
       <span></span><span></span><span></span>
     </div>
@@ -724,7 +788,7 @@ footer { background: #060c24; padding: 56px 0 24px; }
     <p class="hero-tagline">ഒരു തൊഴിൽ. ഒരു ഭാവി. ഇവിടെ നിന്ന് തുടങ്ങാം.</p>
     <p class="hero-desc">പഠനത്തിൽ പിന്നിലായോ? വേവലാതിപ്പെടേണ്ട. Bluetronix-ൽ 1–2 വർഷം practical training എടുക്കൂ — നല്ല ജോലി, നല്ല ശമ്പളം, ഉറപ്പ്. 1968 മുതൽ Kerala-ൽ ഏറ്റവും trusted ITI.</p>
     <div class="hero-actions">
-      <a href="#contact" class="btn-blue">Admission Enquiry →</a>
+      <a href="#contact" class="btn-blue magnet-btn">Admission Enquiry →</a>
       <a href="#courses" class="btn-outline">Which course suits me? ↓</a>
     </div>
   </div>
@@ -1095,7 +1159,7 @@ footer { background: #060c24; padding: 56px 0 24px; }
         <p class="engine-desc">Scroll to disassemble a real engine. ITI trains you to understand — and fix — every one of these components.</p>
       </div>
       <div class="engine-part-badge" id="engine-badge">
-        <div class="engine-badge-label">Currently Showing</div>
+        <div class="engine-badge-label">Now Separating</div>
         <div class="engine-badge-name" id="engine-badge-name">Engine Block</div>
       </div>
     </div>
@@ -1188,6 +1252,21 @@ footer { background: #060c24; padding: 56px 0 24px; }
           <div>
             <div class="founder-name">Mrs. Usha P. Panicker</div>
             <div class="founder-role">Managing Director &amp; Proprietrix</div>
+          </div>
+        </div>
+        <!-- STAT COUNTERS -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:28px;border:1px solid var(--border);">
+          <div style="padding:20px 16px;text-align:center;border-right:1px solid var(--border);">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;color:var(--navy);line-height:1;"><span class="count-up" data-target="56">0</span><span>+</span></div>
+            <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-top:6px;">Years</div>
+          </div>
+          <div style="padding:20px 16px;text-align:center;border-right:1px solid var(--border);">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;color:var(--navy);line-height:1;"><span class="count-up" data-target="5000">0</span><span>+</span></div>
+            <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-top:6px;">Graduates</div>
+          </div>
+          <div style="padding:20px 16px;text-align:center;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;color:var(--navy);line-height:1;"><span class="count-up" data-target="8">0</span><span></span></div>
+            <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-top:6px;">Trades</div>
           </div>
         </div>
       </div>
@@ -1927,6 +2006,140 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
     <span>മലയാളത്തിൽ സംസാരിക്കാം</span>
   </div>
 </a>
+
+<!-- ══ AWWWARDS ENHANCEMENTS ══ -->
+<script>
+(function() {
+  'use strict';
+
+  /* ── 1. LENIS SMOOTH SCROLL ── */
+  // Lightweight smooth scroll via lerp — no library needed
+  let lY = window.scrollY, tY = window.scrollY;
+  let smoothActive = window.matchMedia('(hover: hover)').matches; // disable on touch
+  if (smoothActive) {
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+    const scroller = document.createElement('div');
+    scroller.id = 'smooth-scroller';
+    scroller.style.cssText = 'position:fixed;top:0;left:0;width:100%;will-change:transform;';
+    while (document.body.firstChild) scroller.appendChild(document.body.firstChild);
+    document.body.appendChild(scroller);
+
+    const setHeight = () => document.body.style.height = scroller.scrollHeight + 'px';
+    setHeight();
+    new ResizeObserver(setHeight).observe(scroller);
+
+    window.addEventListener('scroll', () => { tY = window.scrollY; }, { passive: true });
+
+    const lerp = (a, b, t) => a + (b - a) * t;
+    const tick = () => {
+      lY = lerp(lY, tY, 0.09);
+      if (Math.abs(lY - tY) < 0.5) lY = tY;
+      scroller.style.transform = `translateY(${-lY}px)`;
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+
+  /* ── 2. CUSTOM CURSOR ── */
+  const dot  = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  if (dot && ring && window.matchMedia('(hover: hover)').matches) {
+    let mx = -100, my = -100, rx = -100, ry = -100;
+    window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; }, { passive: true });
+    const moveCursor = () => {
+      dot.style.left  = mx + 'px';
+      dot.style.top   = my + 'px';
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px';
+      ring.style.top  = ry + 'px';
+      requestAnimationFrame(moveCursor);
+    };
+    requestAnimationFrame(moveCursor);
+    document.querySelectorAll('a,button,.btn-blue,.btn-outline,.nav-apply,.course-card,.pw-card').forEach(el => {
+      el.addEventListener('mouseenter', () => ring.classList.add('hovering'));
+      el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
+    });
+    window.addEventListener('mousedown', () => ring.classList.add('clicking'));
+    window.addEventListener('mouseup',   () => ring.classList.remove('clicking'));
+  }
+
+  /* ── 3. MAGNETIC BUTTONS ── */
+  document.querySelectorAll('.magnet-btn').forEach(btn => {
+    btn.addEventListener('mousemove', e => {
+      const r = btn.getBoundingClientRect();
+      const dx = e.clientX - (r.left + r.width  / 2);
+      const dy = e.clientY - (r.top  + r.height / 2);
+      btn.style.transform = `translate(${dx * 0.28}px, ${dy * 0.28}px)`;
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transform = '';
+    });
+  });
+
+  /* ── 4. WORD REVEAL ON SCROLL ── */
+  const revealEls = document.querySelectorAll('h1, h2, .section-title, .hero-badge, .section-label');
+  revealEls.forEach(el => {
+    // wrap each word
+    el.innerHTML = el.innerHTML.replace(/(<[^>]*>)|([^<]+)/g, (match, tag, text) => {
+      if (tag) return tag;
+      return text.replace(/(\S+)/g, w =>
+        `<span class="reveal-word"><span>${w}</span></span>&zwj;`
+      );
+    });
+    el.classList.add('will-reveal');
+  });
+
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('revealed');
+        revealObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => revealObs.observe(el));
+
+  /* ── 5. FADE-UP SECTIONS ── */
+  document.querySelectorAll('section, .course-card, .pw-card, .accred-item-box, .backing-card, .myth-card').forEach((el, i) => {
+    el.classList.add('fade-up');
+    el.style.transitionDelay = (i % 4) * 0.08 + 's';
+  });
+  const fadeObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in-view'); fadeObs.unobserve(e.target); }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-up').forEach(el => fadeObs.observe(el));
+
+  /* ── 6. COUNTER ANIMATION ── */
+  const counters = document.querySelectorAll('.count-up');
+  const counterObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const target = +el.dataset.target;
+      const duration = 1800;
+      const step = target > 1000 ? Math.ceil(target / 60) : 1;
+      let current = 0;
+      const start = performance.now();
+      const update = (now) => {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+        current = Math.round(eased * target);
+        el.textContent = current >= 1000 ? (current / 1000).toFixed(1) + 'k' : current;
+        if (progress < 1) requestAnimationFrame(update);
+        else el.textContent = target >= 1000 ? (target / 1000).toFixed(1) + 'k' : target;
+      };
+      requestAnimationFrame(update);
+      counterObs.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(c => counterObs.observe(c));
+
+})();
+</script>
 
 </body>
 </html>
