@@ -2471,9 +2471,12 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
     /* Detect if cursor is over a light/white section */
     let isLight = false;
     const darkSels = '.hero,.stigma-section,.myth-section,.pathway-section,.contact-section,.trust-section,footer,.stats-band';
+    const lightOverrideSels = '.form-wrap,.partner-chip,.course-card,.why-section,.about-section,.engine-section,.courses-section';
     function updateLight() {
       const el = document.elementFromPoint(mx, my);
-      isLight = el ? !el.closest(darkSels) : true;
+      if (!el) { isLight = true; return; }
+      if (el.closest(lightOverrideSels)) { isLight = true; return; }
+      isLight = !el.closest(darkSels);
     }
     window.addEventListener('mousemove', updateLight, { passive: true });
 
