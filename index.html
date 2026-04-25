@@ -2012,36 +2012,7 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 (function() {
   'use strict';
 
-  /* ── 1. LENIS SMOOTH SCROLL ── */
-  // Lightweight smooth scroll via lerp — no library needed
-  let lY = window.scrollY, tY = window.scrollY;
-  let smoothActive = window.matchMedia('(hover: hover)').matches; // disable on touch
-  if (smoothActive) {
-    document.documentElement.style.overflow = 'hidden';
-    document.body.style.overflow = 'hidden';
-    const scroller = document.createElement('div');
-    scroller.id = 'smooth-scroller';
-    scroller.style.cssText = 'position:fixed;top:0;left:0;width:100%;will-change:transform;';
-    while (document.body.firstChild) scroller.appendChild(document.body.firstChild);
-    document.body.appendChild(scroller);
-
-    const setHeight = () => document.body.style.height = scroller.scrollHeight + 'px';
-    setHeight();
-    new ResizeObserver(setHeight).observe(scroller);
-
-    window.addEventListener('scroll', () => { tY = window.scrollY; }, { passive: true });
-
-    const lerp = (a, b, t) => a + (b - a) * t;
-    const tick = () => {
-      lY = lerp(lY, tY, 0.09);
-      if (Math.abs(lY - tY) < 0.5) lY = tY;
-      scroller.style.transform = `translateY(${-lY}px)`;
-      requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
-  }
-
-  /* ── 2. CUSTOM CURSOR ── */
+  /* ── 1. CUSTOM CURSOR ── */
   const dot  = document.getElementById('cursor-dot');
   const ring = document.getElementById('cursor-ring');
   if (dot && ring && window.matchMedia('(hover: hover)').matches) {
@@ -2065,7 +2036,7 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
     window.addEventListener('mouseup',   () => ring.classList.remove('clicking'));
   }
 
-  /* ── 3. MAGNETIC BUTTONS ── */
+  /* ── 2. MAGNETIC BUTTONS ── */
   document.querySelectorAll('.magnet-btn').forEach(btn => {
     btn.addEventListener('mousemove', e => {
       const r = btn.getBoundingClientRect();
@@ -2078,7 +2049,7 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
     });
   });
 
-  /* ── 4. WORD REVEAL ON SCROLL ── */
+  /* ── 3. WORD REVEAL ON SCROLL ── */
   const revealEls = document.querySelectorAll('h1, h2, .section-title, .hero-badge, .section-label');
   revealEls.forEach(el => {
     // wrap each word
@@ -2101,7 +2072,7 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
   }, { threshold: 0.15 });
   revealEls.forEach(el => revealObs.observe(el));
 
-  /* ── 5. FADE-UP SECTIONS ── */
+  /* ── 4. FADE-UP SECTIONS ── */
   document.querySelectorAll('section, .course-card, .pw-card, .accred-item-box, .backing-card, .myth-card').forEach((el, i) => {
     el.classList.add('fade-up');
     el.style.transitionDelay = (i % 4) * 0.08 + 's';
@@ -2113,7 +2084,7 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
   }, { threshold: 0.08 });
   document.querySelectorAll('.fade-up').forEach(el => fadeObs.observe(el));
 
-  /* ── 6. COUNTER ANIMATION ── */
+  /* ── 5. COUNTER ANIMATION ── */
   const counters = document.querySelectorAll('.count-up');
   const counterObs = new IntersectionObserver((entries) => {
     entries.forEach(e => {
