@@ -391,6 +391,7 @@ nav {
   transform: translateY(-2px);
 }
 .partner-chip svg { display: block; }
+.partner-chip img { display: block; height: 36px; width: auto; max-width: 140px; object-fit: contain; }
 
 /* ── STATS BAND ── */
 .stats-band {
@@ -735,20 +736,22 @@ footer > * { position: relative; z-index: 1; }
 .chart-highlight strong { color: var(--navy); }
 
 /* ── PARENT TRUST ── */
-.trust-section { background: var(--blue); padding: 72px 0; }
+.trust-section { background: url('./hero-sky.png') center 35% / cover no-repeat; padding: 96px 0; position: relative; overflow: hidden; }
+.trust-section::before { content:''; position:absolute; inset:0; background:rgba(5,10,30,0.82); z-index:0; }
+.trust-section > * { position: relative; z-index: 2; }
 .trust-section .section-label { color: rgba(255,255,255,0.55); }
 .trust-section .section-label::before { background: rgba(255,255,255,0.35); }
 .trust-headline { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(34px,4.5vw,58px); font-weight: 900; text-transform: uppercase; color: #fff; line-height: 0.95; margin-top: 12px; }
-.trust-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0; margin-top: 44px; border: 1px solid rgba(255,255,255,0.2); }
-.trust-card { padding: 36px 28px; border-right: 1px solid rgba(255,255,255,0.2); transition: background 0.2s; }
+.trust-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0; margin-top: 44px; border: 1px solid rgba(255,255,255,0.08); }
+.trust-card { padding: 40px 32px; border-right: 1px solid rgba(255,255,255,0.08); transition: background 0.3s; }
 .trust-card:last-child { border-right: none; }
-.trust-card:hover { background: rgba(255,255,255,0.09); }
-.trust-icon-box { width: 52px; height: 52px; border: 2px solid rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 20px; }
-.trust-title { font-family: 'Barlow Condensed', sans-serif; font-size: 21px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.03em; color: #fff; margin-bottom: 8px; line-height: 1.1; }
-.trust-desc { font-size: 12px; color: rgba(255,255,255,0.65); line-height: 1.7; }
-.trust-cta { display: flex; justify-content: center; margin-top: 48px; }
-.btn-white { background: #fff; color: var(--blue); padding: 14px 32px; font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: background 0.2s, color 0.2s; display: inline-flex; align-items: center; gap: 10px; border: none; cursor: pointer; }
-.btn-white:hover { background: var(--blue-light); }
+.trust-card:hover { background: rgba(65,105,225,0.10); }
+.trust-icon-box { width: 52px; height: 52px; border: 1px solid rgba(65,105,225,0.4); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 20px; }
+.trust-title { font-family: 'Barlow Condensed', sans-serif; font-size: 21px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.03em; color: #fff; margin-bottom: 10px; line-height: 1.1; }
+.trust-desc { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.8; }
+.trust-cta { display: flex; justify-content: center; margin-top: 52px; }
+.btn-white { background: transparent; color: #fff; padding: 14px 36px; font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: background 0.2s, color 0.2s; display: inline-flex; align-items: center; gap: 10px; border: 1px solid rgba(255,255,255,0.35); cursor: pointer; }
+.btn-white:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.6); }
 
 /* ── 3D ENGINE SECTION ── */
 .engine-section { position: relative; height: 320vh; background: var(--off-white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
@@ -861,52 +864,12 @@ footer > * { position: relative; z-index: 1; }
 }
 
 /* ── CUSTOM CURSOR ── */
-/* ── CROSSHAIR CURSOR ── */
-* { cursor: none; }
-.cursor-dot {
-  position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999;
-  width: 4px; height: 4px; background: #fff;
-  transform: translate(-50%,-50%);
-  transition: opacity 0.2s, transform 0.1s;
-}
-.cursor-ring {
-  position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998;
-  width: 32px; height: 32px;
-  transform: translate(-50%,-50%);
-  transition: width 0.2s, height 0.2s, opacity 0.2s;
-  opacity: 0.7;
-}
-/* Four corner brackets of the crosshair */
-.cursor-ring::before,
-.cursor-ring::after,
-.cursor-dot::before,
-.cursor-dot::after {
-  content: ''; position: absolute; border-color: var(--blue); border-style: solid;
-}
-/* Top-left + bottom-right via ::before/::after on ring */
-.cursor-ring::before {
-  top: 0; left: 0; width: 9px; height: 9px;
-  border-width: 1.5px 0 0 1.5px;
-}
-.cursor-ring::after {
-  bottom: 0; right: 0; width: 9px; height: 9px;
-  border-width: 0 1.5px 1.5px 0;
-}
-.cursor-dot::before {
-  top: -16px; right: -16px; width: 9px; height: 9px;
-  border-width: 1.5px 1.5px 0 0;
-}
-.cursor-dot::after {
-  bottom: -16px; left: -16px; width: 9px; height: 9px;
-  border-width: 0 0 1.5px 1.5px;
-}
-.cursor-ring.hovering { width: 48px; height: 48px; opacity: 1; }
-.cursor-ring.hovering::before, .cursor-ring.hovering::after,
-.cursor-ring.hovering ~ .cursor-dot::before, .cursor-ring.hovering ~ .cursor-dot::after {
-  border-color: #fff;
-}
-.cursor-ring.clicking { width: 20px; height: 20px; opacity: 1; }
-@media(hover: none) { .cursor-dot, .cursor-ring { display: none; } * { cursor: auto; } }
+/* ── MAGNETIC BLOB CURSOR ── */
+@media(hover: hover) { * { cursor: none; } }
+#blob-cursor { position: fixed; inset: 0; pointer-events: none; z-index: 9999; }
+.cursor-dot { display: none; }
+.cursor-ring { display: none; }
+@media(hover: none) { #blob-cursor { display: none; } * { cursor: auto; } }
 
 /* ── GRAIN OVERLAY ── */
 .grain-overlay {
@@ -993,6 +956,7 @@ footer > *:not(canvas) { position: relative; z-index: 2; }
 
 <!-- GRAIN + CURSOR -->
 <div class="grain-overlay" aria-hidden="true"></div>
+<canvas id="blob-cursor" aria-hidden="true"></canvas>
 <div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
 <div class="cursor-ring" id="cursor-ring" aria-hidden="true"></div>
 
@@ -1093,174 +1057,25 @@ footer > *:not(canvas) { position: relative; z-index: 2; }
   <div class="marquee-wrap">
     <div class="marquee-track" id="marquee-track">
       <!-- SET 1 -->
-
-      <!-- Blue Star: #0066B2 blue with 5-pointed star -->
-      <div class="partner-chip" title="Blue Star">
-        <svg width="130" height="40" viewBox="0 0 130 40" xmlns="http://www.w3.org/2000/svg">
-          <polygon points="12,2 14.5,9 22,9 16,13.5 18.5,20.5 12,16 5.5,20.5 8,13.5 2,9 9.5,9" fill="#0066B2"/>
-          <text x="27" y="15" font-family="Arial,sans-serif" font-size="11" font-weight="900" fill="#0066B2" letter-spacing="1">BLUE</text>
-          <text x="27" y="28" font-family="Arial,sans-serif" font-size="11" font-weight="900" fill="#0066B2" letter-spacing="1">STAR</text>
-        </svg>
-      </div>
-
-      <!-- Voltas: #E2231A red wordmark -->
-      <div class="partner-chip" title="Voltas">
-        <svg width="110" height="40" viewBox="0 0 110 40" xmlns="http://www.w3.org/2000/svg">
-          <text x="55" y="26" font-family="Arial,sans-serif" font-size="22" font-weight="900" fill="#E2231A" text-anchor="middle" letter-spacing="2">VOLTAS</text>
-          <rect x="10" y="31" width="90" height="2.5" fill="#E2231A" rx="1"/>
-        </svg>
-      </div>
-
-      <!-- Crompton: #00843D green -->
-      <div class="partner-chip" title="Crompton">
-        <svg width="140" height="40" viewBox="0 0 140 40" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="18" cy="20" r="10" fill="none" stroke="#00843D" stroke-width="3"/>
-          <circle cx="18" cy="20" r="4" fill="#00843D"/>
-          <text x="33" y="25" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#00843D" letter-spacing="0.5">crompton</text>
-        </svg>
-      </div>
-
-      <!-- Maruti Suzuki: #C8102E red + S mark -->
-      <div class="partner-chip" title="Maruti Suzuki">
-        <svg width="160" height="40" viewBox="0 0 160 40" xmlns="http://www.w3.org/2000/svg">
-          <text x="4" y="17" font-family="Arial,sans-serif" font-size="10" font-weight="900" fill="#C8102E" letter-spacing="1">MARUTI</text>
-          <text x="4" y="30" font-family="Arial,sans-serif" font-size="10" font-weight="900" fill="#1A1A1A" letter-spacing="1">SUZUKI</text>
-          <text x="118" y="32" font-family="Arial,sans-serif" font-size="34" font-weight="900" fill="#C8102E" font-style="italic">S</text>
-        </svg>
-      </div>
-
-      <!-- Amphenol: #003087 dark blue -->
-      <div class="partner-chip" title="Amphenol">
-        <svg width="140" height="40" viewBox="0 0 140 40" xmlns="http://www.w3.org/2000/svg">
-          <rect x="0" y="0" width="8" height="40" fill="#003087" rx="2"/>
-          <text x="16" y="26" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#003087" letter-spacing="0.3">Amphenol</text>
-        </svg>
-      </div>
-
-      <!-- SFO Technologies: #0055A5 blue -->
-      <div class="partner-chip" title="SFO Technologies">
-        <svg width="160" height="40" viewBox="0 0 160 40" xmlns="http://www.w3.org/2000/svg">
-          <rect x="0" y="8" width="36" height="24" fill="#0055A5" rx="3"/>
-          <text x="18" y="25" font-family="Arial,sans-serif" font-size="13" font-weight="900" fill="white" text-anchor="middle">SFO</text>
-          <text x="44" y="19" font-family="Arial,sans-serif" font-size="9" font-weight="700" fill="#0055A5" letter-spacing="0.5">TECHNOLOGIES</text>
-          <text x="44" y="30" font-family="Arial,sans-serif" font-size="8" font-weight="500" fill="#555" letter-spacing="0.3">Kochi, Kerala</text>
-        </svg>
-      </div>
-
-      <!-- ISRO: #003580 navy + orbit ring -->
-      <div class="partner-chip" title="ISRO">
-        <svg width="130" height="40" viewBox="0 0 130 40" xmlns="http://www.w3.org/2000/svg">
-          <ellipse cx="20" cy="20" rx="16" ry="8" fill="none" stroke="#FF6600" stroke-width="2"/>
-          <ellipse cx="20" cy="20" rx="16" ry="8" fill="none" stroke="#FF6600" stroke-width="2" transform="rotate(60 20 20)"/>
-          <circle cx="20" cy="20" r="4" fill="#003580"/>
-          <text x="42" y="17" font-family="Arial,sans-serif" font-size="14" font-weight="900" fill="#003580" letter-spacing="2">ISRO</text>
-          <text x="42" y="30" font-family="Arial,sans-serif" font-size="7" font-weight="500" fill="#666" letter-spacing="0.3">Govt. of India</text>
-        </svg>
-      </div>
-
-      <!-- Indian Railways: #003087 blue + wheel -->
-      <div class="partner-chip" title="Indian Railways">
-        <svg width="170" height="40" viewBox="0 0 170 40" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="20" cy="20" r="14" fill="none" stroke="#003087" stroke-width="2.5"/>
-          <circle cx="20" cy="20" r="4" fill="#003087"/>
-          <line x1="20" y1="6" x2="20" y2="34" stroke="#003087" stroke-width="1.5"/>
-          <line x1="6" y1="20" x2="34" y2="20" stroke="#003087" stroke-width="1.5"/>
-          <line x1="10" y1="10" x2="30" y2="30" stroke="#003087" stroke-width="1.5"/>
-          <line x1="30" y1="10" x2="10" y2="30" stroke="#003087" stroke-width="1.5"/>
-          <text x="40" y="18" font-family="Arial,sans-serif" font-size="10" font-weight="700" fill="#003087" letter-spacing="0.3">INDIAN</text>
-          <text x="40" y="30" font-family="Arial,sans-serif" font-size="10" font-weight="700" fill="#003087" letter-spacing="0.3">RAILWAYS</text>
-        </svg>
-      </div>
-
-      <!-- Indian Navy: #002147 navy + anchor -->
-      <div class="partner-chip" title="Indian Navy">
-        <svg width="160" height="40" viewBox="0 0 160 40" xmlns="http://www.w3.org/2000/svg">
-          <line x1="20" y1="8" x2="20" y2="34" stroke="#002147" stroke-width="2.5"/>
-          <path d="M12,14 Q20,10 28,14" fill="none" stroke="#002147" stroke-width="2.5"/>
-          <circle cx="20" cy="10" r="3" fill="#002147"/>
-          <path d="M11,32 Q15,26 20,28 Q25,26 29,32" fill="none" stroke="#002147" stroke-width="2"/>
-          <line x1="14" y1="22" x2="26" y2="22" stroke="#002147" stroke-width="1.5"/>
-          <text x="38" y="18" font-family="Arial,sans-serif" font-size="10" font-weight="700" fill="#002147" letter-spacing="0.3">INDIAN</text>
-          <text x="38" y="30" font-family="Arial,sans-serif" font-size="10" font-weight="700" fill="#002147" letter-spacing="0.3">NAVY</text>
-        </svg>
-      </div>
-
-      <!-- SET 2 — identical duplicate for seamless loop -->
-
-      <div class="partner-chip" title="Blue Star">
-        <svg width="130" height="40" viewBox="0 0 130 40" xmlns="http://www.w3.org/2000/svg">
-          <polygon points="12,2 14.5,9 22,9 16,13.5 18.5,20.5 12,16 5.5,20.5 8,13.5 2,9 9.5,9" fill="#0066B2"/>
-          <text x="27" y="15" font-family="Arial,sans-serif" font-size="11" font-weight="900" fill="#0066B2" letter-spacing="1">BLUE</text>
-          <text x="27" y="28" font-family="Arial,sans-serif" font-size="11" font-weight="900" fill="#0066B2" letter-spacing="1">STAR</text>
-        </svg>
-      </div>
-      <div class="partner-chip" title="Voltas">
-        <svg width="110" height="40" viewBox="0 0 110 40" xmlns="http://www.w3.org/2000/svg">
-          <text x="55" y="26" font-family="Arial,sans-serif" font-size="22" font-weight="900" fill="#E2231A" text-anchor="middle" letter-spacing="2">VOLTAS</text>
-          <rect x="10" y="31" width="90" height="2.5" fill="#E2231A" rx="1"/>
-        </svg>
-      </div>
-      <div class="partner-chip" title="Crompton">
-        <svg width="140" height="40" viewBox="0 0 140 40" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="18" cy="20" r="10" fill="none" stroke="#00843D" stroke-width="3"/>
-          <circle cx="18" cy="20" r="4" fill="#00843D"/>
-          <text x="33" y="25" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#00843D" letter-spacing="0.5">crompton</text>
-        </svg>
-      </div>
-      <div class="partner-chip" title="Maruti Suzuki">
-        <svg width="160" height="40" viewBox="0 0 160 40" xmlns="http://www.w3.org/2000/svg">
-          <text x="4" y="17" font-family="Arial,sans-serif" font-size="10" font-weight="900" fill="#C8102E" letter-spacing="1">MARUTI</text>
-          <text x="4" y="30" font-family="Arial,sans-serif" font-size="10" font-weight="900" fill="#1A1A1A" letter-spacing="1">SUZUKI</text>
-          <text x="118" y="32" font-family="Arial,sans-serif" font-size="34" font-weight="900" fill="#C8102E" font-style="italic">S</text>
-        </svg>
-      </div>
-      <div class="partner-chip" title="Amphenol">
-        <svg width="140" height="40" viewBox="0 0 140 40" xmlns="http://www.w3.org/2000/svg">
-          <rect x="0" y="0" width="8" height="40" fill="#003087" rx="2"/>
-          <text x="16" y="26" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#003087" letter-spacing="0.3">Amphenol</text>
-        </svg>
-      </div>
-      <div class="partner-chip" title="SFO Technologies">
-        <svg width="160" height="40" viewBox="0 0 160 40" xmlns="http://www.w3.org/2000/svg">
-          <rect x="0" y="8" width="36" height="24" fill="#0055A5" rx="3"/>
-          <text x="18" y="25" font-family="Arial,sans-serif" font-size="13" font-weight="900" fill="white" text-anchor="middle">SFO</text>
-          <text x="44" y="19" font-family="Arial,sans-serif" font-size="9" font-weight="700" fill="#0055A5" letter-spacing="0.5">TECHNOLOGIES</text>
-          <text x="44" y="30" font-family="Arial,sans-serif" font-size="8" font-weight="500" fill="#555" letter-spacing="0.3">Kochi, Kerala</text>
-        </svg>
-      </div>
-      <div class="partner-chip" title="ISRO">
-        <svg width="130" height="40" viewBox="0 0 130 40" xmlns="http://www.w3.org/2000/svg">
-          <ellipse cx="20" cy="20" rx="16" ry="8" fill="none" stroke="#FF6600" stroke-width="2"/>
-          <ellipse cx="20" cy="20" rx="16" ry="8" fill="none" stroke="#FF6600" stroke-width="2" transform="rotate(60 20 20)"/>
-          <circle cx="20" cy="20" r="4" fill="#003580"/>
-          <text x="42" y="17" font-family="Arial,sans-serif" font-size="14" font-weight="900" fill="#003580" letter-spacing="2">ISRO</text>
-          <text x="42" y="30" font-family="Arial,sans-serif" font-size="7" font-weight="500" fill="#666" letter-spacing="0.3">Govt. of India</text>
-        </svg>
-      </div>
-      <div class="partner-chip" title="Indian Railways">
-        <svg width="170" height="40" viewBox="0 0 170 40" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="20" cy="20" r="14" fill="none" stroke="#003087" stroke-width="2.5"/>
-          <circle cx="20" cy="20" r="4" fill="#003087"/>
-          <line x1="20" y1="6" x2="20" y2="34" stroke="#003087" stroke-width="1.5"/>
-          <line x1="6" y1="20" x2="34" y2="20" stroke="#003087" stroke-width="1.5"/>
-          <line x1="10" y1="10" x2="30" y2="30" stroke="#003087" stroke-width="1.5"/>
-          <line x1="30" y1="10" x2="10" y2="30" stroke="#003087" stroke-width="1.5"/>
-          <text x="40" y="18" font-family="Arial,sans-serif" font-size="10" font-weight="700" fill="#003087" letter-spacing="0.3">INDIAN</text>
-          <text x="40" y="30" font-family="Arial,sans-serif" font-size="10" font-weight="700" fill="#003087" letter-spacing="0.3">RAILWAYS</text>
-        </svg>
-      </div>
-      <div class="partner-chip" title="Indian Navy">
-        <svg width="160" height="40" viewBox="0 0 160 40" xmlns="http://www.w3.org/2000/svg">
-          <line x1="20" y1="8" x2="20" y2="34" stroke="#002147" stroke-width="2.5"/>
-          <path d="M12,14 Q20,10 28,14" fill="none" stroke="#002147" stroke-width="2.5"/>
-          <circle cx="20" cy="10" r="3" fill="#002147"/>
-          <path d="M11,32 Q15,26 20,28 Q25,26 29,32" fill="none" stroke="#002147" stroke-width="2"/>
-          <line x1="14" y1="22" x2="26" y2="22" stroke="#002147" stroke-width="1.5"/>
-          <text x="38" y="18" font-family="Arial,sans-serif" font-size="10" font-weight="700" fill="#002147" letter-spacing="0.3">INDIAN</text>
-          <text x="38" y="30" font-family="Arial,sans-serif" font-size="10" font-weight="700" fill="#002147" letter-spacing="0.3">NAVY</text>
-        </svg>
-      </div>
-
+      <div class="partner-chip" title="Blue Star"><img src="./logos/Blue_Star_primary_logo.png" alt="Blue Star" loading="lazy"/></div>
+      <div class="partner-chip" title="Voltas"><img src="./logos/voltas.png" alt="Voltas" loading="lazy"/></div>
+      <div class="partner-chip" title="Crompton Greaves"><img src="./logos/Crompton_Greaves_Logo.png" alt="Crompton Greaves" loading="lazy"/></div>
+      <div class="partner-chip" title="Maruti Suzuki"><img src="./logos/suzuki.png" alt="Maruti Suzuki" loading="lazy"/></div>
+      <div class="partner-chip" title="Amphenol"><img src="./logos/amphenol.png" alt="Amphenol" loading="lazy"/></div>
+      <div class="partner-chip" title="SFO Technologies"><img src="./logos/sfo.png" alt="SFO Technologies" loading="lazy"/></div>
+      <div class="partner-chip" title="ISRO"><img src="./logos/isro.png" alt="ISRO" loading="lazy"/></div>
+      <div class="partner-chip" title="Indian Railways"><img src="./logos/railway.png" alt="Indian Railways" loading="lazy"/></div>
+      <div class="partner-chip" title="Daikin"><img src="./logos/daikin.png" alt="Daikin" loading="lazy"/></div>
+      <!-- SET 2 — duplicate for seamless loop -->
+      <div class="partner-chip" title="Blue Star"><img src="./logos/Blue_Star_primary_logo.png" alt="Blue Star" loading="lazy"/></div>
+      <div class="partner-chip" title="Voltas"><img src="./logos/voltas.png" alt="Voltas" loading="lazy"/></div>
+      <div class="partner-chip" title="Crompton Greaves"><img src="./logos/Crompton_Greaves_Logo.png" alt="Crompton Greaves" loading="lazy"/></div>
+      <div class="partner-chip" title="Maruti Suzuki"><img src="./logos/suzuki.png" alt="Maruti Suzuki" loading="lazy"/></div>
+      <div class="partner-chip" title="Amphenol"><img src="./logos/amphenol.png" alt="Amphenol" loading="lazy"/></div>
+      <div class="partner-chip" title="SFO Technologies"><img src="./logos/sfo.png" alt="SFO Technologies" loading="lazy"/></div>
+      <div class="partner-chip" title="ISRO"><img src="./logos/isro.png" alt="ISRO" loading="lazy"/></div>
+      <div class="partner-chip" title="Indian Railways"><img src="./logos/railway.png" alt="Indian Railways" loading="lazy"/></div>
+      <div class="partner-chip" title="Daikin"><img src="./logos/daikin.png" alt="Daikin" loading="lazy"/></div>
     </div>
   </div>
 </section>
@@ -1634,7 +1449,7 @@ footer > *:not(canvas) { position: relative; z-index: 2; }
 </section>
 
 <!-- PARENT TRUST -->
-<section class="trust-section">
+<section class="trust-section" data-stars data-anim="particles">
   <div class="container">
     <div class="section-label">For Parents</div>
     <h2 class="trust-headline">What parents ask us —<br/>&amp; what we tell them.</h2>
@@ -2007,7 +1822,7 @@ footer > *:not(canvas) { position: relative; z-index: 2; }
 </section>
 
 <!-- CONTACT -->
-<section id="contact" class="contact-section" data-stars data-anim="radar">
+<section id="contact" class="contact-section" data-stars data-anim="shooting">
   <div class="container">
     <div class="section-label" style="color:rgba(65,105,225,0.8);">Admission 2025 — August Start</div>
     <h2 class="section-heading on-dark">
@@ -2576,28 +2391,107 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
   'use strict';
 
   /* ── 1. CUSTOM CURSOR ── */
-  const dot  = document.getElementById('cursor-dot');
-  const ring = document.getElementById('cursor-ring');
-  if (dot && ring && window.matchMedia('(hover: hover)').matches) {
-    let mx = -100, my = -100, rx = -100, ry = -100;
+  /* ── MAGNETIC BLOB CURSOR ── */
+  (function() {
+    if (!window.matchMedia('(hover: hover)').matches) return;
+    const canvas = document.getElementById('blob-cursor');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    let W, H;
+    function resize() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize, { passive: true });
+    resize();
+
+    let mx = -200, my = -200;   // actual mouse
+    let bx = -200, by = -200;   // blob centre (lagged)
+    let pvx = 0, pvy = 0;       // velocity for stretch
+    let isHover = false, isClick = false;
+
     window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; }, { passive: true });
-    const moveCursor = () => {
-      dot.style.left  = mx + 'px';
-      dot.style.top   = my + 'px';
-      rx += (mx - rx) * 0.12;
-      ry += (my - ry) * 0.12;
-      ring.style.left = rx + 'px';
-      ring.style.top  = ry + 'px';
-      requestAnimationFrame(moveCursor);
-    };
-    requestAnimationFrame(moveCursor);
-    document.querySelectorAll('a,button,.btn-blue,.btn-outline,.nav-apply,.course-card,.pw-card').forEach(el => {
-      el.addEventListener('mouseenter', () => ring.classList.add('hovering'));
-      el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
+    document.querySelectorAll('a,button,.btn-blue,.btn-outline,.nav-apply,.course-card,.magnet-btn').forEach(el => {
+      el.addEventListener('mouseenter', () => isHover = true);
+      el.addEventListener('mouseleave', () => isHover = false);
     });
-    window.addEventListener('mousedown', () => ring.classList.add('clicking'));
-    window.addEventListener('mouseup',   () => ring.classList.remove('clicking'));
-  }
+    window.addEventListener('mousedown', () => isClick = true);
+    window.addEventListener('mouseup',   () => isClick = false);
+
+    const VERTS = 8;
+    const phases  = Array.from({ length: VERTS }, (_, i) => i * Math.PI * 2 / VERTS);
+    const offsets = Array.from({ length: VERTS }, () => Math.random() * Math.PI * 2);
+    const speeds  = Array.from({ length: VERTS }, () => 0.018 + Math.random() * 0.012);
+
+    let t = 0;
+
+    function draw(ts) {
+      t = ts * 0.001;
+      ctx.clearRect(0, 0, W, H);
+
+      // Lag the blob centre toward mouse
+      const lag = isHover ? 0.10 : 0.14;
+      const dx = mx - bx, dy = my - by;
+      pvx = pvx * 0.7 + dx * lag;
+      pvy = pvy * 0.7 + dy * lag;
+      bx += pvx; by += pvy;
+
+      // Stretch blob in direction of movement
+      const speed = Math.sqrt(pvx * pvx + pvy * pvy);
+      const stretchAmt = Math.min(speed * 0.55, 18);
+      const angle = Math.atan2(pvy, pvx);
+
+      // Base radius
+      const baseR = isClick ? 14 : isHover ? 34 : 20;
+
+      // Build blob vertices
+      const pts = [];
+      for (let i = 0; i < VERTS; i++) {
+        const a = phases[i];
+        // Organic wobble
+        const wobble = Math.sin(t * speeds[i] * 6 + offsets[i]) * (isHover ? 4 : 2.5);
+        const r = baseR + wobble;
+        // Stretch along velocity axis
+        const cosA = Math.cos(a - angle);
+        const finalR = r + stretchAmt * Math.abs(cosA) * (cosA > 0 ? 1 : 0.4);
+        pts.push({ x: bx + Math.cos(a) * finalR, y: by + Math.sin(a) * finalR });
+      }
+
+      // Draw smooth closed path through vertices
+      ctx.beginPath();
+      for (let i = 0; i < VERTS; i++) {
+        const curr = pts[i];
+        const next = pts[(i + 1) % VERTS];
+        const mx2  = (curr.x + next.x) / 2;
+        const my2  = (curr.y + next.y) / 2;
+        i === 0 ? ctx.moveTo(mx2, my2) : ctx.lineTo(mx2, my2);
+        ctx.quadraticCurveTo(next.x, next.y, (next.x + pts[(i + 2) % VERTS].x) / 2, (next.y + pts[(i + 2) % VERTS].y) / 2);
+      }
+      ctx.closePath();
+
+      // Color
+      const alpha = isClick ? 0.85 : isHover ? 0.70 : 0.55;
+      if (isHover) {
+        const g = ctx.createRadialGradient(bx, by, 0, bx, by, baseR + 20);
+        g.addColorStop(0, `rgba(120,160,255,${alpha})`);
+        g.addColorStop(1, `rgba(65,105,225,${alpha * 0.6})`);
+        ctx.fillStyle = g;
+      } else {
+        ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+      }
+      ctx.fill();
+
+      // Tiny sharp dot at exact mouse position
+      ctx.beginPath();
+      ctx.arc(mx, my, 2, 0, Math.PI * 2);
+      ctx.fillStyle = isHover ? 'rgba(65,105,225,0.9)' : 'rgba(255,255,255,0.9)';
+      ctx.fill();
+
+      requestAnimationFrame(draw);
+    }
+    requestAnimationFrame(draw);
+  })();
 
   /* ── 2. MAGNETIC BUTTONS ── */
   document.querySelectorAll('.magnet-btn').forEach(btn => {
