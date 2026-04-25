@@ -247,25 +247,29 @@ nav {
 }
 .slideshow-dots span.active { background: var(--blue); width: 20px; border-radius: 3px; }
 .hero-badge {
-  display: inline-flex; align-items: center; gap: 10px; flex-wrap: wrap;
-  background: rgba(65,105,225,0.12); border: 1px solid rgba(65,105,225,0.35);
-  backdrop-filter: blur(6px);
-  color: rgba(255,255,255,0.75); font-size: 11px; font-weight: 600; letter-spacing: 0.10em;
-  text-transform: uppercase; padding: 8px 14px; margin-bottom: 32px;
-  width: fit-content; max-width: 100%; border-radius: 2px;
+  display: inline-flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  background: rgba(65,105,225,0.18); border: 1px solid rgba(65,105,225,0.55);
+  backdrop-filter: blur(8px);
+  color: rgba(255,255,255,0.85); font-size: 15px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; padding: 12px 20px; margin-bottom: 36px;
+  width: fit-content; max-width: 100%; border-radius: 4px;
+  box-shadow: 0 0 0 1px rgba(100,140,255,0.25), 0 8px 32px rgba(65,105,225,0.18);
 }
-.hero-badge::before { content: ''; width: 6px; height: 6px; background: #7fa8ff; border-radius: 50%; flex-shrink: 0; }
+.hero-badge::before { content: '⭐'; font-size: 18px; flex-shrink: 0; filter: drop-shadow(0 0 6px #7fa8ff); }
 .hero-badge .badge-highlight {
   color: #fff;
-  font-weight: 800;
-  letter-spacing: 0.06em;
+  font-weight: 900;
+  font-size: 17px;
+  letter-spacing: 0.04em;
+  text-shadow: 0 0 20px rgba(100,160,255,0.6);
 }
 .hero-badge .badge-year {
   background: var(--blue);
   color: #fff;
-  font-size: 10px; font-weight: 800;
-  padding: 2px 8px; border-radius: 2px;
-  letter-spacing: 0.08em;
+  font-size: 13px; font-weight: 900;
+  padding: 4px 12px; border-radius: 3px;
+  letter-spacing: 0.06em;
+  box-shadow: 0 0 12px rgba(65,105,225,0.5);
 }
 .hero h1 {
   font-family: 'Barlow Condensed', sans-serif;
@@ -738,6 +742,9 @@ footer > * { position: relative; z-index: 1; }
 .bc-link:hover { gap: 10px; }
 
 /* ── MYTH VS REALITY ── */
+/* Hint text: "Hover" on mouse, "Tap" on touch */
+@media(hover: hover) and (pointer: fine) { .myth-interact-hint::after { content: 'Hover'; } .myth-interact-hint { display: none; } }
+.myth-interact-hint { display: inline; }
 .myth-section { background: url('./night-sky.jpg') center 50% / cover no-repeat; padding: 96px 0; position: relative; overflow: hidden; }
 .myth-section::before { content:''; position:absolute; inset:0; background:rgba(5,10,30,0.62); z-index:0; }
 .myth-section > * { position: relative; z-index: 1; }
@@ -928,14 +935,15 @@ footer > * { position: relative; z-index: 1; }
   .backing-grid { grid-template-columns: 1fr; }
   /* Hero badge — stack nicely on small screens */
   .hero-badge {
-    font-size: 10px;
-    padding: 7px 12px;
-    gap: 7px;
-    letter-spacing: 0.08em;
+    font-size: 12px;
+    padding: 10px 14px;
+    gap: 10px;
+    letter-spacing: 0.06em;
   }
+  .hero-badge .badge-highlight { font-size: 14px; }
   .hero-badge .badge-year {
-    font-size: 9px;
-    padding: 2px 6px;
+    font-size: 11px;
+    padding: 3px 8px;
   }
   /* Hero heading size down slightly */
   .hero h1 { font-size: clamp(52px, 14vw, 80px); }
@@ -1376,7 +1384,7 @@ footer > *:not(canvas) { position: relative; z-index: 2; }
 <section class="myth-section" data-stars data-anim="constellation">
   <div class="container">
     <div class="section-label" style="color:rgba(255,255,255,0.4);">Myth vs Reality</div>
-    <h2 class="section-heading" style="color:#fff;">Hover each card to<br/>see the <span class="accent">real truth.</span></h2>
+    <h2 class="section-heading" style="color:#fff;"><span class="myth-interact-hint">Tap</span> each card to<br/>see the <span class="accent">real truth.</span></h2>
     <div class="myth-grid">
       <div class="flip-card">
         <div class="flip-card-inner">
@@ -2101,17 +2109,8 @@ window.addEventListener('beforeunload', () => window.scrollTo(0, 0));
   hRAF = requestAnimationFrame(hTick);
 })();
 
-// Flip cards — click/tap toggle (works on both desktop and mobile)
+// Flip cards — click only (mobile browsers synthesize click from clean taps, ignoring scroll)
 document.querySelectorAll('.flip-card').forEach(card => {
-  let touchMoved = false;
-  card.addEventListener('touchstart', () => { touchMoved = false; }, { passive: true });
-  card.addEventListener('touchmove',  () => { touchMoved = true;  }, { passive: true });
-  card.addEventListener('touchend', e => {
-    if (touchMoved) return; // ignore scroll-swipes
-    e.preventDefault();
-    card.classList.toggle('flipped');
-  }, { passive: false });
-  // Also handle click for desktop (hover handles visual, click handles flipped state)
   card.addEventListener('click', () => card.classList.toggle('flipped'));
 });
 
