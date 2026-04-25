@@ -746,6 +746,10 @@ footer > * { position: relative; z-index: 1; }
 .flip-card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.65s cubic-bezier(0.4,0,0.2,1); transform-style: preserve-3d; }
 .flip-card:hover .flip-card-inner,
 .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+@media(hover: none) {
+  .flip-card:hover .flip-card-inner { transform: none; }
+  .flip-hint::after { content: ' (tap)'; }
+}
 .flip-front, .flip-back { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; padding: 28px 32px; display: flex; flex-direction: column; justify-content: space-between; }
 .flip-front {
   background: rgba(255,255,255,0.06);
@@ -1379,15 +1383,15 @@ footer > *:not(canvas) { position: relative; z-index: 2; }
         <div class="flip-card-inner">
           <div class="flip-front">
             <div>
-              <div class="flip-myth-tag">❌ Myth</div>
-              <div class="flip-myth-text">ITI is only for students who failed</div>
+              <div class="flip-myth-tag">❌ തെറ്റിദ്ധാരണ</div>
+              <div class="flip-myth-text">ITI പഠിക്കുന്നത് പരാജയപ്പെട്ടവർ മാത്രം</div>
             </div>
-            <div class="flip-hint">Hover to flip →</div>
+            <div class="flip-hint">തൊടൂ, മറിക്കൂ →</div>
           </div>
           <div class="flip-back">
             <div>
-              <div class="flip-reality-tag">✅ Reality</div>
-              <div class="flip-reality-text">ITI graduates earn more than many engineering degree holders within 3 years</div>
+              <div class="flip-reality-tag">✅ സത്യം</div>
+              <div class="flip-reality-text">3 വർഷത്തിനുള്ളിൽ ITI graduates പല engineering degree holders-നേക്കാൾ കൂടുതൽ സമ്പാദിക്കുന്നു</div>
             </div>
             <div class="flip-emoji">💰</div>
           </div>
@@ -1397,15 +1401,15 @@ footer > *:not(canvas) { position: relative; z-index: 2; }
         <div class="flip-card-inner">
           <div class="flip-front">
             <div>
-              <div class="flip-myth-tag">❌ Myth</div>
-              <div class="flip-myth-text">No growth after ITI</div>
+              <div class="flip-myth-tag">❌ തെറ്റിദ്ധാരണ</div>
+              <div class="flip-myth-text">ITI കഴിഞ്ഞാൽ വളർച്ചയില്ല</div>
             </div>
-            <div class="flip-hint">Hover to flip →</div>
+            <div class="flip-hint">തൊടൂ, മറിക്കൂ →</div>
           </div>
           <div class="flip-back">
             <div>
-              <div class="flip-reality-tag">✅ Reality</div>
-              <div class="flip-reality-text">ITI → Diploma → B.Tech lateral entry is a recognized government pathway</div>
+              <div class="flip-reality-tag">✅ സത്യം</div>
+              <div class="flip-reality-text">ITI → Diploma → B.Tech lateral entry — ഇത് Govt. അംഗീകരിച്ച വഴിയാണ്</div>
             </div>
             <div class="flip-emoji">📈</div>
           </div>
@@ -1415,15 +1419,15 @@ footer > *:not(canvas) { position: relative; z-index: 2; }
         <div class="flip-card-inner">
           <div class="flip-front">
             <div>
-              <div class="flip-myth-tag">❌ Myth</div>
-              <div class="flip-myth-text">ITI jobs are dirty or low-status</div>
+              <div class="flip-myth-tag">❌ തെറ്റിദ്ധാരണ</div>
+              <div class="flip-myth-text">ITI ജോലി വൃത്തികേടും, status ഇല്ലാത്തതും</div>
             </div>
-            <div class="flip-hint">Hover to flip →</div>
+            <div class="flip-hint">തൊടൂ, മറിക്കൂ →</div>
           </div>
           <div class="flip-back">
             <div>
-              <div class="flip-reality-tag">✅ Reality</div>
-              <div class="flip-reality-text">Our grads work at ISRO, Indian Railways, Amphenol &amp; top Gulf companies</div>
+              <div class="flip-reality-tag">✅ സത്യം</div>
+              <div class="flip-reality-text">ഞങ്ങളുടെ graduates ISRO-ലും Indian Railways-ലും Gulf-ലും ജോലി ചെയ്യുന്നു</div>
             </div>
             <div class="flip-emoji">🚀</div>
           </div>
@@ -1433,15 +1437,15 @@ footer > *:not(canvas) { position: relative; z-index: 2; }
         <div class="flip-card-inner">
           <div class="flip-front">
             <div>
-              <div class="flip-myth-tag">❌ Myth</div>
-              <div class="flip-myth-text">Parents won't be proud</div>
+              <div class="flip-myth-tag">❌ തെറ്റിദ്ധാരണ</div>
+              <div class="flip-myth-text">അച്ഛനും അമ്മയ്ക്കും അഭിമാനം തോന്നില്ല</div>
             </div>
-            <div class="flip-hint">Hover to flip →</div>
+            <div class="flip-hint">തൊടൂ, മറിക്കൂ →</div>
           </div>
           <div class="flip-back">
             <div>
-              <div class="flip-reality-tag">✅ Reality</div>
-              <div class="flip-reality-text">When your son sends ₹50,000/month from Dubai — they will be very proud</div>
+              <div class="flip-reality-tag">✅ സത്യം</div>
+              <div class="flip-reality-text">മകൻ Dubai-യിൽ നിന്ന് ₹50,000 അയക്കുമ്പോൾ — അഭിമാനം തോന്നും, തീർച്ചയായും</div>
             </div>
             <div class="flip-emoji">🇦🇪</div>
           </div>
@@ -2097,6 +2101,14 @@ window.addEventListener('beforeunload', () => window.scrollTo(0, 0));
   hGoTo(0);
   hRAF = requestAnimationFrame(hTick);
 })();
+
+// Flip cards — touch support
+document.querySelectorAll('.flip-card').forEach(card => {
+  card.addEventListener('touchend', e => {
+    e.preventDefault();
+    card.classList.toggle('flipped');
+  }, { passive: false });
+});
 
 // Mobile nav
 const hamburger = document.getElementById('hamburger');
