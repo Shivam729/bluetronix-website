@@ -450,7 +450,7 @@ details[open] .faq-icon {
 }
 
 /* ── FOOTER ── */
-footer { background: #060c24; padding: 56px 0 24px; }
+footer { background: var(--navy2); padding: 56px 0 24px; }
 .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
 .footer-brand-name { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.04em; color: rgba(255,255,255,0.8); margin-bottom: 4px; }
 .footer-brand-sub { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 14px; }
@@ -717,8 +717,21 @@ footer { background: #060c24; padding: 56px 0 24px; }
 /* ── COUNTER NUMBERS ── */
 .count-up { display: inline-block; }
 
-/* ── HERO STAR CANVAS ── */
-#star-canvas {
+/* ── TYPEWRITER HERO ── */
+.type-line { display: inline-block; }
+.type-cursor {
+  display: inline-block;
+  width: 3px;
+  background: currentColor;
+  margin-left: 4px;
+  vertical-align: middle;
+  height: 0.75em;
+  animation: blink 0.75s step-end infinite;
+}
+@keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+/* ── STAR CANVAS (hero + all [data-stars] sections) ── */
+#star-canvas, .section-star-canvas {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -726,6 +739,7 @@ footer { background: #060c24; padding: 56px 0 24px; }
   z-index: 0;
   pointer-events: none;
 }
+[data-stars] { position: relative; overflow: hidden; }
 
 /* ── SECTION FADE-IN ── */
 .fade-up {
@@ -789,11 +803,11 @@ footer { background: #060c24; padding: 56px 0 24px; }
   <div class="hero-content">
     <div class="hero-circuit" aria-hidden="true"></div>
     <div class="hero-badge">Kerala's Oldest ITI · Since 1968 · Kochi</div>
-    <h1>
-      Marks<br/>
-      <span class="accent">Doesn't</span><br/>
-      Matter.<br/>
-      Skills Do.
+    <h1 id="hero-h1" style="min-height:4.5em;">
+      <span class="type-line" id="tl-1"></span><br/>
+      <span class="type-line accent" id="tl-2"></span><br/>
+      <span class="type-line" id="tl-3"></span><br/>
+      <span class="type-line" id="tl-4"></span>
     </h1>
     <p class="hero-tagline">ഒരു തൊഴിൽ. ഒരു ഭാവി. ഇവിടെ നിന്ന് തുടങ്ങാം.</p>
     <p class="hero-desc">പഠനത്തിൽ പിന്നിലായോ? വേവലാതിപ്പെടേണ്ട. Bluetronix-ൽ 1–2 വർഷം practical training എടുക്കൂ — നല്ല ജോലി, നല്ല ശമ്പളം, ഉറപ്പ്. 1968 മുതൽ Kerala-ൽ ഏറ്റവും trusted ITI.</p>
@@ -1193,7 +1207,7 @@ footer { background: #060c24; padding: 56px 0 24px; }
 </section>
 
 <!-- PATHWAY -->
-<section id="pathway" class="pathway-section">
+<section id="pathway" class="pathway-section" data-stars>
   <div class="container">
     <div class="section-label" style="color:rgba(65,105,225,0.8);">After 10th — Why ITI</div>
     <h2 class="section-heading on-dark">
@@ -1470,7 +1484,7 @@ footer { background: #060c24; padding: 56px 0 24px; }
 </section>
 
 <!-- CONTACT -->
-<section id="contact" class="contact-section">
+<section id="contact" class="contact-section" data-stars>
   <div class="container">
     <div class="section-label" style="color:rgba(65,105,225,0.8);">Admission 2025 — August Start</div>
     <h2 class="section-heading on-dark">
@@ -1569,7 +1583,7 @@ footer { background: #060c24; padding: 56px 0 24px; }
 </section>
 
 <!-- FOOTER -->
-<footer>
+<footer data-stars>
   <div class="container">
     <div class="footer-grid">
       <div>
@@ -2122,82 +2136,125 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 })();
 </script>
 
-<!-- ── HERO STAR FIELD ── -->
+<!-- ── HERO TYPEWRITER ── -->
 <script>
 (function () {
-  const canvas = document.getElementById('star-canvas');
+  const lines = [
+    { id: 'tl-1', text: 'Marks',     delay: 400  },
+    { id: 'tl-2', text: "Doesn't",  delay: 1000 },
+    { id: 'tl-3', text: 'Matter.',   delay: 1650 },
+    { id: 'tl-4', text: 'Skills Do.', delay: 2350 },
+  ];
+
+  const cursor = document.createElement('span');
+  cursor.className = 'type-cursor';
+
+  function typeLine(el, text, startDelay, onDone) {
+    setTimeout(() => {
+      el.appendChild(cursor);
+      let i = 0;
+      const interval = setInterval(() => {
+        el.textContent = text.slice(0, ++i);
+        el.appendChild(cursor);
+        if (i === text.length) {
+          clearInterval(interval);
+          // Remove cursor from this line after brief pause
+          setTimeout(() => {
+            cursor.remove();
+            if (onDone) onDone();
+          }, 120);
+        }
+      }, 68);
+    }, startDelay);
+  }
+
+  function runLines(index) {
+    if (index >= lines.length) {
+      // All done — attach blinking cursor to last line permanently
+      const last = document.getElementById(lines[lines.length - 1].id);
+      if (last) last.appendChild(cursor);
+      return;
+    }
+    const { id, text, delay } = lines[index];
+    const el = document.getElementById(id);
+    if (!el) return runLines(index + 1);
+    typeLine(el, text, index === 0 ? delay : 0, () => runLines(index + 1));
+  }
+
+  runLines(0);
+})();
+</script>
+
+<!-- ── STAR FIELD (hero + all dark sections) ── -->
+<script>
+/* Shared mouse position for parallax */
+let _starMX = 0.5, _starMY = 0.5;
+window.addEventListener('mousemove', e => {
+  _starMX = e.clientX / window.innerWidth;
+  _starMY = e.clientY / window.innerHeight;
+}, { passive: true });
+
+function spawnStarField(canvas, opts = {}) {
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
+  const COUNT        = opts.count    ?? 140;
+  const SHOOTING     = opts.shooting ?? true;
+  const PARALLAX     = opts.parallax ?? true;
 
   let W, H, stars = [], shooting = null, shootTimer = 0;
-  const STAR_COUNT = 180;
 
   function resize() {
-    W = canvas.width  = canvas.offsetWidth;
-    H = canvas.height = canvas.offsetHeight;
+    W = canvas.width  = canvas.offsetWidth  || canvas.parentElement.offsetWidth;
+    H = canvas.height = canvas.offsetHeight || canvas.parentElement.offsetHeight;
+    // Rebuild stars to fill new size
+    stars = Array.from({ length: COUNT }, () => makeStar());
   }
-  window.addEventListener('resize', resize, { passive: true });
-  resize();
 
-  /* ── Star factory ── */
-  function makeStar(x, y) {
+  function makeStar() {
     const size   = Math.random() * 1.6 + 0.3;
-    const speed  = Math.random() * 0.12 + 0.03;
-    const drift  = (Math.random() - 0.5) * 0.08;
-    const phase  = Math.random() * Math.PI * 2;
-    const twinkleSpeed = Math.random() * 0.02 + 0.005;
-    const baseAlpha    = Math.random() * 0.55 + 0.2;
-    // colour: mostly white, some blue-tinted
-    const hue  = Math.random() < 0.3 ? 210 : 0;
-    const sat  = hue === 210 ? 60 : 0;
-    return { x: x ?? Math.random() * W, y: y ?? Math.random() * H,
-             size, speed, drift, phase, twinkleSpeed, baseAlpha, hue, sat };
-  }
-
-  for (let i = 0; i < STAR_COUNT; i++) stars.push(makeStar());
-
-  /* ── Shooting star factory ── */
-  function makeShooter() {
-    const angle = (Math.random() * 30 + 15) * Math.PI / 180; // ~15-45°
+    const hue    = Math.random() < 0.3 ? 210 : 0;
+    const sat    = hue === 210 ? 60 : 0;
     return {
-      x: Math.random() * W * 0.7,
-      y: Math.random() * H * 0.3,
-      vx: Math.cos(angle) * (6 + Math.random() * 5),
-      vy: Math.sin(angle) * (6 + Math.random() * 5),
-      len: 80 + Math.random() * 80,
-      alpha: 1,
-      life: 1,
+      x: Math.random() * W, y: Math.random() * H,
+      size, speed: Math.random() * 0.1 + 0.02,
+      drift: (Math.random() - 0.5) * 0.07,
+      phase: Math.random() * Math.PI * 2,
+      twinkleSpeed: Math.random() * 0.02 + 0.005,
+      baseAlpha: Math.random() * 0.5 + 0.2,
+      hue, sat
     };
   }
 
-  /* ── Mouse parallax ── */
-  let mx = 0.5, my = 0.5;
-  window.addEventListener('mousemove', e => {
-    mx = e.clientX / window.innerWidth;
-    my = e.clientY / window.innerHeight;
-  }, { passive: true });
+  function makeShooter() {
+    const angle = (Math.random() * 30 + 15) * Math.PI / 180;
+    return {
+      x: Math.random() * W * 0.7, y: Math.random() * H * 0.3,
+      vx: Math.cos(angle) * (5 + Math.random() * 5),
+      vy: Math.sin(angle) * (5 + Math.random() * 5),
+      alpha: 1, life: 1
+    };
+  }
+
+  const ro = new ResizeObserver(resize);
+  ro.observe(canvas.parentElement);
+  resize();
 
   let last = 0;
   function draw(ts) {
-    const dt = Math.min(ts - last, 32);
-    last = ts;
+    const dt = Math.min(ts - last, 32); last = ts;
     ctx.clearRect(0, 0, W, H);
 
-    /* ── Draw stars ── */
     stars.forEach(s => {
       s.phase += s.twinkleSpeed;
       const alpha = s.baseAlpha * (0.6 + 0.4 * Math.sin(s.phase));
-
-      // parallax offset based on mouse
-      const px = (mx - 0.5) * s.size * 6;
-      const py = (my - 0.5) * s.size * 6;
+      const px = PARALLAX ? (_starMX - 0.5) * s.size * 5 : 0;
+      const py = PARALLAX ? (_starMY - 0.5) * s.size * 5 : 0;
+      const sx = s.x + px, sy = s.y + py;
 
       ctx.beginPath();
-      ctx.arc(s.x + px, s.y + py, s.size, 0, Math.PI * 2);
-
-      // subtle glow for bigger stars
+      ctx.arc(sx, sy, s.size, 0, Math.PI * 2);
       if (s.size > 1.2) {
-        const g = ctx.createRadialGradient(s.x+px, s.y+py, 0, s.x+px, s.y+py, s.size * 3);
+        const g = ctx.createRadialGradient(sx, sy, 0, sx, sy, s.size * 3);
         g.addColorStop(0, `hsla(${s.hue},${s.sat}%,100%,${alpha})`);
         g.addColorStop(1, `hsla(${s.hue},${s.sat}%,100%,0)`);
         ctx.fillStyle = g;
@@ -2206,46 +2263,55 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
       }
       ctx.fill();
 
-      // drift upward slowly
       s.y -= s.speed * (dt / 16);
       s.x += s.drift * (dt / 16);
       if (s.y < -2) { s.y = H + 2; s.x = Math.random() * W; }
       if (s.x < -2 || s.x > W + 2) s.x = Math.random() * W;
     });
 
-    /* ── Shooting star ── */
-    shootTimer -= dt;
-    if (shootTimer <= 0 && !shooting) {
-      shooting = makeShooter();
-      shootTimer = 4000 + Math.random() * 8000;
+    if (SHOOTING) {
+      shootTimer -= dt;
+      if (shootTimer <= 0 && !shooting) {
+        shooting = makeShooter();
+        shootTimer = 5000 + Math.random() * 9000;
+      }
+      if (shooting) {
+        const g = ctx.createLinearGradient(
+          shooting.x, shooting.y,
+          shooting.x - shooting.vx * 10, shooting.y - shooting.vy * 10
+        );
+        g.addColorStop(0, `rgba(255,255,255,${shooting.alpha})`);
+        g.addColorStop(1, `rgba(200,220,255,0)`);
+        ctx.beginPath();
+        ctx.moveTo(shooting.x, shooting.y);
+        ctx.lineTo(shooting.x - shooting.vx * 10, shooting.y - shooting.vy * 10);
+        ctx.strokeStyle = g;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        shooting.x += shooting.vx * (dt / 16);
+        shooting.y += shooting.vy * (dt / 16);
+        shooting.alpha -= 0.018 * (dt / 16);
+        if (shooting.alpha <= 0 || shooting.x > W + 50 || shooting.y > H + 50) shooting = null;
+      }
     }
-    if (shooting) {
-      const tail = shooting.len * shooting.life;
-      const g = ctx.createLinearGradient(
-        shooting.x, shooting.y,
-        shooting.x - shooting.vx * (tail / shooting.vx),
-        shooting.y - shooting.vy * (tail / shooting.vy)
-      );
-      g.addColorStop(0, `rgba(255,255,255,${shooting.alpha})`);
-      g.addColorStop(1, `rgba(200,220,255,0)`);
-      ctx.beginPath();
-      ctx.moveTo(shooting.x, shooting.y);
-      ctx.lineTo(shooting.x - shooting.vx * (tail / 8), shooting.y - shooting.vy * (tail / 8));
-      ctx.strokeStyle = g;
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-
-      shooting.x += shooting.vx * (dt / 16);
-      shooting.y += shooting.vy * (dt / 16);
-      shooting.alpha -= 0.018 * (dt / 16);
-      shooting.life  -= 0.025 * (dt / 16);
-      if (shooting.alpha <= 0 || shooting.x > W || shooting.y > H) shooting = null;
-    }
-
     requestAnimationFrame(draw);
   }
   requestAnimationFrame(draw);
-})();
+}
+
+/* ── Hero star canvas ── */
+spawnStarField(document.getElementById('star-canvas'), { count: 180, shooting: true, parallax: true });
+
+/* ── Inject into all [data-stars] sections ── */
+document.querySelectorAll('[data-stars]').forEach(section => {
+  const c = document.createElement('canvas');
+  c.className = 'section-star-canvas';
+  c.setAttribute('aria-hidden', 'true');
+  section.prepend(c);
+  // Make sure children above canvas are relatively positioned
+  const h = section.offsetHeight;
+  spawnStarField(c, { count: Math.round(80 + (h / 12)), shooting: h > 400, parallax: false });
+});
 </script>
 
 </body>
