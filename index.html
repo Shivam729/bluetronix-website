@@ -718,6 +718,16 @@ footer { background: #060c24; padding: 56px 0 24px; }
 /* ── COUNTER NUMBERS ── */
 .count-up { display: inline-block; }
 
+/* ── HERO STAR CANVAS ── */
+#star-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
 /* ── SECTION FADE-IN ── */
 .fade-up {
   opacity: 0;
@@ -776,6 +786,7 @@ footer { background: #060c24; padding: 56px 0 24px; }
 
 <!-- HERO -->
 <div id="home" class="hero">
+  <canvas id="star-canvas" aria-hidden="true"></canvas>
   <div class="hero-content">
     <div class="hero-circuit" aria-hidden="true"></div>
     <div class="hero-badge">Kerala's Oldest ITI · Since 1968 · Kochi</div>
@@ -2109,6 +2120,132 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
   }, { threshold: 0.5 });
   counters.forEach(c => counterObs.observe(c));
 
+})();
+</script>
+
+<!-- ── HERO STAR FIELD ── -->
+<script>
+(function () {
+  const canvas = document.getElementById('star-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  let W, H, stars = [], shooting = null, shootTimer = 0;
+  const STAR_COUNT = 180;
+
+  function resize() {
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+  window.addEventListener('resize', resize, { passive: true });
+  resize();
+
+  /* ── Star factory ── */
+  function makeStar(x, y) {
+    const size   = Math.random() * 1.6 + 0.3;
+    const speed  = Math.random() * 0.12 + 0.03;
+    const drift  = (Math.random() - 0.5) * 0.08;
+    const phase  = Math.random() * Math.PI * 2;
+    const twinkleSpeed = Math.random() * 0.02 + 0.005;
+    const baseAlpha    = Math.random() * 0.55 + 0.2;
+    // colour: mostly white, some blue-tinted
+    const hue  = Math.random() < 0.3 ? 210 : 0;
+    const sat  = hue === 210 ? 60 : 0;
+    return { x: x ?? Math.random() * W, y: y ?? Math.random() * H,
+             size, speed, drift, phase, twinkleSpeed, baseAlpha, hue, sat };
+  }
+
+  for (let i = 0; i < STAR_COUNT; i++) stars.push(makeStar());
+
+  /* ── Shooting star factory ── */
+  function makeShooter() {
+    const angle = (Math.random() * 30 + 15) * Math.PI / 180; // ~15-45°
+    return {
+      x: Math.random() * W * 0.7,
+      y: Math.random() * H * 0.3,
+      vx: Math.cos(angle) * (6 + Math.random() * 5),
+      vy: Math.sin(angle) * (6 + Math.random() * 5),
+      len: 80 + Math.random() * 80,
+      alpha: 1,
+      life: 1,
+    };
+  }
+
+  /* ── Mouse parallax ── */
+  let mx = 0.5, my = 0.5;
+  window.addEventListener('mousemove', e => {
+    mx = e.clientX / window.innerWidth;
+    my = e.clientY / window.innerHeight;
+  }, { passive: true });
+
+  let last = 0;
+  function draw(ts) {
+    const dt = Math.min(ts - last, 32);
+    last = ts;
+    ctx.clearRect(0, 0, W, H);
+
+    /* ── Draw stars ── */
+    stars.forEach(s => {
+      s.phase += s.twinkleSpeed;
+      const alpha = s.baseAlpha * (0.6 + 0.4 * Math.sin(s.phase));
+
+      // parallax offset based on mouse
+      const px = (mx - 0.5) * s.size * 6;
+      const py = (my - 0.5) * s.size * 6;
+
+      ctx.beginPath();
+      ctx.arc(s.x + px, s.y + py, s.size, 0, Math.PI * 2);
+
+      // subtle glow for bigger stars
+      if (s.size > 1.2) {
+        const g = ctx.createRadialGradient(s.x+px, s.y+py, 0, s.x+px, s.y+py, s.size * 3);
+        g.addColorStop(0, `hsla(${s.hue},${s.sat}%,100%,${alpha})`);
+        g.addColorStop(1, `hsla(${s.hue},${s.sat}%,100%,0)`);
+        ctx.fillStyle = g;
+      } else {
+        ctx.fillStyle = `hsla(${s.hue},${s.sat}%,100%,${alpha})`;
+      }
+      ctx.fill();
+
+      // drift upward slowly
+      s.y -= s.speed * (dt / 16);
+      s.x += s.drift * (dt / 16);
+      if (s.y < -2) { s.y = H + 2; s.x = Math.random() * W; }
+      if (s.x < -2 || s.x > W + 2) s.x = Math.random() * W;
+    });
+
+    /* ── Shooting star ── */
+    shootTimer -= dt;
+    if (shootTimer <= 0 && !shooting) {
+      shooting = makeShooter();
+      shootTimer = 4000 + Math.random() * 8000;
+    }
+    if (shooting) {
+      const tail = shooting.len * shooting.life;
+      const g = ctx.createLinearGradient(
+        shooting.x, shooting.y,
+        shooting.x - shooting.vx * (tail / shooting.vx),
+        shooting.y - shooting.vy * (tail / shooting.vy)
+      );
+      g.addColorStop(0, `rgba(255,255,255,${shooting.alpha})`);
+      g.addColorStop(1, `rgba(200,220,255,0)`);
+      ctx.beginPath();
+      ctx.moveTo(shooting.x, shooting.y);
+      ctx.lineTo(shooting.x - shooting.vx * (tail / 8), shooting.y - shooting.vy * (tail / 8));
+      ctx.strokeStyle = g;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      shooting.x += shooting.vx * (dt / 16);
+      shooting.y += shooting.vy * (dt / 16);
+      shooting.alpha -= 0.018 * (dt / 16);
+      shooting.life  -= 0.025 * (dt / 16);
+      if (shooting.alpha <= 0 || shooting.x > W || shooting.y > H) shooting = null;
+    }
+
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
 })();
 </script>
 
