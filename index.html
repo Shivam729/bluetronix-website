@@ -934,16 +934,6 @@ footer > * { position: relative; z-index: 1; }
   0%   { opacity: 0; transform: translateY(28px); }
   100% { opacity: 1; transform: translateY(0); }
 }
-/* Constellation canvas sits over the heading */
-#hero-constellation {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 3;
-  opacity: 1;
-  transition: opacity 1.2s ease 2.4s;
-}
-#hero-constellation.fade-out { opacity: 0; }
 .type-cursor {
   display: inline-block;
   width: 3px;
@@ -1041,15 +1031,12 @@ footer > *:not(canvas) { position: relative; z-index: 2; }
   <canvas id="star-canvas" aria-hidden="true"></canvas>
   <div class="hero-content">
     <div class="hero-badge"><span class="badge-highlight">Kerala's Oldest ITI</span> <span class="badge-year">Since 1968</span> · Palluruthy, Kochi</div>
-    <div style="position:relative;">
-      <canvas id="hero-constellation" aria-hidden="true"></canvas>
-      <h1 id="hero-h1" style="min-height:4.5em;">
-        <span class="hero-line" style="--i:0">Marks</span><br/>
-        <span class="hero-line accent" style="--i:1">Doesn't</span><br/>
-        <span class="hero-line" style="--i:2">Matter.</span><br/>
-        <span class="hero-line" style="--i:3">Skills Do.</span>
-      </h1>
-    </div>
+    <h1 id="hero-h1" style="min-height:4.5em;">
+      <span class="hero-line" style="--i:0">Marks</span><br/>
+      <span class="hero-line accent" style="--i:1">Doesn't</span><br/>
+      <span class="hero-line" style="--i:2">Matter.</span><br/>
+      <span class="hero-line" style="--i:3">Skills Do.</span>
+    </h1>
     <p class="hero-tagline">ഒരു തൊഴിൽ. ഒരു ഭാവി. ഇവിടെ നിന്ന് തുടങ്ങാം.</p>
     <p class="hero-desc">പഠനത്തിൽ പിന്നിലായോ? വേവലാതിപ്പെടേണ്ട. Bluetronix-ൽ 1–2 വർഷം practical training എടുക്കൂ — നല്ല ജോലി, നല്ല ശമ്പളം, ഉറപ്പ്. 1968 മുതൽ Kerala-ൽ ഏറ്റവും trusted ITI.</p>
     <div class="hero-actions">
@@ -2622,92 +2609,6 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 })();
 </script>
 
-<!-- ── HERO TYPEWRITER ── -->
-<script>
-/* ── CONSTELLATION HEADING ANIMATION ── */
-(function () {
-  const canvas = document.getElementById('hero-constellation');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  const h1  = document.getElementById('hero-h1');
-  if (!h1) return;
-
-  function resize() {
-    const rect = h1.parentElement.getBoundingClientRect();
-    canvas.width  = rect.width  || h1.offsetWidth  || 600;
-    canvas.height = rect.height || h1.offsetHeight || 320;
-  }
-  resize();
-
-  /* Build a cloud of nodes spread across the heading area */
-  const NODE_COUNT = 55;
-  const CONNECT_DIST = 90;
-  let nodes = [];
-
-  function buildNodes() {
-    nodes = Array.from({ length: NODE_COUNT }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      r: Math.random() * 1.8 + 0.5,
-      vx: (Math.random() - 0.5) * 0.3,
-      vy: (Math.random() - 0.5) * 0.3,
-      alpha: 0,
-      targetAlpha: Math.random() * 0.6 + 0.2,
-      born: performance.now() + Math.random() * 900  /* staggered spawn */
-    }));
-  }
-  buildNodes();
-
-  let raf;
-  function draw(ts) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    /* Update node alphas (fade in staggered) */
-    nodes.forEach(n => {
-      if (ts > n.born) n.alpha = Math.min(n.alpha + 0.025, n.targetAlpha);
-      n.x += n.vx; n.y += n.vy;
-      if (n.x < 0 || n.x > canvas.width)  n.vx *= -1;
-      if (n.y < 0 || n.y > canvas.height) n.vy *= -1;
-    });
-
-    /* Draw connecting lines */
-    for (let i = 0; i < NODE_COUNT; i++) {
-      for (let j = i + 1; j < NODE_COUNT; j++) {
-        const a = nodes[i], b = nodes[j];
-        const dx = a.x - b.x, dy = a.y - b.y;
-        const d  = Math.sqrt(dx * dx + dy * dy);
-        if (d < CONNECT_DIST) {
-          const lineAlpha = (1 - d / CONNECT_DIST) * Math.min(a.alpha, b.alpha) * 0.6;
-          ctx.beginPath();
-          ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
-          ctx.strokeStyle = `rgba(100,150,255,${lineAlpha})`;
-          ctx.lineWidth = 0.7;
-          ctx.stroke();
-        }
-      }
-    }
-
-    /* Draw nodes */
-    nodes.forEach(n => {
-      if (n.alpha <= 0) return;
-      const g = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r * 3);
-      g.addColorStop(0, `rgba(180,210,255,${n.alpha})`);
-      g.addColorStop(1, `rgba(100,150,255,0)`);
-      ctx.beginPath(); ctx.arc(n.x, n.y, n.r * 3, 0, Math.PI * 2);
-      ctx.fillStyle = g; ctx.fill();
-    });
-
-    raf = requestAnimationFrame(draw);
-  }
-  raf = requestAnimationFrame(draw);
-
-  /* Fade out constellation after text has fully appeared (~2.4s) */
-  setTimeout(() => {
-    canvas.classList.add('fade-out');
-    setTimeout(() => { cancelAnimationFrame(raf); canvas.style.display = 'none'; }, 1300);
-  }, 2400);
-})();
-</script>
 
 <!-- ── STAR FIELD (hero + all dark sections) ── -->
 <script>
@@ -2827,7 +2728,7 @@ function spawnStarField(canvas, opts = {}) {
 }
 
 /* ── Hero star canvas ── */
-spawnStarField(document.getElementById('star-canvas'), { count: 0, shooting: true, parallax: false, shootFreqMin: 1200, shootFreqMax: 3500 });
+spawnConstellation(document.getElementById('star-canvas'));
 
 /* ══════════════════════════════════════════════════
    SECTION ANIMATIONS — one style per section
