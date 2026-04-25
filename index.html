@@ -583,7 +583,7 @@ footer { background: var(--navy2); padding: 56px 0 24px; }
 #engine-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .engine-overlay-top {
   position: absolute; top: 0; left: 0; right: 0;
-  padding: 40px 5vw; z-index: 10; pointer-events: none;
+  padding: 40px 5vw; padding-top: 80px; z-index: 10; pointer-events: none;
   display: flex; align-items: flex-start; justify-content: space-between; gap: 32px;
 }
 .engine-text-block { max-width: 420px; }
@@ -645,7 +645,7 @@ footer { background: var(--navy2); padding: 56px 0 24px; }
 @media(max-width: 1024px) {
   .hero { grid-template-columns: 1fr; }
   .hero-slideshow { display: none; }
-  .hero-circuit { display: block; }
+  .hero-circuit { display: none; }
   .why-layout, .about-layout, .contact-layout { grid-template-columns: 1fr; gap: 48px; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .pathway-grid { grid-template-columns: 1fr 1fr; }
@@ -2300,17 +2300,16 @@ function spawnStarField(canvas, opts = {}) {
 }
 
 /* ── Hero star canvas ── */
-spawnStarField(document.getElementById('star-canvas'), { count: 180, shooting: true, parallax: true });
+spawnStarField(document.getElementById('star-canvas'), { count: 110, shooting: true, parallax: true });
 
 /* ── Inject into all [data-stars] sections ── */
 document.querySelectorAll('[data-stars]').forEach(section => {
-  const c = document.createElement('canvas');
-  c.className = 'section-star-canvas';
-  c.setAttribute('aria-hidden', 'true');
-  section.prepend(c);
-  // Make sure children above canvas are relatively positioned
+  const sc = document.createElement('canvas');
+  sc.className = 'section-star-canvas';
+  sc.setAttribute('aria-hidden', 'true');
+  section.prepend(sc);
   const h = section.offsetHeight;
-  spawnStarField(c, { count: Math.round(80 + (h / 12)), shooting: h > 400, parallax: false });
+  spawnStarField(sc, { count: Math.round(50 + (h / 18)), shooting: h > 400, parallax: false });
 });
 </script>
 
