@@ -1603,8 +1603,7 @@ window.addEventListener('scroll', () => {
 <!-- 3D ENGINE SCRIPT -->
 <script type="module">
 import * as THREE from 'three';
-import { GLTFLoader }  from 'three/addons/loaders/GLTFLoader.js';
-import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
+import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 
 (async function() {
   'use strict';
@@ -1680,23 +1679,24 @@ import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
   onResize();
   new ResizeObserver(onResize).observe(canvas);
 
-  /* ── LOAD GLB ── */
-  const draco = new DRACOLoader();
-  draco.setDecoderPath('https://unpkg.com/three@0.160.0/examples/jsm/libs/draco/');
-  const loader = new GLTFLoader();
-  loader.setDRACOLoader(draco);
+  /* ── LOAD FBX ── */
+  const loader = new FBXLoader();
+  loader.setResourcePath('./textures/'); // tell FBXLoader where to find textures
 
-  let parts = [];   // { mesh, base, dir }
+  let parts = [];
   let labeledParts = [];
   let modelReady = false;
+  let explodeRadius = 5; // updated after model loads
+
+  /* Pre-load the AO texture so we can apply it to any unlit black materials */
+  const texLoader = new THREE.TextureLoader();
+  const aoTex = texLoader.load('./textures/internal_ground_ao_texture.jpeg');
 
   loader.load(
-    './simplified_car_engine.glb',
-    (gltf) => {
+    './moto_engine.fbx',
+    (model) => {
       /* ── Hide loading UI ── */
       if (loadingEl) loadingEl.style.display = 'none';
-
-      const model = gltf.scene;
 
       /* 1. Collect all meshes and bake world transforms */
       const rawMeshes = [];
@@ -1722,7 +1722,33 @@ import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
         const ws = new THREE.Vector3();
         child.matrixWorld.decompose(wp, wq, ws);
 
-        const flat = new THREE.Mesh(child.geometry, child.material);
+        /* Fix materials: FBX often gives MeshPhong; upgrade to MeshStandard
+           and ensure any all-black colour gets a neutral grey so lights work */
+        let mat = child.material;
+        const mats = Array.isArray(mat) ? mat : [mat];
+        const fixedMats = mats.map(m => {
+          if (!m) return new THREE.MeshStandardMaterial({ color: 0x888888 });
+          // Clone so we don't mutate shared materials
+          const nm = new THREE.MeshStandardMaterial();
+          nm.name = m.name;
+          // Colour
+          const col = m.color || new THREE.Color(0x888888);
+          const isBlack = col.r < 0.02 && col.g < 0.02 && col.b < 0.02;
+          nm.color = isBlack ? new THREE.Color(0x555555) : col.clone();
+          // Copy any existing maps
+          if (m.map)          { nm.map = m.map; }
+          if (m.normalMap)    { nm.normalMap = m.normalMap; }
+          if (m.aoMap)        { nm.aoMap = m.aoMap; }
+          else                { nm.aoMap = aoTex; nm.aoMapIntensity = 0.6; }
+          // Metalness / roughness
+          nm.metalness  = 0.4;
+          nm.roughness  = 0.55;
+          nm.side       = THREE.FrontSide;
+          return nm;
+        });
+        const finalMat = Array.isArray(child.material) ? fixedMats : fixedMats[0];
+
+        const flat = new THREE.Mesh(child.geometry, finalMat);
         flat.position.copy(wp).sub(worldCenter).multiplyScalar(scale);
         flat.quaternion.copy(wq);
         flat.scale.copy(ws).multiplyScalar(scale);
@@ -1731,28 +1757,61 @@ import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
         flat.name = child.name;
         group.add(flat);
 
-        /* Explode direction = from model centre toward this mesh's centre */
+        /* base = assembled world position (relative to model centre) */
+        const basePos = flat.position.clone();
+
+        /* Explode direction = outward from model centre through mesh bounding centre */
         const meshBox    = new THREE.Box3().setFromObject(flat);
         const meshCentre = meshBox.getCenter(new THREE.Vector3());
-        const dir = meshCentre.length() > 0.001
-          ? meshCentre.clone().normalize()
-          : new THREE.Vector3(
-              (Math.random() - 0.5),
-              (Math.random() - 0.5),
-              (Math.random() - 0.5)
-            ).normalize();
+        // prefer bounding-box centre for direction; fall back to base pos; then random
+        const refVec = meshCentre.length() > 0.001 ? meshCentre
+                     : basePos.length() > 0.001    ? basePos
+                     : new THREE.Vector3(Math.random()-0.5, Math.random()-0.5, Math.random()-0.5);
+        const dir = refVec.clone().normalize();
 
-        parts.push({ mesh: flat, base: flat.position.clone(), dir, label: child.name || '' });
+        parts.push({ mesh: flat, base: basePos, dir, label: child.name || '' });
+        /* Leave mesh at its base (assembled) position – animation moves it outward */
       });
 
       /* 4. Adjust camera to fit model */
-      camera.position.set(0, worldSize.y * scale * 0.3, maxDim * scale * 1.7);
+      explodeRadius = maxDim * scale * 0.42; // how far parts fly out
+      camera.position.set(0, worldSize.y * scale * 0.3, maxDim * scale * 2.4);
       camera.lookAt(0, 0, 0);
 
       /* 5. Deduplicate labels for badge */
+      const friendlyName = raw => {
+        // Strip trailing number suffixes like _001, .001
+        let s = raw.replace(/[._]\d+$/, '').trim();
+        // Replace underscores / dots with spaces
+        s = s.replace(/[_\.]+/g, ' ').trim();
+        // Title-case each word
+        s = s.replace(/\b\w/g, c => c.toUpperCase());
+        // Map known technical tokens to readable names
+        const map = {
+          'Ao': '', 'Mat': '', 'Mesh': '', 'Object': '', 'Cylinder': 'Engine Cylinder',
+          'Piston': 'Piston', 'Crankshaft': 'Crankshaft', 'Camshaft': 'Camshaft',
+          'Valve': 'Valve', 'Head': 'Cylinder Head', 'Block': 'Engine Block',
+          'Oil': 'Oil System', 'Coolant': 'Coolant System', 'Resovoir': 'Reservoir',
+          'Cap': 'Cap', 'Gasket': 'Gasket', 'Cover': 'Cover', 'Pan': 'Oil Pan',
+          'Gear': 'Gear', 'Chain': 'Chain Drive', 'Sprocket': 'Sprocket',
+          'Filter': 'Filter', 'Pump': 'Pump', 'Sensor': 'Sensor',
+          'Bolt': 'Bolt Assembly', 'Nut': 'Fastener', 'Bracket': 'Bracket',
+          'Exhaust': 'Exhaust Manifold', 'Intake': 'Intake Manifold',
+          'Carb': 'Carburettor', 'Throttle': 'Throttle Body',
+          'Wire': 'Wiring', 'Clip': 'Clip', 'Hose': 'Hose',
+          'Internal Ground': 'Engine Base',
+        };
+        // Try to find a known keyword match
+        for (const [key, val] of Object.entries(map)) {
+          if (val && s.toLowerCase().includes(key.toLowerCase())) return val;
+        }
+        // Otherwise just return cleaned string (remove leftover noise words)
+        return s.replace(/\b(Ao|Mat|Mesh|Object|Fbx|Import)\b/gi, '').replace(/\s+/g, ' ').trim() || 'Engine Part';
+      };
+
       const seen = new Set();
       labeledParts = parts.filter(p => {
-        const lbl = p.label.replace(/_\d+$/, '').trim();
+        const lbl = friendlyName(p.label);
         if (!lbl || seen.has(lbl)) return false;
         seen.add(lbl); p.label = lbl; return true;
       });
@@ -1829,8 +1888,9 @@ import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
         ? 2 * cur * cur
         : 1 - Math.pow(-2 * cur + 2, 2) / 2;
 
+      /* t=0 → assembled (base pos), t=1 → exploded (base + dir * explodeRadius) */
       parts.forEach(p => {
-        p.mesh.position.copy(p.base).addScaledVector(p.dir, eased * 2.2);
+        p.mesh.position.copy(p.base).addScaledVector(p.dir, explodeRadius * eased);
       });
     }
 
