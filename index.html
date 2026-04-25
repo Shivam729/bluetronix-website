@@ -155,19 +155,21 @@ body { background: var(--white); color: var(--ink); font-family: 'Barlow', sans-
 /* ── NAV — glass morphism ── */
 nav {
   position: sticky; top: 0; z-index: 200;
-  background: rgba(255,255,255,0.65);
-  backdrop-filter: blur(18px) saturate(1.6);
-  -webkit-backdrop-filter: blur(18px) saturate(1.6);
-  border-bottom: 1px solid rgba(226,229,240,0.5);
-  box-shadow: 0 1px 24px rgba(13,27,78,0.07);
-  transition: background 0.3s;
+  background: rgba(255,255,255,0.30);
+  backdrop-filter: blur(28px) saturate(2.0) brightness(1.08);
+  -webkit-backdrop-filter: blur(28px) saturate(2.0) brightness(1.08);
+  border-bottom: 1px solid rgba(255,255,255,0.45);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.6) inset,
+    0 4px 32px rgba(13,27,78,0.10);
+  transition: background 0.4s;
 }
 .nav-inner {
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 5vw; height: 68px; max-width: 1400px; margin: 0 auto;
 }
 .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-.nav-logo img { height: 44px; width: auto; object-fit: contain; }
+.nav-logo img { height: 52px; width: auto; object-fit: contain; }
 .nav-logo-text { display: flex; flex-direction: column; }
 .nav-logo-name { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 800; color: var(--navy); letter-spacing: 0.04em; text-transform: uppercase; line-height: 1; }
 .nav-logo-sub { font-size: 9px; font-weight: 500; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 2px; }
@@ -1012,10 +1014,6 @@ footer > *:not(canvas) { position: relative; z-index: 2; }
   <div class="nav-inner">
     <a class="nav-logo" href="#home">
       <img src="./logo.png" alt="Bluetronix"/>
-      <div class="nav-logo-text">
-        <span class="nav-logo-name">Bluetronix</span>
-        <span class="nav-logo-sub">College of Engineering &amp; Private ITI</span>
-      </div>
     </a>
     <ul class="nav-links">
       <li><a href="#why">Why ITI</a></li>
