@@ -181,48 +181,64 @@ nav {
 
 /* ── HERO ── */
 .hero {
-  background: url('./hero-sky.png') center center / cover no-repeat;
   min-height: 90vh;
-  display: grid; grid-template-columns: 1fr 1fr;
+  display: flex; align-items: center;
   position: relative; overflow: hidden;
 }
+/* Full-bleed crossfade slides as hero background */
+.hero-bg-slides {
+  position: absolute; inset: 0; z-index: 0;
+}
+.hero-bg-slides .hslide {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  opacity: 0;
+  transition: opacity 1.8s ease;
+  animation: kenburns 12s ease-in-out infinite alternate;
+}
+.hero-bg-slides .hslide.active { opacity: 1; }
+@keyframes kenburns {
+  from { transform: scale(1.0) translate(0,0); }
+  to   { transform: scale(1.08) translate(-1%,1%); }
+}
+/* Dark vignette: heavier on left (text), lighter on right (image visible) */
 .hero::before {
   content: '';
-  position: absolute; inset: 0; z-index: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(5,10,30,0.82) 0%,
-    rgba(13,27,78,0.65) 50%,
-    rgba(5,10,30,0.50) 100%
-  );
+  position: absolute; inset: 0; z-index: 1;
+  background:
+    linear-gradient(to right,
+      rgba(5,10,30,0.90) 0%,
+      rgba(5,10,30,0.70) 40%,
+      rgba(5,10,30,0.25) 70%,
+      rgba(5,10,30,0.10) 100%),
+    linear-gradient(to bottom,
+      rgba(5,10,30,0.35) 0%,
+      transparent 30%,
+      transparent 70%,
+      rgba(5,10,30,0.50) 100%);
 }
 .hero-content {
   padding: 80px 5vw 80px;
   display: flex; flex-direction: column; justify-content: center;
   position: relative; z-index: 2;
+  max-width: 760px;
 }
-/* Slideshow */
-.hero-slideshow {
-  position: relative; overflow: hidden;
+/* Progress bar for slides */
+.hero-progress {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 2px; z-index: 3;
+  background: rgba(255,255,255,0.08);
 }
-.hero-slideshow .slide {
-  position: absolute; inset: 0;
-  background-size: cover; background-position: center;
-  opacity: 0; transition: opacity 1s ease;
-}
-.hero-slideshow .slide.active { opacity: 1; }
-.hero-slideshow::after {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(to right, var(--navy) 0%, rgba(13,27,78,0.3) 40%, rgba(13,27,78,0.1) 100%);
-  z-index: 1;
+.hero-progress-bar {
+  height: 100%; background: var(--blue); width: 0%;
+  transition: width linear;
 }
 .slideshow-dots {
-  position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
-  display: flex; gap: 8px; z-index: 2;
+  position: absolute; bottom: 20px; left: 5vw;
+  display: flex; gap: 8px; z-index: 3;
 }
 .slideshow-dots span {
   width: 6px; height: 6px; border-radius: 50%;
-  background: rgba(255,255,255,0.3); cursor: pointer; transition: background 0.3s;
+  background: rgba(255,255,255,0.25); cursor: pointer; transition: background 0.3s;
 }
 .slideshow-dots span.active { background: var(--blue); width: 20px; border-radius: 3px; }
 .hero-badge {
@@ -803,8 +819,6 @@ footer > * { position: relative; z-index: 1; }
 
 /* RESPONSIVE */
 @media(max-width: 1024px) {
-  .hero { grid-template-columns: 1fr; }
-  .hero-slideshow { display: none; }
   .hero-circuit { display: none; }
   .why-layout, .about-layout, .contact-layout { grid-template-columns: 1fr; gap: 48px; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
@@ -847,22 +861,52 @@ footer > * { position: relative; z-index: 1; }
 }
 
 /* ── CUSTOM CURSOR ── */
+/* ── CROSSHAIR CURSOR ── */
+* { cursor: none; }
 .cursor-dot {
   position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999;
-  width: 8px; height: 8px; background: var(--blue);
-  border-radius: 50%; transform: translate(-50%,-50%);
-  transition: transform 0.1s, opacity 0.2s;
+  width: 4px; height: 4px; background: #fff;
+  transform: translate(-50%,-50%);
+  transition: opacity 0.2s, transform 0.1s;
 }
 .cursor-ring {
   position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998;
-  width: 36px; height: 36px; border: 1.5px solid var(--blue);
-  border-radius: 50%; transform: translate(-50%,-50%);
-  transition: width 0.25s, height 0.25s, opacity 0.25s, border-color 0.25s;
-  opacity: 0.5;
+  width: 32px; height: 32px;
+  transform: translate(-50%,-50%);
+  transition: width 0.2s, height 0.2s, opacity 0.2s;
+  opacity: 0.7;
 }
-.cursor-ring.hovering { width: 56px; height: 56px; opacity: 0.8; border-color: var(--blue-dark); }
-.cursor-ring.clicking { width: 28px; height: 28px; opacity: 1; }
-@media(hover: none) { .cursor-dot, .cursor-ring { display: none; } }
+/* Four corner brackets of the crosshair */
+.cursor-ring::before,
+.cursor-ring::after,
+.cursor-dot::before,
+.cursor-dot::after {
+  content: ''; position: absolute; border-color: var(--blue); border-style: solid;
+}
+/* Top-left + bottom-right via ::before/::after on ring */
+.cursor-ring::before {
+  top: 0; left: 0; width: 9px; height: 9px;
+  border-width: 1.5px 0 0 1.5px;
+}
+.cursor-ring::after {
+  bottom: 0; right: 0; width: 9px; height: 9px;
+  border-width: 0 1.5px 1.5px 0;
+}
+.cursor-dot::before {
+  top: -16px; right: -16px; width: 9px; height: 9px;
+  border-width: 1.5px 1.5px 0 0;
+}
+.cursor-dot::after {
+  bottom: -16px; left: -16px; width: 9px; height: 9px;
+  border-width: 0 0 1.5px 1.5px;
+}
+.cursor-ring.hovering { width: 48px; height: 48px; opacity: 1; }
+.cursor-ring.hovering::before, .cursor-ring.hovering::after,
+.cursor-ring.hovering ~ .cursor-dot::before, .cursor-ring.hovering ~ .cursor-dot::after {
+  border-color: #fff;
+}
+.cursor-ring.clicking { width: 20px; height: 20px; opacity: 1; }
+@media(hover: none) { .cursor-dot, .cursor-ring { display: none; } * { cursor: auto; } }
 
 /* ── GRAIN OVERLAY ── */
 .grain-overlay {
@@ -985,9 +1029,15 @@ footer > *:not(canvas) { position: relative; z-index: 2; }
 
 <!-- HERO -->
 <div id="home" class="hero">
+  <!-- Full-bleed crossfade background slides -->
+  <div class="hero-bg-slides" aria-hidden="true">
+    <div class="hslide active" style="background-image:url('slide-a.png')"></div>
+    <div class="hslide" style="background-image:url('slide-b.png')"></div>
+    <div class="hslide" style="background-image:url('slide-c.png')"></div>
+    <div class="hslide" style="background-image:url('slide-d.png')"></div>
+  </div>
   <canvas id="star-canvas" aria-hidden="true"></canvas>
   <div class="hero-content">
-    <div class="hero-circuit" aria-hidden="true"></div>
     <div class="hero-badge"><span class="badge-highlight">Kerala's Oldest ITI</span> <span class="badge-year">Since 1968</span> · Palluruthy, Kochi</div>
     <h1 id="hero-h1" style="min-height:4.5em;">
       <span class="type-line" id="tl-1"></span><br/>
@@ -1002,17 +1052,11 @@ footer > *:not(canvas) { position: relative; z-index: 2; }
       <a href="#courses" class="btn-outline">Which course suits me? ↓</a>
     </div>
   </div>
-  <!-- Slideshow -->
-  <div class="hero-slideshow" aria-hidden="true">
-    <div class="slide active" style="background-image:url('uploads/slide1.jpg')"></div>
-    <div class="slide" style="background-image:url('uploads/slide4.jpg')"></div>
-    <div class="slide" style="background-image:url('uploads/slide2.jpg')"></div>
-    <div class="slide" style="background-image:url('uploads/slide3.jpg')"></div>
-    <div class="slide" style="background-image:url('uploads/slide5.jpg')"></div>
-    <div class="slideshow-dots">
-      <span class="active"></span><span></span><span></span><span></span><span></span>
-    </div>
+  <!-- Slide dots + progress -->
+  <div class="slideshow-dots" id="hero-dots" aria-hidden="true">
+    <span class="active"></span><span></span><span></span><span></span>
   </div>
+  <div class="hero-progress" aria-hidden="true"><div class="hero-progress-bar" id="hero-progress-bar"></div></div>
   <div class="accred-strip" style="grid-column:1/-1;align-self:end;">
     <span class="accred-strip-label">Recognized &amp; Affiliated By</span>
     <div class="accred-strip-items">
@@ -2119,18 +2163,34 @@ footer > *:not(canvas) { position: relative; z-index: 2; }
 <script>
 // Hero slideshow
 (function() {
-  const slides = document.querySelectorAll('.hero-slideshow .slide');
-  const dots = document.querySelectorAll('.slideshow-dots span');
-  let current = 0;
-  function goTo(n) {
-    slides[current].classList.remove('active');
-    dots[current].classList.remove('active');
-    current = (n + slides.length) % slides.length;
-    slides[current].classList.add('active');
-    dots[current].classList.add('active');
+  /* ── Full-bleed hero crossfade slideshow ── */
+  const hslides = document.querySelectorAll('.hero-bg-slides .hslide');
+  const hdots   = document.querySelectorAll('#hero-dots span');
+  const hbar    = document.getElementById('hero-progress-bar');
+  const SLIDE_DUR = 5000;
+  let hCurrent = 0, hStart = null, hRAF = null;
+
+  function hGoTo(n) {
+    hslides[hCurrent].classList.remove('active');
+    hdots[hCurrent].classList.remove('active');
+    hCurrent = (n + hslides.length) % hslides.length;
+    hslides[hCurrent].classList.add('active');
+    hdots[hCurrent].classList.add('active');
+    hStart = null;
+    if (hbar) { hbar.style.transition = 'none'; hbar.style.width = '0%'; }
   }
-  dots.forEach((dot, i) => dot.addEventListener('click', () => { goTo(i); clearInterval(timer); timer = setInterval(() => goTo(current + 1), 4500); }));
-  let timer = setInterval(() => goTo(current + 1), 4500);
+
+  function hTick(ts) {
+    if (!hStart) hStart = ts;
+    const pct = Math.min((ts - hStart) / SLIDE_DUR * 100, 100);
+    if (hbar) { hbar.style.transition = 'none'; hbar.style.width = pct + '%'; }
+    if (pct >= 100) hGoTo(hCurrent + 1);
+    hRAF = requestAnimationFrame(hTick);
+  }
+
+  hdots.forEach((dot, i) => dot.addEventListener('click', () => hGoTo(i)));
+  hGoTo(0);
+  hRAF = requestAnimationFrame(hTick);
 })();
 
 // Mobile nav
@@ -2928,58 +2988,70 @@ function spawnMatrix(canvas) {
   requestAnimationFrame(draw);
 }
 
-/* 4. RADAR — pulsing concentric rings (contact section) */
+/* 4. GEOFLOW — drifting hollow geometric shapes (contact section) */
 function spawnRadar(canvas) {
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  let W, H;
+  let W, H, shapes = [];
+  const TYPES = ['triangle', 'square', 'hexagon', 'circle'];
+
   function resize() {
     W = canvas.width = canvas.offsetWidth || canvas.parentElement.offsetWidth;
     H = canvas.height = canvas.offsetHeight || canvas.parentElement.offsetHeight;
+    shapes = Array.from({ length: 22 }, () => makeShape(true));
   }
-  new ResizeObserver(resize).observe(canvas.parentElement); resize();
-  const rings = Array.from({ length: 5 }, (_, i) => ({
-    r: 0, phase: i * (Math.PI * 2 / 5), speed: 0.4 + i * 0.1
-  }));
-  let last = 0, t = 0;
-  function draw(ts) {
-    const dt = Math.min(ts - last, 32); last = ts; t += dt * 0.001;
-    ctx.clearRect(0, 0, W, H);
-    const cx = W * 0.5, cy = H * 0.5;
-    const maxR = Math.max(W, H) * 0.65;
-    // Static faint grid rings
-    for (let i = 1; i <= 4; i++) {
-      ctx.beginPath();
-      ctx.arc(cx, cy, maxR * i / 4, 0, Math.PI * 2);
-      ctx.strokeStyle = 'rgba(65,105,225,0.06)';
-      ctx.lineWidth = 0.8; ctx.stroke();
-    }
-    // Pulsing animated rings
-    rings.forEach((ring, idx) => {
-      const progress = ((t * ring.speed + idx * 0.4) % 1);
-      const r = progress * maxR;
-      const alpha = (1 - progress) * 0.18;
-      ctx.beginPath();
-      ctx.arc(cx, cy, r, 0, Math.PI * 2);
-      ctx.strokeStyle = `rgba(100,150,255,${alpha})`;
-      ctx.lineWidth = 1.2; ctx.stroke();
-    });
-    // Rotating sweep line
-    const angle = t * 0.5;
-    const grad = ctx.createConicalGradient ? null : null; // fallback
+
+  function makeShape(randY) {
+    const size = Math.random() * 40 + 12;
+    return {
+      x: Math.random() * W,
+      y: randY ? Math.random() * H : H + size,
+      size,
+      type: TYPES[Math.floor(Math.random() * TYPES.length)],
+      rot: Math.random() * Math.PI * 2,
+      rotSpeed: (Math.random() - 0.5) * 0.008,
+      vx: (Math.random() - 0.5) * 0.2,
+      vy: -(Math.random() * 0.3 + 0.08),
+      alpha: Math.random() * 0.12 + 0.03
+    };
+  }
+
+  function drawShape(s) {
     ctx.save();
-    ctx.translate(cx, cy);
-    ctx.rotate(angle);
-    const sg = ctx.createLinearGradient(0, 0, maxR, 0);
-    sg.addColorStop(0, 'rgba(65,105,225,0.18)');
-    sg.addColorStop(1, 'rgba(65,105,225,0)');
+    ctx.translate(s.x, s.y);
+    ctx.rotate(s.rot);
+    ctx.strokeStyle = `rgba(100,150,255,${s.alpha})`;
+    ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.arc(0, 0, maxR, -0.25, 0.05);
-    ctx.closePath();
-    ctx.fillStyle = sg;
-    ctx.fill();
+    if (s.type === 'circle') {
+      ctx.arc(0, 0, s.size / 2, 0, Math.PI * 2);
+    } else if (s.type === 'square') {
+      ctx.rect(-s.size / 2, -s.size / 2, s.size, s.size);
+    } else {
+      const sides = s.type === 'triangle' ? 3 : 6;
+      for (let i = 0; i < sides; i++) {
+        const a = (i / sides) * Math.PI * 2 - Math.PI / 2;
+        i === 0 ? ctx.moveTo(Math.cos(a) * s.size / 2, Math.sin(a) * s.size / 2)
+                : ctx.lineTo(Math.cos(a) * s.size / 2, Math.sin(a) * s.size / 2);
+      }
+      ctx.closePath();
+    }
+    ctx.stroke();
     ctx.restore();
+  }
+
+  new ResizeObserver(resize).observe(canvas.parentElement); resize();
+  let last = 0;
+  function draw(ts) {
+    const dt = Math.min(ts - last, 32); last = ts;
+    ctx.clearRect(0, 0, W, H);
+    shapes.forEach(s => {
+      drawShape(s);
+      s.x += s.vx * (dt / 16);
+      s.y += s.vy * (dt / 16);
+      s.rot += s.rotSpeed * (dt / 16);
+      if (s.y < -s.size * 2) Object.assign(s, makeShape(false));
+    });
     requestAnimationFrame(draw);
   }
   requestAnimationFrame(draw);
