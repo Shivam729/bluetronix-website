@@ -1011,7 +1011,7 @@ footer > *:not(canvas) { position: relative; z-index: 2; }
 <nav>
   <div class="nav-inner">
     <a class="nav-logo" href="#home">
-      <img src="https://www.bluetronixiti.com/img/logo.jpg" alt="Bluetronix" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'"/>
+      <img src="./logo.png" alt="Bluetronix"/>
       <div class="nav-logo-text">
         <span class="nav-logo-name">Bluetronix</span>
         <span class="nav-logo-sub">College of Engineering &amp; Private ITI</span>
@@ -2023,6 +2023,10 @@ footer > *:not(canvas) { position: relative; z-index: 2; }
 </a>
 
 <script>
+/* ── Scroll restoration: always land at top on reload ── */
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+window.addEventListener('beforeunload', () => window.scrollTo(0, 0));
+
 // Hero slideshow
 (function() {
   /* ── Full-bleed hero crossfade slideshow ── */
