@@ -152,12 +152,15 @@
 html { scroll-behavior: smooth; }
 body { background: var(--white); color: var(--ink); font-family: 'Barlow', sans-serif; overflow-x: hidden; line-height: 1.6; }
 
-/* ── NAV ── */
+/* ── NAV — glass morphism ── */
 nav {
   position: sticky; top: 0; z-index: 200;
-  background: var(--white);
-  border-bottom: 1px solid var(--border);
-  box-shadow: 0 1px 12px rgba(13,27,78,0.08);
+  background: rgba(255,255,255,0.65);
+  backdrop-filter: blur(18px) saturate(1.6);
+  -webkit-backdrop-filter: blur(18px) saturate(1.6);
+  border-bottom: 1px solid rgba(226,229,240,0.5);
+  box-shadow: 0 1px 24px rgba(13,27,78,0.07);
+  transition: background 0.3s;
 }
 .nav-inner {
   display: flex; align-items: center; justify-content: space-between;
@@ -395,16 +398,30 @@ nav {
 
 /* ── STATS BAND ── */
 .stats-band {
-  background: var(--blue);
+  background: url('./hero-sky.png') center 45% / cover no-repeat;
+  position: relative; overflow: hidden;
   display: grid; grid-template-columns: repeat(4, 1fr);
 }
-.stats-cell {
-  padding: 28px 0; border-right: 1px solid rgba(255,255,255,0.15);
-  text-align: center;
+.stats-band::before {
+  content: ''; position: absolute; inset: 0;
+  background: rgba(5,10,30,0.80); z-index: 0;
 }
+.stats-cell {
+  padding: 48px 24px; border-right: 1px solid rgba(255,255,255,0.08);
+  text-align: center; position: relative; z-index: 1;
+  transition: background 0.3s;
+}
+.stats-cell:hover { background: rgba(65,105,225,0.10); }
 .stats-cell:last-child { border-right: none; }
-.stats-num { font-family: 'Barlow Condensed', sans-serif; font-size: 44px; font-weight: 900; color: #fff; line-height: 1; }
-.stats-lbl { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.65); margin-top: 4px; }
+.stats-num {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 56px;
+  font-weight: 900; color: #fff; line-height: 1;
+  opacity: 0; transform: translateY(16px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.stats-cell.counted .stats-num { opacity: 1; transform: translateY(0); }
+.stats-num-accent { color: var(--blue); }
+.stats-lbl { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.50); margin-top: 8px; }
 
 /* ── SHARED ── */
 .container { max-width: 1200px; margin: 0 auto; padding: 0 5vw; }
@@ -829,6 +846,8 @@ footer > * { position: relative; z-index: 1; }
 }
 @media(max-width: 768px) {
   .stats-band { grid-template-columns: 1fr 1fr; }
+  .stats-cell { padding: 32px 16px; }
+  .stats-num { font-size: 44px; }
   .courses-grid { grid-template-columns: 1fr; }
   .accred-row { flex-direction: column; }
   .accred-item-box { border-right: none; border-bottom: 1px solid var(--border); }
@@ -1109,11 +1128,11 @@ footer > *:not(canvas) { position: relative; z-index: 2; }
 </section>
 
 <!-- STATS BAND -->
-<div class="stats-band">
-  <div class="stats-cell"><div class="stats-num">1968</div><div class="stats-lbl">മുതൽ Kerala-നെ Serve ചെയ്യുന്നു</div></div>
-  <div class="stats-cell"><div class="stats-num">5</div><div class="stats-lbl">Certified Trades</div></div>
-  <div class="stats-cell"><div class="stats-num">100%</div><div class="stats-lbl">Practical Training · Theory കുറവ്</div></div>
-  <div class="stats-cell"><div class="stats-num">100+</div><div class="stats-lbl">Companies നേരിട്ട് ബന്ധപ്പെടുന്നു</div></div>
+<div class="stats-band" data-stars data-anim="particles">
+  <div class="stats-cell" data-count="1968" data-suffix=""><div class="stats-num"><span class="stat-val">1968</span></div><div class="stats-lbl">മുതൽ Kerala-നെ Serve ചെയ്യുന്നു</div></div>
+  <div class="stats-cell" data-count="5" data-suffix="+"><div class="stats-num"><span class="stat-val">5</span><span class="stats-num-accent">+</span></div><div class="stats-lbl">Certified Trades · NCVT</div></div>
+  <div class="stats-cell" data-count="100" data-suffix="%"><div class="stats-num"><span class="stat-val">100</span><span class="stats-num-accent">%</span></div><div class="stats-lbl">Practical Training · Theory കുറവ്</div></div>
+  <div class="stats-cell" data-count="100" data-suffix="+"><div class="stats-num"><span class="stat-val">100</span><span class="stats-num-accent">+</span></div><div class="stats-lbl">Companies നേരിട്ട് ബന്ധപ്പെടുന്നു</div></div>
 </div>
 
 <!-- WHY ITI -->
@@ -2447,6 +2466,15 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
     window.addEventListener('mousedown', () => isClick = true);
     window.addEventListener('mouseup',   () => isClick = false);
 
+    /* Detect if cursor is over a light/white section */
+    let isLight = false;
+    const darkSels = '.hero,.stigma-section,.myth-section,.pathway-section,.contact-section,.trust-section,footer,.stats-band';
+    function updateLight() {
+      const el = document.elementFromPoint(mx, my);
+      isLight = el ? !el.closest(darkSels) : true;
+    }
+    window.addEventListener('mousemove', updateLight, { passive: true });
+
     const VERTS = 8;
     const phases  = Array.from({ length: VERTS }, (_, i) => i * Math.PI * 2 / VERTS);
     const offsets = Array.from({ length: VERTS }, () => Math.random() * Math.PI * 2);
@@ -2498,14 +2526,22 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
       }
       ctx.closePath();
 
-      // Color
+      // Color — blue on light backgrounds, white on dark
       const alpha = isClick ? 0.85 : isHover ? 0.70 : 0.55;
-      if (isHover) {
+      if (isLight) {
+        // On white sections: solid blue blob
+        const g = ctx.createRadialGradient(bx, by, 0, bx, by, baseR + 20);
+        g.addColorStop(0, `rgba(65,105,225,${alpha})`);
+        g.addColorStop(1, `rgba(45,82,196,${alpha * 0.5})`);
+        ctx.fillStyle = g;
+      } else if (isHover) {
+        // On dark sections hovering links: bright blue glow
         const g = ctx.createRadialGradient(bx, by, 0, bx, by, baseR + 20);
         g.addColorStop(0, `rgba(120,160,255,${alpha})`);
         g.addColorStop(1, `rgba(65,105,225,${alpha * 0.6})`);
         ctx.fillStyle = g;
       } else {
+        // On dark sections: white blob
         ctx.fillStyle = `rgba(255,255,255,${alpha})`;
       }
       ctx.fill();
@@ -2513,7 +2549,7 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
       // Tiny sharp dot at exact mouse position
       ctx.beginPath();
       ctx.arc(mx, my, 2, 0, Math.PI * 2);
-      ctx.fillStyle = isHover ? 'rgba(65,105,225,0.9)' : 'rgba(255,255,255,0.9)';
+      ctx.fillStyle = isLight ? 'rgba(65,105,225,1)' : isHover ? 'rgba(65,105,225,0.9)' : 'rgba(255,255,255,0.9)';
       ctx.fill();
 
       requestAnimationFrame(draw);
@@ -2593,6 +2629,30 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
     });
   }, { threshold: 0.5 });
   counters.forEach(c => counterObs.observe(c));
+
+  /* ── STATS BAND COUNTUP ── */
+  const statObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const cell = e.target;
+      cell.classList.add('counted');
+      const target = +cell.dataset.count;
+      const valEl  = cell.querySelector('.stat-val');
+      if (!valEl) return;
+      const duration = target > 100 ? 2200 : 1200;
+      const start = performance.now();
+      const update = (now) => {
+        const p = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        valEl.textContent = Math.round(eased * target);
+        if (p < 1) requestAnimationFrame(update);
+        else valEl.textContent = target;
+      };
+      requestAnimationFrame(update);
+      statObs.unobserve(cell);
+    });
+  }, { threshold: 0.4 });
+  document.querySelectorAll('.stats-cell[data-count]').forEach(c => statObs.observe(c));
 
   /* ── 6. INCOME CHART BAR ANIMATION ── */
   const chartObs = new IntersectionObserver((entries) => {
