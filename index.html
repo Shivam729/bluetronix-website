@@ -575,6 +575,47 @@ footer { background: #060c24; padding: 56px 0 24px; }
 .btn-white { background: #fff; color: var(--blue); padding: 14px 32px; font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: background 0.2s, color 0.2s; display: inline-flex; align-items: center; gap: 10px; border: none; cursor: pointer; }
 .btn-white:hover { background: var(--blue-light); }
 
+/* ── 3D ENGINE SECTION ── */
+.engine-section { position: relative; height: 320vh; background: #060c1a; }
+.engine-sticky {
+  position: sticky; top: 0; height: 100vh;
+  overflow: hidden; display: flex; align-items: center; justify-content: center;
+}
+#engine-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.engine-overlay-top {
+  position: absolute; top: 0; left: 0; right: 0;
+  padding: 40px 5vw; z-index: 10; pointer-events: none;
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 32px;
+}
+.engine-text-block { max-width: 420px; }
+.engine-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(65,105,225,0.8); display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.engine-eyebrow::before { content: ''; width: 20px; height: 2px; background: var(--blue); }
+.engine-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(32px,4vw,52px); font-weight: 900; text-transform: uppercase; color: #fff; line-height: 0.95; }
+.engine-title .accent { color: var(--blue); }
+.engine-desc { font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.7; margin-top: 12px; }
+.engine-part-badge {
+  background: rgba(65,105,225,0.12); border: 1px solid rgba(65,105,225,0.3);
+  padding: 10px 18px; text-align: right;
+  min-width: 180px; opacity: 0; transition: opacity 0.4s;
+}
+.engine-part-badge.visible { opacity: 1; }
+.engine-badge-label { font-size: 9px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--blue); margin-bottom: 4px; }
+.engine-badge-name { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 800; text-transform: uppercase; color: #fff; }
+.engine-bottom-ui {
+  position: absolute; bottom: 32px; left: 0; right: 0;
+  display: flex; flex-direction: column; align-items: center; gap: 14px; z-index: 10; pointer-events: none;
+}
+.engine-scroll-hint { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.25); animation: eng-bounce 2s ease-in-out infinite; transition: opacity 0.5s; }
+@keyframes eng-bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
+.engine-progress-row { display: flex; align-items: center; gap: 14px; }
+.engine-progress-track { width: 180px; height: 2px; background: rgba(255,255,255,0.08); }
+.engine-progress-fill-bar { height: 100%; background: var(--blue); width: 0; transition: width 0.08s linear; }
+.engine-pct { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 800; color: rgba(255,255,255,0.3); letter-spacing: 0.06em; min-width: 40px; }
+@media(max-width:768px) {
+  .engine-overlay-top { flex-direction: column; gap: 16px; }
+  .engine-part-badge { text-align: left; }
+}
+
 /* ── RESPONSIVE: NEW SECTIONS ── */
 @media(max-width:1024px) {
   .stigma-layout { grid-template-columns: 1fr; gap: 48px; }
@@ -621,6 +662,8 @@ footer { background: #060c24; padding: 56px 0 24px; }
   .accred-strip-items { flex-direction: column; }
 }
 </style>
+<!-- Three.js for 3D engine -->
+<script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
 </head>
 <body>
 
@@ -1024,6 +1067,35 @@ footer { background: #060c24; padding: 56px 0 24px; }
         <div class="cc-tags"><span class="cc-tag">Welding</span><span class="cc-tag">Automobile</span><span class="cc-tag">Electronics</span><span class="cc-tag">Plumbing</span></div>
         <div class="cc-arrow">→</div>
       </a>
+    </div>
+  </div>
+</section>
+
+<!-- 3D ENGINE EXPLODE -->
+<section id="engine-section" class="engine-section">
+  <div class="engine-sticky" id="engine-sticky">
+    <canvas id="engine-canvas"></canvas>
+
+    <div class="engine-overlay-top container">
+      <div class="engine-text-block">
+        <div class="engine-eyebrow">The Machine, Inside Out</div>
+        <h2 class="engine-title">Every bolt.<br/><span class="accent">Every system.</span></h2>
+        <p class="engine-desc">Scroll to disassemble a real engine. ITI trains you to understand — and fix — every one of these components.</p>
+      </div>
+      <div class="engine-part-badge" id="engine-badge">
+        <div class="engine-badge-label">Currently Showing</div>
+        <div class="engine-badge-name" id="engine-badge-name">Engine Block</div>
+      </div>
+    </div>
+
+    <div class="engine-bottom-ui">
+      <div class="engine-scroll-hint" id="engine-scroll-hint">↓ &nbsp; Scroll to disassemble</div>
+      <div class="engine-progress-row">
+        <div class="engine-progress-track">
+          <div class="engine-progress-fill-bar" id="engine-prog-fill"></div>
+        </div>
+        <span class="engine-pct" id="engine-pct">0%</span>
+      </div>
     </div>
   </div>
 </section>
@@ -1508,6 +1580,289 @@ window.addEventListener('scroll', () => {
     }
   });
 }, { passive: true });
+</script>
+
+<!-- 3D ENGINE SCRIPT -->
+<script>
+(function() {
+  'use strict';
+  if (typeof THREE === 'undefined') return;
+
+  const section  = document.getElementById('engine-section');
+  const canvas   = document.getElementById('engine-canvas');
+  const progFill = document.getElementById('engine-prog-fill');
+  const pctEl    = document.getElementById('engine-pct');
+  const hint     = document.getElementById('engine-scroll-hint');
+  const badge    = document.getElementById('engine-badge');
+  const badgeName= document.getElementById('engine-badge-name');
+  if (!section || !canvas) return;
+
+  /* ── RENDERER ── */
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.3;
+  renderer.setClearColor(0x000000, 0);
+
+  const scene  = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 200);
+  camera.position.set(6, 3.5, 9);
+  camera.lookAt(0, 0, 0);
+
+  /* ── LIGHTS ── */
+  scene.add(new THREE.AmbientLight(0x203060, 1.2));
+
+  const sun = new THREE.DirectionalLight(0xffffff, 3.5);
+  sun.position.set(6, 10, 6);
+  sun.castShadow = true;
+  sun.shadow.mapSize.set(1024, 1024);
+  sun.shadow.camera.near = 0.5;
+  sun.shadow.camera.far  = 40;
+  sun.shadow.camera.left = sun.shadow.camera.bottom = -8;
+  sun.shadow.camera.right= sun.shadow.camera.top    =  8;
+  scene.add(sun);
+
+  const rim = new THREE.PointLight(0x4169E1, 5, 20);
+  rim.position.set(-5, 2, -5);
+  scene.add(rim);
+
+  const fill = new THREE.PointLight(0xffeedd, 2, 25);
+  fill.position.set(4, -2, 5);
+  scene.add(fill);
+
+  /* ── MATERIALS ── */
+  const M = (col, metal, rough) =>
+    new THREE.MeshStandardMaterial({ color: col, metalness: metal, roughness: rough });
+
+  const mBlock   = M(0x252525, 0.90, 0.50);
+  const mHead    = M(0x383838, 0.85, 0.40);
+  const mCover   = M(0x141414, 0.65, 0.60);
+  const mSilver  = M(0x909090, 0.95, 0.15);
+  const mBore    = M(0x0a0a0a, 0.99, 0.05);
+  const mExhaust = M(0x5a4535, 0.75, 0.65);
+  const mBronze  = M(0xcd7f32, 0.90, 0.25);
+  const mBlue    = M(0x4169E1, 0.75, 0.30);
+  const mPan     = M(0x181818, 0.82, 0.55);
+
+  /* ── ENGINE GROUP ── */
+  const group = new THREE.Group();
+  scene.add(group);
+
+  const parts = [];   // { mesh, base, dir, label, mult }
+
+  function add(geom, mat, px, py, pz, dx, dy, dz, label, mult) {
+    const mesh = new THREE.Mesh(geom, mat);
+    mesh.position.set(px, py, pz);
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+    group.add(mesh);
+    const dir = new THREE.Vector3(dx, dy, dz);
+    if (dir.length() > 0) dir.normalize();
+    parts.push({
+      mesh,
+      base: new THREE.Vector3(px, py, pz),
+      dir,
+      label: label || '',
+      mult: mult || 0
+    });
+  }
+
+  /* ──────────────────────────────────────
+     GEOMETRY: Inline-4 Engine
+  ────────────────────────────────────── */
+
+  // ENGINE BLOCK — stays put
+  add(new THREE.BoxGeometry(2.6, 1.8, 4.2), mBlock, 0, 0, 0, 0, 0, 0, 'Engine Block', 0);
+
+  // Cylinder bores (dark holes in top of block)
+  [-1.4, -0.47, 0.47, 1.4].forEach(z => {
+    add(new THREE.CylinderGeometry(0.27, 0.27, 1.85, 20), mBore, 0, 0.02, z, 0, 0, 0, '', 0);
+  });
+
+  // CYLINDER HEAD
+  add(new THREE.BoxGeometry(2.4, 0.60, 4.0), mHead, 0, 1.20, 0, 0, 1, 0, 'Cylinder Head', 2.2);
+
+  // VALVE COVER
+  add(new THREE.BoxGeometry(2.1, 0.30, 3.7), mCover, 0, 1.65, 0, 0, 1, 0.05, 'Valve Cover', 3.5);
+
+  // PISTONS (4) — rise upward with slight lateral spread
+  const PZ = [-1.4, -0.47, 0.47, 1.4];
+  PZ.forEach((z, i) => {
+    const sx = (i % 2 === 0) ? -0.12 : 0.12;
+    add(new THREE.CylinderGeometry(0.24, 0.24, 0.38, 20), mSilver,
+        0, 0.55, z, sx, 2.0, 0.2 * (i - 1.5), i === 0 ? 'Piston' : '', 3.0);
+    // Piston pin
+    add(new THREE.CylinderGeometry(0.04, 0.04, 0.55, 8), mSilver,
+        0, 0.55, z, sx * 1.5, 2.0, 0.2 * (i - 1.5), '', 3.0);
+  });
+
+  // CONNECTING RODS (4)
+  PZ.forEach((z, i) => {
+    const sx = (i % 2 === 0) ? -0.10 : 0.10;
+    add(new THREE.BoxGeometry(0.09, 1.0, 0.09), mSilver,
+        0, -0.05, z, sx, 1.6, 0.15 * (i - 1.5), i === 0 ? 'Connecting Rod' : '', 2.4);
+  });
+
+  // CRANKSHAFT — drops down
+  add(new THREE.CylinderGeometry(0.11, 0.11, 4.3, 14), mSilver, 0, -0.72, 0, 0, -1, 0, 'Crankshaft', 2.8);
+  // Crank journals
+  PZ.forEach(z => {
+    add(new THREE.CylinderGeometry(0.21, 0.21, 0.20, 14), mSilver, 0, -0.72, z, 0, -1, 0, '', 2.8);
+  });
+  // Crank counterweights
+  PZ.forEach((z, i) => {
+    const m = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.18, 0.18), mSilver);
+    m.position.set((i % 2 === 0) ? 0.3 : -0.3, -0.72, z);
+    m.castShadow = true;
+    group.add(m);
+    parts.push({ mesh: m, base: m.position.clone(), dir: new THREE.Vector3(0, -1, 0), label: '', mult: 2.8 });
+  });
+
+  // OIL PAN — drops down
+  add(new THREE.BoxGeometry(2.4, 0.58, 4.0), mPan, 0, -1.19, 0, 0, -1, 0, 'Oil Pan', 2.4);
+
+  // INTAKE MANIFOLD — flies right
+  add(new THREE.BoxGeometry(0.65, 0.85, 3.2), mSilver, 1.62, 0.22, 0, 1, 0.15, 0, 'Intake Manifold', 2.2);
+  PZ.forEach((z, i) => {
+    add(new THREE.CylinderGeometry(0.07, 0.07, 0.75, 8), mSilver,
+        1.22, 0.42, z, 1.3, 0.5, 0.3 * (i - 1.5), '', 2.2);
+  });
+
+  // EXHAUST MANIFOLD — flies left
+  add(new THREE.BoxGeometry(0.50, 0.72, 3.2), mExhaust, -1.60, 0.12, 0, -1, 0.15, 0, 'Exhaust Manifold', 2.2);
+  PZ.forEach((z, i) => {
+    add(new THREE.CylinderGeometry(0.065, 0.065, 0.65, 8), mExhaust,
+        -1.20, 0.30, z, -1.4, 0.4, 0.3 * (i - 1.5), '', 2.2);
+  });
+
+  // TIMING COVER — flies forward (Z+)
+  add(new THREE.BoxGeometry(2.4, 2.2, 0.32), mHead, 0, 0, 2.28, 0, 0, 1, 'Timing Cover', 2.4);
+
+  // FLYWHEEL — flies backward (Z-)
+  add(new THREE.CylinderGeometry(0.88, 0.88, 0.20, 36), mBlock, 0, -0.65, -2.22, 0, -0.2, -1, 'Flywheel', 2.2);
+  // Ring gear
+  add(new THREE.TorusGeometry(0.88, 0.06, 8, 36), mSilver, 0, -0.65, -2.22, 0, -0.2, -1, '', 2.2);
+
+  // ALTERNATOR — flies upper-right-front
+  add(new THREE.CylinderGeometry(0.36, 0.36, 0.72, 20), mSilver, 1.68, 0.75, 1.5, 1.2, 0.9, 0.6, 'Alternator', 2.8);
+
+  // SPARK PLUGS (4) — fly up and out
+  PZ.forEach((z, i) => {
+    const sx = (i % 2 === 0) ? 0.4 : -0.4;
+    add(new THREE.CylinderGeometry(0.045, 0.055, 0.45, 10), mBlue,
+        sx * 0.5, 1.08, z, sx, 2.8, 0.4 * (i - 1.5), i === 0 ? 'Spark Plug' : '', 4.0);
+  });
+
+  // OIL FILTER — flies right-down
+  add(new THREE.CylinderGeometry(0.19, 0.19, 0.52, 14), mBronze, -1.45, -0.55, 1.2, -1, -0.5, 0.6, 'Oil Filter', 3.0);
+
+  // ROCKER ARMS (4) — on top of head, fly up
+  PZ.forEach((z, i) => {
+    add(new THREE.BoxGeometry(0.80, 0.07, 0.10), mSilver,
+        0, 1.38, z, 0.2 * (i - 1.5), 2.0, 0.3 * (i - 1.5), i === 0 ? 'Rocker Arm' : '', 3.8);
+  });
+
+  // CAMSHAFT — lifts upward with head
+  add(new THREE.CylinderGeometry(0.08, 0.08, 3.8, 12), mSilver, 0, 1.22, 0, 0, 2.5, 0, 'Camshaft', 3.2);
+  PZ.forEach(z => {
+    add(new THREE.CylinderGeometry(0.14, 0.14, 0.12, 14), mSilver, 0, 1.22, z, 0, 2.5, 0, '', 3.2);
+  });
+
+  /* ── GROUND PLANE (shadow catcher) ── */
+  const ground = new THREE.Mesh(
+    new THREE.PlaneGeometry(30, 30),
+    new THREE.ShadowMaterial({ opacity: 0.35 })
+  );
+  ground.rotation.x = -Math.PI / 2;
+  ground.position.y = -2.0;
+  ground.receiveShadow = true;
+  scene.add(ground);
+
+  /* ── RESIZE ── */
+  function onResize() {
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  onResize();
+  new ResizeObserver(onResize).observe(canvas);
+
+  /* ── SCROLL PROGRESS ── */
+  function getProgress() {
+    const rect  = section.getBoundingClientRect();
+    const total = section.offsetHeight - window.innerHeight;
+    return Math.max(0, Math.min(1, -rect.top / total));
+  }
+
+  /* ── MOUSE / TOUCH DRAG ROTATION ── */
+  let dragX = 0, dragY = 0, isDragging = false, lastX = 0, lastY = 0;
+  let autoRotY = 0;
+
+  canvas.addEventListener('mousedown',  e => { isDragging = true; lastX = e.clientX; lastY = e.clientY; });
+  window.addEventListener('mousemove',  e => {
+    if (!isDragging) return;
+    dragX += (e.clientX - lastX) * 0.008; lastX = e.clientX;
+    dragY += (e.clientY - lastY) * 0.005; lastY = e.clientY;
+    dragY = Math.max(-0.6, Math.min(0.6, dragY));
+  });
+  window.addEventListener('mouseup', () => isDragging = false);
+
+  canvas.addEventListener('touchstart', e => { isDragging = true; lastX = e.touches[0].clientX; lastY = e.touches[0].clientY; }, { passive: true });
+  canvas.addEventListener('touchmove',  e => {
+    if (!isDragging) return;
+    dragX += (e.touches[0].clientX - lastX) * 0.008; lastX = e.touches[0].clientX;
+    dragY += (e.touches[0].clientY - lastY) * 0.005; lastY = e.touches[0].clientY;
+    dragY = Math.max(-0.6, Math.min(0.6, dragY));
+  }, { passive: true });
+  canvas.addEventListener('touchend', () => isDragging = false);
+
+  /* ── LABEL CYCLING ── */
+  const labeledParts = parts.filter(p => p.label);
+  let lastLabel = '';
+  function updateBadge(progress) {
+    if (progress < 0.05) { badge && badge.classList.remove('visible'); return; }
+    const idx = Math.min(Math.floor(progress * (labeledParts.length - 1)), labeledParts.length - 1);
+    const lbl = labeledParts[idx].label;
+    if (lbl !== lastLabel) { lastLabel = lbl; if (badgeName) badgeName.textContent = lbl; }
+    badge && badge.classList.add('visible');
+  }
+
+  /* ── ANIMATION LOOP ── */
+  let cur = 0;
+  function tick() {
+    requestAnimationFrame(tick);
+
+    const target = getProgress();
+    cur += (target - cur) * 0.07;
+
+    // Ease-in-out for explosion distance
+    const t = cur;
+    const eased = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+
+    parts.forEach(p => {
+      const dist = eased * 3.2 * p.mult;
+      p.mesh.position.copy(p.base).addScaledVector(p.dir, dist);
+    });
+
+    // Auto-rotate (slow) + drag
+    if (!isDragging) autoRotY += 0.004;
+    group.rotation.y += (autoRotY + dragX - group.rotation.y) * 0.04;
+    group.rotation.x += (dragY              - group.rotation.x) * 0.04;
+
+    // UI updates
+    const pct = Math.round(cur * 100);
+    if (progFill) progFill.style.width = pct + '%';
+    if (pctEl)    pctEl.textContent    = pct + '%';
+    if (hint)     hint.style.opacity   = cur > 0.04 ? '0' : '1';
+    updateBadge(cur);
+
+    renderer.render(scene, camera);
+  }
+  tick();
+})();
 </script>
 
 <!-- WHATSAPP FLOATING BUTTON -->
