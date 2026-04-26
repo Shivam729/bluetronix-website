@@ -864,12 +864,12 @@ footer > * { position: relative; z-index: 1; }
 /* Gradient blends at section boundaries */
 .engine-grad-top {
   position: absolute; top: 0; left: 0; right: 0; height: 180px;
-  background: linear-gradient(to bottom, rgba(5,10,30,0.76) 0%, transparent 100%);
+  background: linear-gradient(to bottom, rgba(5,10,30,0.76) 0%, rgba(5,10,30,0) 100%);
   z-index: 5; pointer-events: none;
 }
 .engine-grad-bot {
   position: absolute; bottom: 0; left: 0; right: 0; height: 180px;
-  background: linear-gradient(to top, rgba(5,10,30,0.76) 0%, transparent 100%);
+  background: linear-gradient(to top, rgba(5,10,30,0.76) 0%, rgba(5,10,30,0) 100%);
   z-index: 5; pointer-events: none;
 }
 
@@ -2653,7 +2653,7 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 
     // Phase 2 & 3: inside engine section
     const engP = (scrollY - engTop) / engScroll; // 0 → 1
-    const collapseWindow = 0.30; // collapse finishes at 30% of engine section scroll
+    const collapseWindow = 0.60; // collapse finishes at 60% of engine section scroll (~20 scrolls)
     if (engP <= collapseWindow) {
       // Collapse: 0.5 → 0.0
       return 0.5 * (1 - engP / collapseWindow);
