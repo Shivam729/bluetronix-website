@@ -863,13 +863,13 @@ footer > * { position: relative; z-index: 1; }
 
 /* Gradient blends at section boundaries */
 .engine-grad-top {
-  position: absolute; top: 0; left: 0; right: 0; height: 220px;
-  background: linear-gradient(to bottom, rgba(5,10,30,0.85) 0%, transparent 100%);
+  position: absolute; top: 0; left: 0; right: 0; height: 180px;
+  background: linear-gradient(to bottom, rgba(5,10,30,0.76) 0%, transparent 100%);
   z-index: 5; pointer-events: none;
 }
 .engine-grad-bot {
-  position: absolute; bottom: 0; left: 0; right: 0; height: 220px;
-  background: linear-gradient(to top, rgba(5,10,30,0.95) 0%, transparent 100%);
+  position: absolute; bottom: 0; left: 0; right: 0; height: 180px;
+  background: linear-gradient(to top, rgba(5,10,30,0.76) 0%, transparent 100%);
   z-index: 5; pointer-events: none;
 }
 
@@ -2632,22 +2632,33 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
   );
 
   /* ── SCROLL PROGRESS (three-phase) ──
-     Phase 0: within hero                    = 0.0  (no explosion, slides visible)
-     Phase 1: hero exit → engine section     = 0.0 → 0.8
-     Phase 2: within engine section          = 0.8 → 1.0                        */
+     Phase 0: within hero                      = 0.0
+     Phase 1: hero exit → engine section       = 0.0 → 0.5  (slow pre-explode)
+     Phase 2: within engine section (first 30%)= 0.5 → 0.0  (collapse/reassemble)
+     Phase 3: remainder of engine section      = 0.0         (assembled, user reads) */
   const heroEl = document.getElementById('home');
   function getProgress() {
-    const scrollY      = window.scrollY;
-    const heroBottom   = heroEl ? heroEl.offsetTop + heroEl.offsetHeight : 0;
-    const engTop       = section.offsetTop;
-    const engScroll    = Math.max(1, section.offsetHeight - window.innerHeight);
-    const phase1Range  = Math.max(1, engTop - heroBottom);
+    const scrollY     = window.scrollY;
+    const heroBottom  = heroEl ? heroEl.offsetTop + heroEl.offsetHeight : 0;
+    const engTop      = section.offsetTop;
+    const engScroll   = Math.max(1, section.offsetHeight - window.innerHeight);
+    const phase1Range = Math.max(1, engTop - heroBottom);
 
-    if (scrollY <= heroBottom) return 0;                         // inside hero
+    if (scrollY <= heroBottom) return 0;
+
     if (scrollY < engTop) {
-      return ((scrollY - heroBottom) / phase1Range) * 0.8;      // pre-explode 0→80%
+      // Phase 1: slow pre-explode 0 → 0.5
+      return ((scrollY - heroBottom) / phase1Range) * 0.5;
     }
-    return 0.8 + Math.min(1, (scrollY - engTop) / engScroll) * 0.2; // finish 80→100%
+
+    // Phase 2 & 3: inside engine section
+    const engP = (scrollY - engTop) / engScroll; // 0 → 1
+    const collapseWindow = 0.30; // collapse finishes at 30% of engine section scroll
+    if (engP <= collapseWindow) {
+      // Collapse: 0.5 → 0.0
+      return 0.5 * (1 - engP / collapseWindow);
+    }
+    return 0; // fully assembled — stays here for rest of section
   }
 
   /* Hero slides stay fully opaque always */
