@@ -862,7 +862,7 @@ footer > * { position: relative; z-index: 1; }
 /* Gradient blends at section boundaries */
 .engine-grad-top {
   position: absolute; top: 0; left: 0; right: 0; height: 220px;
-  background: linear-gradient(to bottom, #F8F9FF 0%, transparent 100%);
+  background: linear-gradient(to bottom, rgba(5,10,30,0.85) 0%, transparent 100%);
   z-index: 5; pointer-events: none;
 }
 .engine-grad-bot {
@@ -1221,6 +1221,39 @@ footer               { background: rgba(3,  6, 20, 0.90) !important; }
 
 /* Section star canvases — keep but very subtle so they don't compete */
 .section-star-canvas { opacity: 0.25 !important; }
+
+/* ── ENGINE PART LABELS ── */
+#engine-labels {
+  position: fixed; inset: 0; z-index: 2;
+  pointer-events: none; overflow: hidden;
+}
+.eng-label {
+  position: absolute;
+  display: flex; align-items: center; gap: 7px;
+  opacity: 0; transform: translateY(4px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  pointer-events: none; white-space: nowrap;
+}
+.eng-label.visible { opacity: 1; transform: translateY(0); }
+.eng-label-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #7fa8ff; flex-shrink: 0;
+  box-shadow: 0 0 0 3px rgba(127,168,255,0.25);
+}
+.eng-label-line {
+  width: 28px; height: 1px;
+  background: linear-gradient(to right, #7fa8ff, rgba(127,168,255,0.3));
+  flex-shrink: 0;
+}
+.eng-label-text {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: #fff;
+  background: rgba(10,18,50,0.65);
+  backdrop-filter: blur(6px);
+  padding: 3px 9px; border: 1px solid rgba(127,168,255,0.30);
+}
 </style>
 <!-- Three.js ES module importmap -->
 <script type="importmap">
@@ -1817,6 +1850,8 @@ footer               { background: rgba(3,  6, 20, 0.90) !important; }
 </section>
 
 <!-- 3D ENGINE EXPLODE -->
+<div id="engine-labels" aria-hidden="true"></div>
+
 <section id="engine-section" class="engine-section">
   <div class="engine-sticky" id="engine-sticky">
     <canvas id="engine-canvas"></canvas>
@@ -2568,6 +2603,21 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
         seen.add(lbl); p.label = lbl; return true;
       });
 
+      /* ── BUILD FLOATING LABEL DOM ── */
+      const labelsContainer = document.getElementById('engine-labels');
+      // Pick up to 12 spread-out labeled parts to avoid clutter
+      const stride = Math.max(1, Math.floor(labeledParts.length / 12));
+      const pickedParts = labeledParts.filter((_, i) => i % stride === 0).slice(0, 12);
+      pickedParts.forEach(p => {
+        const el = document.createElement('div');
+        el.className = 'eng-label';
+        el.innerHTML = `<div class="eng-label-dot"></div><div class="eng-label-line"></div><div class="eng-label-text">${p.label}</div>`;
+        labelsContainer.appendChild(el);
+        p.labelEl = el;
+      });
+      // Store for tick
+      window._engineLabelParts = pickedParts;
+
       modelReady = true;
     },
     (xhr) => {
@@ -2585,20 +2635,20 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
   );
 
   /* ── SCROLL PROGRESS (page-wide, two-phase) ──
-     Phase 1: scroll from page top → engine section entry  = 0.0 → 0.5
-     Phase 2: scroll within engine section                 = 0.5 → 1.0  */
+     Phase 1: scroll from page top → engine section entry  = 0.0 → 0.8
+     Phase 2: scroll within engine section                 = 0.8 → 1.0  */
   function getProgress() {
     const scrollY    = window.scrollY;
-    const engTop     = section.offsetTop;                          // px from page top
+    const engTop     = section.offsetTop;
     const engScroll  = Math.max(1, section.offsetHeight - window.innerHeight);
 
     if (scrollY < engTop) {
-      // Phase 1: slowly pre-explode as user scrolls toward engine
-      return Math.max(0, (scrollY / Math.max(1, engTop)) * 0.5);
+      // Phase 1: pre-explode to 80% as user scrolls toward engine
+      return Math.max(0, (scrollY / Math.max(1, engTop)) * 0.8);
     } else {
-      // Phase 2: finish explosion within the engine section
+      // Phase 2: finish last 20% within the engine section
       const p = Math.min(1, (scrollY - engTop) / engScroll);
-      return 0.5 + p * 0.5;
+      return 0.8 + p * 0.2;
     }
   }
 
@@ -2669,6 +2719,36 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
     updateBadge(cur);
 
     renderer.render(scene, camera);
+
+    /* ── PROJECT PART LABELS to screen coords ── */
+    const labelParts = window._engineLabelParts;
+    if (labelParts && labelParts.length) {
+      // Labels only show when we're in the engine section (cur >= 0.78)
+      // and at least partially exploded so labels have room
+      const showLabels = cur >= 0.78 && cur >= 0.1;
+      const vp = new THREE.Vector3();
+      labelParts.forEach(p => {
+        if (!p.labelEl) return;
+        if (!showLabels) { p.labelEl.classList.remove('visible'); return; }
+
+        // Get world position of this mesh
+        p.mesh.getWorldPosition(vp);
+        // Project to NDC
+        vp.project(camera);
+        // Convert NDC to screen px
+        const sx = ( vp.x * 0.5 + 0.5) * window.innerWidth;
+        const sy = (-vp.y * 0.5 + 0.5) * window.innerHeight;
+
+        // Only show if in front of camera and on screen
+        const onScreen = vp.z < 1 && sx > 60 && sx < window.innerWidth - 160
+                      && sy > 60 && sy < window.innerHeight - 60;
+        if (!onScreen) { p.labelEl.classList.remove('visible'); return; }
+
+        p.labelEl.style.left = sx + 'px';
+        p.labelEl.style.top  = sy + 'px';
+        p.labelEl.classList.add('visible');
+      });
+    }
   }
   tick();
 })();
