@@ -460,12 +460,12 @@ h2.section-heading.on-dark .accent { color: var(--blue); }
 .why-section { background: var(--white); }
 .why-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; margin-top: 56px; align-items: start; }
 .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-.compare-table th { padding: 12px 16px; text-align: left; font-weight: 700; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; border-bottom: 2px solid var(--border-dark); }
-.compare-table th.iti-col { color: var(--navy); background: var(--blue-light); }
-.compare-table th.other-col { color: var(--muted); }
-.compare-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); vertical-align: middle; color: var(--body); }
-.compare-table td:first-child { font-weight: 700; color: var(--ink); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; }
-.compare-table td.iti-col { background: var(--blue-light); font-weight: 600; color: var(--navy); }
+.compare-table th { padding: 12px 16px; text-align: left; font-weight: 700; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; border-bottom: 2px solid rgba(255,255,255,0.15); }
+.compare-table th.iti-col { color: #fff; background: rgba(65,105,225,0.75); backdrop-filter: blur(8px); }
+.compare-table th.other-col { color: rgba(255,255,255,0.60); }
+.compare-table td { padding: 11px 16px; border-bottom: 1px solid rgba(255,255,255,0.10); vertical-align: middle; color: rgba(255,255,255,0.80); }
+.compare-table td:first-child { font-weight: 700; color: #fff; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; }
+.compare-table td.iti-col { background: rgba(65,105,225,0.20); font-weight: 600; color: #fff; border-left: 2px solid rgba(65,105,225,0.60); }
 .chk { color: var(--blue); font-weight: 700; }
 .crs { color: #b02020; }
 .why-points { display: flex; flex-direction: column; gap: 0; }
@@ -1089,10 +1089,25 @@ footer > *:not(canvas) { position: relative; z-index: 2; }
    canvas at z-index:0 bleeds through every part of the page
 ═══════════════════════════════════════════════════════════════════ */
 
-/* Hero: remove photo slides (engine is the bg now) */
-.hero-bg-slides { display: none !important; }
-/* Hero keeps its left-gradient overlay for text readability */
-.hero { background: rgba(4, 8, 24, 0.40) !important; }
+/* Hero: slideshow on the RIGHT half only — engine shows through left */
+.hero { background: transparent !important; }
+.hero-bg-slides {
+  display: block !important;
+  position: absolute !important;
+  inset: auto 0 0 50% !important; /* right 50% only */
+  z-index: 0 !important;
+}
+.hero-bg-slides .hslide {
+  position: absolute !important;
+  inset: 0 !important;
+}
+/* Gradient mask: blends slideshow left edge into the engine bg */
+.hero-bg-slides::after {
+  content: '';
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(to right, rgba(4,8,24,1) 0%, rgba(4,8,24,0.2) 35%, transparent 65%);
+  pointer-events: none;
+}
 
 /* All sections: semi-transparent dark glass */
 .partners-section    { background: rgba(5, 10, 30, 0.82) !important; }
@@ -1116,15 +1131,24 @@ footer               { background: rgba(3,  6, 20, 0.90) !important; }
 .contact-section::before, .trust-section::before, .backing-section::before,
 .stats-band::before, footer::before { display: none !important; }
 
-/* Override CSS colour tokens for previously-light sections */
+/* Override CSS colour tokens for previously-light sections — all white, no grey */
 .why-section, .courses-section, .about-section, .gstats-section,
 .partners-section, .chart-section, .faq-section {
-  --body: rgba(220,228,255,0.80);
-  --navy: #e8eeff;
-  --muted: rgba(200,215,255,0.50);
+  --body: rgba(255,255,255,0.88);
+  --navy: #ffffff;
+  --muted: rgba(255,255,255,0.70);
   --border: rgba(255,255,255,0.12);
-  color: rgba(220,228,255,0.88);
+  --ink: #ffffff;
+  color: rgba(255,255,255,0.90);
 }
+
+/* Global: kill grey text everywhere on the page */
+.hero-location { color: rgba(255,255,255,0.80) !important; }
+.hero-tagline  { color: rgba(255,255,255,0.80) !important; }
+.hero-desc     { color: rgba(255,255,255,0.80) !important; }
+.section-label { color: #7fa8ff !important; }
+.engine-scroll-hint { color: rgba(255,255,255,0.70) !important; }
+.engine-pct    { color: rgba(255,255,255,0.70) !important; }
 
 /* Glass cards — light sections becoming dark */
 .course-card {
@@ -1351,7 +1375,7 @@ footer               { background: rgba(3,  6, 20, 0.90) !important; }
     </h2>
     <div class="why-layout">
       <div>
-        <p style="font-size:14px;color:var(--body);line-height:1.8;margin-bottom:28px;">An ITI qualification is not a consolation prize — it is a direct, government-certified route to skilled employment. While a four-year college degree offers theory, an ITI gives you practice, a nationally-recognized certificate, and a job on day one.</p>
+        <p style="font-size:14px;color:rgba(255,255,255,0.82);line-height:1.8;margin-bottom:28px;">An ITI qualification is not a consolation prize — it is a direct, government-certified route to skilled employment. While a four-year college degree offers theory, an ITI gives you practice, a nationally-recognized certificate, and a job on day one.</p>
         <table class="compare-table">
           <thead>
             <tr>
