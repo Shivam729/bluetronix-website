@@ -1106,22 +1106,16 @@ footer > *:not(canvas) { position: relative; z-index: 2; }
   background-position: center !important;
 }
 
-/* All sections: semi-transparent dark glass */
-.partners-section    { background: rgba(5, 10, 30, 0.82) !important; }
-.why-section         { background: rgba(5, 10, 30, 0.78) !important; }
-.courses-section     { background: rgba(5, 10, 30, 0.80) !important; }
-.gstats-section      { background: rgba(5, 10, 30, 0.80) !important; border-top-color: rgba(100,140,255,0.5) !important; }
-.stigma-section      { background: rgba(5, 10, 30, 0.72) !important; }
-.backing-section     { background: rgba(5, 10, 30, 0.72) !important; }
-.myth-section        { background: rgba(5, 10, 30, 0.72) !important; }
-.chart-section       { background: rgba(5, 10, 30, 0.80) !important; }
-.trust-section       { background: rgba(5, 10, 30, 0.72) !important; }
-.pathway-section     { background: rgba(5, 10, 30, 0.72) !important; }
-.about-section       { background: rgba(5, 10, 30, 0.80) !important; }
-.faq-section         { background: rgba(5, 10, 30, 0.80) !important; }
-.contact-section     { background: rgba(5, 10, 30, 0.72) !important; }
-.stats-band          { background: rgba(5, 10, 30, 0.72) !important; }
-footer               { background: rgba(3,  6, 20, 0.90) !important; }
+/* All sections: one unified opacity — no seams at boundaries */
+.partners-section, .why-section, .courses-section, .gstats-section,
+.stigma-section, .backing-section, .myth-section, .chart-section,
+.trust-section, .pathway-section, .about-section, .faq-section,
+.contact-section, .stats-band {
+  background: rgba(5, 10, 30, 0.76) !important;
+  border-top: none !important;
+  border-bottom: none !important;
+}
+footer { background: rgba(3, 6, 20, 0.88) !important; border-top: none !important; }
 
 /* Remove night-sky image ::before overlays — engine is the background */
 .stigma-section::before, .myth-section::before, .pathway-section::before,
@@ -2934,7 +2928,7 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
   revealEls.forEach(el => revealObs.observe(el));
 
   /* ── 4. FADE-UP SECTIONS ── */
-  document.querySelectorAll('section, .course-card, .pw-card, .accred-item-box, .backing-card, .myth-card').forEach((el, i) => {
+  document.querySelectorAll('.course-card, .pw-card, .accred-item-box, .backing-card, .myth-card').forEach((el, i) => {
     el.classList.add('fade-up');
     el.style.transitionDelay = (i % 4) * 0.08 + 's';
   });
