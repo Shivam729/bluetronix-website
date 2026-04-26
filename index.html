@@ -1865,7 +1865,7 @@ footer { background: rgba(3, 6, 20, 0.88) !important; border-top: none !importan
     </div>
 
     <div class="engine-bottom-ui">
-      <div class="engine-scroll-hint" id="engine-scroll-hint">↓ &nbsp; Scroll ചെയ്ത് disassemble ചെയ്യൂ</div>
+      <div class="engine-scroll-hint" id="engine-scroll-hint">↓ &nbsp; Scroll ചെയ്ത് assemble ചെയ്യൂ</div>
       <div class="engine-progress-row">
         <div class="engine-progress-track">
           <div class="engine-progress-fill-bar" id="engine-prog-fill"></div>
@@ -2644,7 +2644,7 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 
     // Phase 2 & 3: inside engine section
     const engP = (scrollY - engTop) / engScroll; // 0 → 1
-    const collapseWindow = 0.60; // collapse finishes at 60% of engine section scroll (~20 scrolls)
+    const collapseWindow = 1.0; // full section scroll drives assembly — no dead zone
     if (engP <= collapseWindow) {
       // Collapse: 0.5 → 0.0
       return 0.5 * (1 - engP / collapseWindow);
