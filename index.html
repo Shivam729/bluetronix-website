@@ -829,46 +829,82 @@ footer > * { position: relative; z-index: 1; }
 .btn-white:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.6); }
 
 /* ── 3D ENGINE SECTION ── */
-.engine-section { position: relative; height: 320vh; background: var(--off-white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+/*  Canvas is fixed full-screen at z-index 0. All other page sections
+    sit at z-index 1 with solid backgrounds, covering the canvas.
+    The engine section itself is transparent so the fixed canvas shows through. */
+
+#engine-canvas {
+  position: fixed; inset: 0; width: 100%; height: 100%;
+  display: block; z-index: 0; pointer-events: none;
+}
+
+/* Every major section covers the fixed canvas */
+.hero, .partners-section, .why-section, .courses-section, .gstats-section,
+.backing-section, .stigma-section, .myth-section, .chart-section,
+.trust-section, .pathway-section, .about-section, .faq-section,
+.contact-section, footer, .stats-band {
+  position: relative; z-index: 1;
+}
+
+/* Engine section is transparent — canvas shows through */
+.engine-section {
+  position: relative; height: 320vh;
+  background: transparent; border: none;
+  z-index: 0;
+}
 .engine-sticky {
   position: sticky; top: 0; height: 100vh;
-  overflow: hidden; display: flex; align-items: center; justify-content: center;
+  overflow: visible; display: flex; align-items: center; justify-content: center;
+  background: transparent; cursor: grab;
 }
-#engine-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.engine-sticky:active { cursor: grabbing; }
+
+/* Gradient blends at section boundaries */
+.engine-grad-top {
+  position: absolute; top: 0; left: 0; right: 0; height: 220px;
+  background: linear-gradient(to bottom, #F8F9FF 0%, transparent 100%);
+  z-index: 5; pointer-events: none;
+}
+.engine-grad-bot {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 220px;
+  background: linear-gradient(to top, rgba(5,10,30,0.95) 0%, transparent 100%);
+  z-index: 5; pointer-events: none;
+}
+
 .engine-overlay-top {
   position: absolute; top: 0; left: 0; right: 0;
   padding: 40px 5vw; padding-top: 80px; z-index: 10; pointer-events: none;
   display: flex; align-items: flex-start; justify-content: space-between; gap: 32px;
 }
 .engine-text-block { max-width: 420px; }
-.engine-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--blue); display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-.engine-eyebrow::before { content: ''; width: 20px; height: 2px; background: var(--blue); }
-.engine-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(32px,4vw,52px); font-weight: 900; text-transform: uppercase; color: var(--navy); line-height: 0.95; }
-.engine-title .accent { color: var(--blue); }
-.engine-desc { font-size: 13px; color: var(--body); line-height: 1.7; margin-top: 12px; }
+.engine-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #7fa8ff; display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.engine-eyebrow::before { content: ''; width: 20px; height: 2px; background: #7fa8ff; }
+.engine-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(32px,4vw,52px); font-weight: 900; text-transform: uppercase; color: #fff; line-height: 0.95; }
+.engine-title .accent { color: #7fa8ff; }
+.engine-desc { font-size: 13px; color: rgba(255,255,255,0.65); line-height: 1.7; margin-top: 12px; }
 .engine-part-badge {
-  background: var(--white); border: 1px solid var(--border);
-  box-shadow: 0 2px 12px rgba(13,27,78,0.08);
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
   padding: 10px 18px; text-align: right;
   min-width: 180px; opacity: 0; transition: opacity 0.4s;
 }
 .engine-part-badge.visible { opacity: 1; }
-.engine-badge-label { font-size: 9px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--blue); margin-bottom: 4px; }
-.engine-badge-name { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 800; text-transform: uppercase; color: var(--navy); }
+.engine-badge-label { font-size: 9px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #7fa8ff; margin-bottom: 4px; }
+.engine-badge-name { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 800; text-transform: uppercase; color: #fff; }
 .engine-bottom-ui {
   position: absolute; bottom: 32px; left: 0; right: 0;
   display: flex; flex-direction: column; align-items: center; gap: 14px; z-index: 10; pointer-events: none;
 }
-.engine-scroll-hint { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); animation: eng-bounce 2s ease-in-out infinite; transition: opacity 0.5s; }
+.engine-scroll-hint { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.45); animation: eng-bounce 2s ease-in-out infinite; transition: opacity 0.5s; }
 @keyframes eng-bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
 .engine-progress-row { display: flex; align-items: center; gap: 14px; }
-.engine-progress-track { width: 180px; height: 2px; background: var(--border); }
-.engine-progress-fill-bar { height: 100%; background: var(--blue); width: 0; transition: width 0.08s linear; }
-.engine-pct { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 800; color: var(--muted); letter-spacing: 0.06em; min-width: 40px; }
+.engine-progress-track { width: 180px; height: 2px; background: rgba(255,255,255,0.15); }
+.engine-progress-fill-bar { height: 100%; background: #7fa8ff; width: 0; transition: width 0.08s linear; }
+.engine-pct { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 800; color: rgba(255,255,255,0.45); letter-spacing: 0.06em; min-width: 40px; }
 .engine-loading { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; z-index: 5; pointer-events: none; }
-.engine-loading-bar-wrap { width: 200px; height: 2px; background: var(--border); }
-.engine-loading-bar { height: 100%; background: var(--blue); width: 0; transition: width 0.2s; }
-.engine-loading-text { font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+.engine-loading-bar-wrap { width: 200px; height: 2px; background: rgba(255,255,255,0.15); }
+.engine-loading-bar { height: 100%; background: #7fa8ff; width: 0; transition: width 0.2s; }
+.engine-loading-text { font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.45); }
 @media(max-width:768px) {
   .engine-overlay-top { flex-direction: column; gap: 16px; }
   .engine-part-badge { text-align: left; }
@@ -1646,6 +1682,8 @@ footer > *:not(canvas) { position: relative; z-index: 2; }
 <section id="engine-section" class="engine-section">
   <div class="engine-sticky" id="engine-sticky">
     <canvas id="engine-canvas"></canvas>
+    <div class="engine-grad-top"></div>
+    <div class="engine-grad-bot"></div>
 
     <div class="engine-overlay-top container">
       <div class="engine-text-block">
@@ -2182,6 +2220,7 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 
   const section   = document.getElementById('engine-section');
   const canvas    = document.getElementById('engine-canvas');
+  const sticky    = document.getElementById('engine-sticky');
   const progFill  = document.getElementById('engine-prog-fill');
   const pctEl     = document.getElementById('engine-pct');
   const hint      = document.getElementById('engine-scroll-hint');
@@ -2192,24 +2231,27 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
   const loadText  = document.getElementById('engine-load-text');
   if (!section || !canvas) return;
 
+  /* Move canvas to <body> so position:fixed works with no ancestor transforms */
+  document.body.insertBefore(canvas, document.body.firstChild);
+
   /* ── RENDERER ── */
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.1;
-  renderer.setClearColor(0xF8F9FF, 1);   // match --off-white
+  renderer.toneMappingExposure = 1.2;
+  renderer.setClearColor(0x060d1f, 1);   // dark navy — matches night sky theme
 
   const scene  = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 200);
   camera.position.set(6, 3.5, 9);
   camera.lookAt(0, 0, 0);
 
-  /* ── LIGHTS (tuned for white background) ── */
-  scene.add(new THREE.AmbientLight(0xffffff, 1.8));
+  /* ── LIGHTS (tuned for dark background) ── */
+  scene.add(new THREE.AmbientLight(0xffffff, 1.2));
 
-  const sun = new THREE.DirectionalLight(0xffffff, 3.0);
+  const sun = new THREE.DirectionalLight(0xffffff, 2.8);
   sun.position.set(8, 12, 8);
   sun.castShadow = true;
   sun.shadow.mapSize.set(2048, 2048);
@@ -2219,13 +2261,13 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
   sun.shadow.camera.right= sun.shadow.camera.top    =  10;
   scene.add(sun);
 
-  const backLight = new THREE.DirectionalLight(0xddeeff, 1.5);
+  const backLight = new THREE.DirectionalLight(0x88aaff, 1.8);  // cool blue backlight
   backLight.position.set(-6, 4, -6);
   scene.add(backLight);
 
-  const fillLight = new THREE.DirectionalLight(0xfff5e0, 1.0);
-  fillLight.position.set(0, -5, 8);
-  scene.add(fillLight);
+  const rimLight = new THREE.DirectionalLight(0x4477ff, 0.8);   // blue rim from below
+  rimLight.position.set(0, -5, 8);
+  scene.add(rimLight);
 
   /* ── SCENE + GROUP ── */
   const group = new THREE.Group();
@@ -2243,13 +2285,13 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 
   /* ── RESIZE ── */
   function onResize() {
-    const w = canvas.clientWidth, h = canvas.clientHeight;
+    const w = window.innerWidth, h = window.innerHeight;
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
   }
   onResize();
-  new ResizeObserver(onResize).observe(canvas);
+  window.addEventListener('resize', onResize);
 
   /* ── LOAD FBX ── */
   const loader = new FBXLoader();
@@ -2411,28 +2453,33 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
     return Math.max(0, Math.min(1, -rect.top / total));
   }
 
-  /* ── MOUSE / TOUCH DRAG ── */
+  /* ── MOUSE / TOUCH DRAG (on sticky div — canvas has pointer-events:none) ── */
   let dragX = 0, dragY = 0, isDragging = false, lastX = 0, lastY = 0;
   let autoRotY = 0;
+  let engineVisible = false;
 
-  canvas.addEventListener('mousedown',  e => { isDragging = true; lastX = e.clientX; lastY = e.clientY; canvas.style.cursor = 'grabbing'; });
+  /* Visibility observer — pause rendering when engine is offscreen */
+  new IntersectionObserver(entries => {
+    engineVisible = entries[0].isIntersecting;
+  }, { rootMargin: '200px 0px' }).observe(section);
+
+  sticky.addEventListener('mousedown',  e => { isDragging = true; lastX = e.clientX; lastY = e.clientY; sticky.style.cursor = 'grabbing'; });
   window.addEventListener('mousemove',  e => {
     if (!isDragging) return;
     dragX += (e.clientX - lastX) * 0.008; lastX = e.clientX;
     dragY += (e.clientY - lastY) * 0.005; lastY = e.clientY;
     dragY  = Math.max(-0.7, Math.min(0.7, dragY));
   });
-  window.addEventListener('mouseup', () => { isDragging = false; canvas.style.cursor = 'grab'; });
-  canvas.style.cursor = 'grab';
+  window.addEventListener('mouseup', () => { isDragging = false; sticky.style.cursor = 'grab'; });
 
-  canvas.addEventListener('touchstart', e => { isDragging = true; lastX = e.touches[0].clientX; lastY = e.touches[0].clientY; }, { passive: true });
-  canvas.addEventListener('touchmove',  e => {
+  sticky.addEventListener('touchstart', e => { isDragging = true; lastX = e.touches[0].clientX; lastY = e.touches[0].clientY; }, { passive: true });
+  sticky.addEventListener('touchmove',  e => {
     if (!isDragging) return;
     dragX += (e.touches[0].clientX - lastX) * 0.008; lastX = e.touches[0].clientX;
     dragY += (e.touches[0].clientY - lastY) * 0.005; lastY = e.touches[0].clientY;
     dragY  = Math.max(-0.7, Math.min(0.7, dragY));
   }, { passive: true });
-  canvas.addEventListener('touchend', () => isDragging = false);
+  sticky.addEventListener('touchend', () => isDragging = false);
 
   /* ── BADGE UPDATE ── */
   let lastLabel = '';
@@ -2450,6 +2497,9 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
   let cur = 0;
   function tick() {
     requestAnimationFrame(tick);
+
+    /* Skip render when engine section is scrolled off-screen (perf) */
+    if (!engineVisible) return;
 
     const target = getProgress();
     cur += (target - cur) * 0.07;
