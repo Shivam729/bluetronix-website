@@ -2415,7 +2415,7 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
   renderer.setClearColor(0x060d1f, 1);   // dark navy — matches night sky theme
 
   const scene  = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 200);
+  const camera = new THREE.PerspectiveCamera(48, 1, 0.1, 200);
   camera.position.set(6, 3.5, 9);
   camera.lookAt(0, 0, 0);
 
@@ -2560,7 +2560,7 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 
       /* 4. Adjust camera to fit model */
       explodeRadius = maxDim * scale * 0.42; // how far parts fly out
-      camera.position.set(0, worldSize.y * scale * 0.3, maxDim * scale * 2.4);
+      camera.position.set(0, worldSize.y * scale * 0.2, maxDim * scale * 1.6);
       camera.lookAt(0, 0, 0);
 
       /* 5. Deduplicate labels for badge */
