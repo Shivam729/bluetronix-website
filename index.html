@@ -1094,18 +1094,36 @@ footer > *:not(canvas) { position: relative; z-index: 2; }
 .hero-bg-slides {
   display: block !important;
   position: absolute !important;
-  inset: 0 0 0 50% !important; /* right 50% — full height */
+  inset: 0 0 0 45% !important; /* right 55% — full height */
   z-index: 0 !important;
+  overflow: hidden !important;
 }
+/* Kill kenburns on right-half slides — resets on each swap causing a pop */
 .hero-bg-slides .hslide {
   position: absolute !important;
   inset: 0 !important;
+  animation: none !important;
+  background-size: cover !important;
+  background-position: center !important;
 }
-/* Gradient mask: blends slideshow left edge into the engine bg */
+/* Soft gradient blend: dark left edge fades photo into engine bg */
+.hero-bg-slides::before {
+  content: '';
+  position: absolute; inset: 0; z-index: 2;
+  background: linear-gradient(to right,
+    rgba(4,8,24,1)   0%,
+    rgba(4,8,24,0.7) 18%,
+    rgba(4,8,24,0.1) 45%,
+    transparent      75%);
+  pointer-events: none;
+}
+/* Top/bottom vignette */
 .hero-bg-slides::after {
   content: '';
-  position: absolute; inset: 0; z-index: 1;
-  background: linear-gradient(to right, rgba(4,8,24,1) 0%, rgba(4,8,24,0.2) 35%, transparent 65%);
+  position: absolute; inset: 0; z-index: 2;
+  background:
+    linear-gradient(to bottom, rgba(4,8,24,0.55) 0%, transparent 25%),
+    linear-gradient(to top,    rgba(4,8,24,0.55) 0%, transparent 25%);
   pointer-events: none;
 }
 
@@ -2723,10 +2741,11 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
     /* ── PROJECT PART LABELS to screen coords ── */
     const labelParts = window._engineLabelParts;
     if (labelParts && labelParts.length) {
-      // Labels only show when engine section is actually in the viewport
-      const engRect = section.getBoundingClientRect();
-      const inView  = engRect.top < window.innerHeight && engRect.bottom > 0;
-      const showLabels = inView && cur >= 0.1;
+      // Labels only show when scrolled INTO the engine section (not before, not after)
+      const engTop = section.offsetTop;
+      const engEnd = engTop + section.offsetHeight - window.innerHeight;
+      const sy = window.scrollY;
+      const showLabels = sy >= engTop && sy <= engEnd;
       const vp = new THREE.Vector3();
       labelParts.forEach(p => {
         if (!p.labelEl) return;
