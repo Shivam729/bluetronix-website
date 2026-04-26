@@ -1083,6 +1083,120 @@ footer > *:not(canvas) { position: relative; z-index: 2; }
   transition: opacity 0.7s ease, transform 0.7s ease;
 }
 .fade-up.in-view { opacity: 1; transform: translateY(0); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   ENGINE AS GLOBAL BACKGROUND — all sections glass-dark so engine
+   canvas at z-index:0 bleeds through every part of the page
+═══════════════════════════════════════════════════════════════════ */
+
+/* Hero: remove photo slides (engine is the bg now) */
+.hero-bg-slides { display: none !important; }
+/* Hero keeps its left-gradient overlay for text readability */
+.hero { background: rgba(4, 8, 24, 0.40) !important; }
+
+/* All sections: semi-transparent dark glass */
+.partners-section    { background: rgba(5, 10, 30, 0.82) !important; }
+.why-section         { background: rgba(5, 10, 30, 0.78) !important; }
+.courses-section     { background: rgba(5, 10, 30, 0.80) !important; }
+.gstats-section      { background: rgba(5, 10, 30, 0.80) !important; border-top-color: rgba(100,140,255,0.5) !important; }
+.stigma-section      { background: rgba(5, 10, 30, 0.72) !important; }
+.backing-section     { background: rgba(5, 10, 30, 0.72) !important; }
+.myth-section        { background: rgba(5, 10, 30, 0.72) !important; }
+.chart-section       { background: rgba(5, 10, 30, 0.80) !important; }
+.trust-section       { background: rgba(5, 10, 30, 0.72) !important; }
+.pathway-section     { background: rgba(5, 10, 30, 0.72) !important; }
+.about-section       { background: rgba(5, 10, 30, 0.80) !important; }
+.faq-section         { background: rgba(5, 10, 30, 0.80) !important; }
+.contact-section     { background: rgba(5, 10, 30, 0.72) !important; }
+.stats-band          { background: rgba(5, 10, 30, 0.72) !important; }
+footer               { background: rgba(3,  6, 20, 0.90) !important; }
+
+/* Remove night-sky image ::before overlays — engine is the background */
+.stigma-section::before, .myth-section::before, .pathway-section::before,
+.contact-section::before, .trust-section::before, .backing-section::before,
+.stats-band::before, footer::before { display: none !important; }
+
+/* Override CSS colour tokens for previously-light sections */
+.why-section, .courses-section, .about-section, .gstats-section,
+.partners-section, .chart-section, .faq-section {
+  --body: rgba(220,228,255,0.80);
+  --navy: #e8eeff;
+  --muted: rgba(200,215,255,0.50);
+  --border: rgba(255,255,255,0.12);
+  color: rgba(220,228,255,0.88);
+}
+
+/* Glass cards — light sections becoming dark */
+.course-card {
+  background: rgba(255,255,255,0.06) !important;
+  border-color: rgba(255,255,255,0.12) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+}
+.course-card:hover { background: rgba(255,255,255,0.10) !important; }
+.course-card h3, .course-card p, .course-card .tag { color: inherit !important; }
+.course-card .tag { background: rgba(100,140,255,0.15) !important; color: #7fa8ff !important; }
+
+.gstat-cell {
+  background: transparent !important;
+  border-color: rgba(255,255,255,0.10) !important;
+}
+.gstat-num { color: #fff !important; }
+.gstat-label { color: rgba(200,215,255,0.55) !important; }
+
+.faq-item {
+  background: rgba(255,255,255,0.05) !important;
+  border-color: rgba(255,255,255,0.10) !important;
+  backdrop-filter: blur(8px) !important;
+}
+.faq-q { color: #e8eeff !important; }
+.faq-a { color: rgba(200,215,255,0.75) !important; }
+
+.partner-chip {
+  background: rgba(255,255,255,0.07) !important;
+  border-color: rgba(255,255,255,0.14) !important;
+}
+
+/* About section text */
+.blockquote { color: rgba(200,215,255,0.90) !important; border-color: rgba(100,140,255,0.35) !important; }
+.about-body { color: rgba(200,215,255,0.78) !important; }
+.founder-name { color: #e8eeff !important; }
+.founder-role { color: rgba(200,215,255,0.55) !important; }
+.founder-strip { background: rgba(255,255,255,0.05) !important; border-color: rgba(255,255,255,0.10) !important; }
+
+/* Chart section */
+.chart-year-lbl { color: rgba(200,215,255,0.65) !important; }
+.chart-bar-fill { background: var(--blue) !important; }
+.chart-salary-lbl { color: rgba(200,215,255,0.65) !important; }
+.chart-intro-title { color: #e8eeff !important; }
+.chart-intro-body { color: rgba(200,215,255,0.75) !important; }
+
+/* Section labels + headings in light-turned-dark sections */
+.why-section .section-label,
+.courses-section .section-label,
+.about-section .section-label,
+.gstats-section .section-label,
+.chart-section .section-label,
+.faq-section .section-label { color: #7fa8ff !important; }
+
+.why-section .section-heading,
+.courses-section .section-heading,
+.about-section .section-heading,
+.gstats-section .section-heading,
+.chart-section .section-heading,
+.faq-section .section-heading { color: #e8eeff !important; }
+
+/* Why-section feature blocks */
+.feature-block { background: rgba(255,255,255,0.05) !important; border-color: rgba(255,255,255,0.10) !important; backdrop-filter: blur(8px) !important; }
+.feature-icon { color: #7fa8ff !important; }
+.feature-title { color: #e8eeff !important; }
+.feature-body { color: rgba(200,215,255,0.75) !important; }
+
+/* Contact form on dark */
+.form-wrap { background: rgba(10,18,50,0.80) !important; border-color: rgba(255,255,255,0.12) !important; backdrop-filter: blur(16px) !important; }
+
+/* Section star canvases — keep but very subtle so they don't compete */
+.section-star-canvas { opacity: 0.25 !important; }
 </style>
 <!-- Three.js ES module importmap -->
 <script type="importmap">
@@ -2446,22 +2560,27 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
     }
   );
 
-  /* ── SCROLL PROGRESS ── */
+  /* ── SCROLL PROGRESS (page-wide, two-phase) ──
+     Phase 1: scroll from page top → engine section entry  = 0.0 → 0.5
+     Phase 2: scroll within engine section                 = 0.5 → 1.0  */
   function getProgress() {
-    const rect  = section.getBoundingClientRect();
-    const total = section.offsetHeight - window.innerHeight;
-    return Math.max(0, Math.min(1, -rect.top / total));
+    const scrollY    = window.scrollY;
+    const engTop     = section.offsetTop;                          // px from page top
+    const engScroll  = Math.max(1, section.offsetHeight - window.innerHeight);
+
+    if (scrollY < engTop) {
+      // Phase 1: slowly pre-explode as user scrolls toward engine
+      return Math.max(0, (scrollY / Math.max(1, engTop)) * 0.5);
+    } else {
+      // Phase 2: finish explosion within the engine section
+      const p = Math.min(1, (scrollY - engTop) / engScroll);
+      return 0.5 + p * 0.5;
+    }
   }
 
   /* ── MOUSE / TOUCH DRAG (on sticky div — canvas has pointer-events:none) ── */
   let dragX = 0, dragY = 0, isDragging = false, lastX = 0, lastY = 0;
   let autoRotY = 0;
-  let engineVisible = false;
-
-  /* Visibility observer — pause rendering when engine is offscreen */
-  new IntersectionObserver(entries => {
-    engineVisible = entries[0].isIntersecting;
-  }, { rootMargin: '200px 0px' }).observe(section);
 
   sticky.addEventListener('mousedown',  e => { isDragging = true; lastX = e.clientX; lastY = e.clientY; sticky.style.cursor = 'grabbing'; });
   window.addEventListener('mousemove',  e => {
@@ -2498,9 +2617,6 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
   function tick() {
     requestAnimationFrame(tick);
 
-    /* Skip render when engine section is scrolled off-screen (perf) */
-    if (!engineVisible) return;
-
     const target = getProgress();
     cur += (target - cur) * 0.07;
 
@@ -2516,8 +2632,8 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
       });
     }
 
-    /* Rotation */
-    if (!isDragging) autoRotY += 0.003;
+    /* Rotation — slow majestic spin as page background */
+    if (!isDragging) autoRotY += 0.0015;
     group.rotation.y += (autoRotY + dragX - group.rotation.y) * 0.04;
     group.rotation.x += (dragY            - group.rotation.x) * 0.04;
 
