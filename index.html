@@ -1089,15 +1089,14 @@ footer > *:not(canvas) { position: relative; z-index: 2; }
    canvas at z-index:0 bleeds through every part of the page
 ═══════════════════════════════════════════════════════════════════ */
 
-/* Hero: full-bleed slideshow — slides fade out on scroll, engine emerges beneath */
+/* Hero: full-bleed slideshow — always fully visible, engine starts after hero */
 .hero { background: transparent !important; }
 .hero-bg-slides {
   display: block !important;
   position: absolute !important;
   inset: 0 !important;
   z-index: 0 !important;
-  will-change: opacity;
-  transition: none; /* JS controls opacity directly */
+  opacity: 1 !important;
 }
 .hero-bg-slides .hslide {
   position: absolute !important;
@@ -2651,17 +2650,7 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
     return 0.8 + Math.min(1, (scrollY - engTop) / engScroll) * 0.2; // finish 80→100%
   }
 
-  /* ── HERO SLIDE FADE-OUT on scroll ── */
-  const heroSlides = document.querySelector('.hero-bg-slides');
-  function updateHeroFade() {
-    if (!heroEl || !heroSlides) return;
-    const heroH = heroEl.offsetHeight;
-    // Fade starts at 40% of hero height scrolled, fully gone by 100%
-    const t = Math.max(0, Math.min(1, (window.scrollY - heroH * 0.4) / (heroH * 0.6)));
-    heroSlides.style.opacity = 1 - t;
-  }
-  window.addEventListener('scroll', updateHeroFade, { passive: true });
-  updateHeroFade();
+  /* Hero slides stay fully opaque always */
 
   /* ── MOUSE / TOUCH DRAG (on sticky div — canvas has pointer-events:none) ── */
   let dragX = 0, dragY = 0, isDragging = false, lastX = 0, lastY = 0;
