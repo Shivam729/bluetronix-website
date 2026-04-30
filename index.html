@@ -2615,9 +2615,9 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 
       /* ── BUILD FLOATING LABEL DOM ── */
       const labelsContainer = document.getElementById('engine-labels');
-      // Pick up to 12 spread-out labeled parts to avoid clutter
-      const stride = Math.max(1, Math.floor(labeledParts.length / 12));
-      const pickedParts = labeledParts.filter((_, i) => i % stride === 0).slice(0, 12);
+      // Pick up to 5 spread-out labeled parts to avoid clutter
+      const stride = Math.max(1, Math.floor(labeledParts.length / 5));
+      const pickedParts = labeledParts.filter((_, i) => i % stride === 0).slice(0, 5);
       pickedParts.forEach(p => {
         const el = document.createElement('div');
         el.className = 'eng-label';
@@ -2719,10 +2719,8 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
     cur += (target - cur) * 0.07;
 
     if (modelReady) {
-      /* Ease-in-out */
-      const eased = cur < 0.5
-        ? 2 * cur * cur
-        : 1 - Math.pow(-2 * cur + 2, 2) / 2;
+      /* Fast start, slow end (ease-out quint) */
+      const eased = 1 - Math.pow(1 - cur, 5);
 
       /* t=0 → assembled (base pos), t=1 → exploded (base + dir * explodeRadius) */
       parts.forEach(p => {
