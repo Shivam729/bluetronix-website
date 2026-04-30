@@ -173,7 +173,7 @@ nav.scrolled {
   max-width: calc(100% - 40px);
   margin: 0 auto;
   border-radius: 40px;
-  background: rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.85);
   border: 1px solid rgba(255,255,255,0.4);
   box-shadow:
     0 1px 0 rgba(255,255,255,0.5) inset,
@@ -263,7 +263,7 @@ nav.scrolled .nav-inner {
 }
 .slideshow-dots span {
   width: 6px; height: 6px; border-radius: 50%;
-  background: rgba(255,255,255,0.25); cursor: pointer; transition: background 0.3s;
+  background: rgba(255,255,255,0.85); cursor: pointer; transition: background 0.3s;
 }
 .slideshow-dots span.active { background: var(--blue); width: 20px; border-radius: 3px; }
 .hero-badge {
@@ -958,24 +958,15 @@ footer > * { position: relative; z-index: 1; }
   .courses-grid { grid-template-columns: 1fr; }
   .accred-row { flex-direction: column; }
   .accred-item-box { border-right: none; border-bottom: 1px solid var(--border); }
-  nav .nav-links {
-    display: flex;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    white-space: nowrap;
-    scrollbar-width: none;
-    margin-left: auto;
-    padding-right: 12px;
-  }
-  nav .nav-links::-webkit-scrollbar { display: none; }
-  nav .nav-links a { font-size: 12px; padding: 8px 12px; }
+  nav .nav-links { display: none; }
   .nav-apply { display: none; }
-  .hamburger { display: none; }
-  .nav-inner { height: 52px; padding: 0 16px; }
-  .nav-logo img { height: 32px; }
-  .nav-logo-name { font-size: 18px; }
-  .nav-logo-sub { display: none; }
-  nav.scrolled { top: 12px; width: calc(100% - 24px); border-radius: 28px; }
+  .hamburger { display: flex; }
+  .nav-inner { height: 60px; padding: 0 16px; gap: 16px; }
+  .nav-logo img { height: 38px; }
+  .nav-logo-name { font-size: 20px; }
+  .nav-logo-sub { display: block; font-size: 10px; }
+  #mobile-active-section { display: block; margin-left: auto; font-size: 13px; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.8; }
+  nav.scrolled { top: 20px; width: calc(100% - 32px); border-radius: 30px; background: rgba(255,255,255,0.85); backdrop-filter: blur(20px); }
   .footer-grid { grid-template-columns: 1fr; }
   .pathway-grid { grid-template-columns: 1fr; }
   .pw-arrow { display: none; }
@@ -1309,6 +1300,7 @@ footer { background: rgba(3, 6, 20, 0.88) !important; border-top: none !importan
         <span class="nav-logo-sub" style="color:#22c55e;font-weight:700;letter-spacing:0.06em;">Private ITI</span>
       </div>
     </a>
+    <div id="mobile-active-section" style="display:none;"></div>
     <ul class="nav-links">
       <li><a href="#why">Why ITI</a></li>
       <li><a href="#courses">Courses</a></li>
@@ -2407,7 +2399,14 @@ window.addEventListener('scroll', () => {
     if (y >= el.offsetTop && y < el.offsetTop + el.offsetHeight) {
       navLinks.forEach(a => a.classList.remove('active'));
       const lnk = document.querySelector(`.nav-links a[href="#${id}"]`);
-      if (lnk) lnk.classList.add('active');
+      if (lnk) {
+          lnk.classList.add('active');
+          const mobSec = document.getElementById('mobile-active-section');
+          if(mobSec) mobSec.textContent = lnk.textContent;
+        } else {
+          const mobSec = document.getElementById('mobile-active-section');
+          if(mobSec) mobSec.textContent = '';
+        }
     }
   });
 }, { passive: true });
