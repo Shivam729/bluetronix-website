@@ -156,14 +156,28 @@ body { background: var(--white); color: var(--ink); font-family: 'Barlow', sans-
 /* ── NAV — glass morphism ── */
 nav {
   position: sticky; top: 0; z-index: 200;
-  background: rgba(255,255,255,0.30);
-  backdrop-filter: blur(28px) saturate(2.0) brightness(1.08);
-  -webkit-backdrop-filter: blur(28px) saturate(2.0) brightness(1.08);
-  border-bottom: 1px solid rgba(255,255,255,0.45);
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(32px) saturate(2.5) brightness(1.1);
+  -webkit-backdrop-filter: blur(32px) saturate(2.5) brightness(1.1);
+  border-bottom: 1px solid rgba(255,255,255,0.3);
   box-shadow:
-    0 1px 0 rgba(255,255,255,0.6) inset,
-    0 4px 32px rgba(13,27,78,0.10);
-  transition: background 0.4s;
+    0 1px 0 rgba(255,255,255,0.4) inset,
+    0 8px 32px rgba(13,27,78,0.15);
+  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  margin: 0;
+  width: 100%;
+}
+nav.scrolled {
+  top: 20px;
+  width: calc(100% - 40px);
+  max-width: 1200px;
+  margin: 0 auto;
+  border-radius: 40px;
+  background: rgba(255,255,255,0.25);
+  border: 1px solid rgba(255,255,255,0.4);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.5) inset,
+    0 12px 40px rgba(13,27,78,0.20);
 }
 .nav-inner {
   display: flex; align-items: center; justify-content: space-between;
@@ -3354,6 +3368,18 @@ document.querySelectorAll('[data-stars]').forEach(section => {
   else {
     const h = section.offsetHeight;
     spawnStarField(sc, { count: Math.round(50 + (h / 18)), shooting: h > 400, parallax: false, shootFreqMin: 1500, shootFreqMax: 4000 });
+  }
+});
+
+/* ── NAVBAR SCROLL LOGIC ── */
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector('nav');
+  if (nav) {
+    if (window.scrollY > 50) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
   }
 });
 </script>
