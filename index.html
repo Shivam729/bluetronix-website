@@ -169,8 +169,8 @@ nav {
 }
 nav.scrolled {
   top: 20px;
-  width: calc(100% - 40px);
-  max-width: 1200px;
+  width: fit-content;
+  max-width: calc(100% - 40px);
   margin: 0 auto;
   border-radius: 40px;
   background: rgba(255,255,255,0.25);
@@ -178,6 +178,10 @@ nav.scrolled {
   box-shadow:
     0 1px 0 rgba(255,255,255,0.5) inset,
     0 12px 40px rgba(13,27,78,0.20);
+}
+nav.scrolled .nav-inner {
+  padding: 0 40px;
+  gap: 40px;
 }
 .nav-inner {
   display: flex; align-items: center; justify-content: space-between;
