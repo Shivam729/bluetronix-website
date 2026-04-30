@@ -573,18 +573,24 @@ h2.section-heading.on-dark .accent { color: var(--blue); }
 .faq-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0 64px;
+  gap: 16px 64px;
   margin-top: 32px;
   align-items: start;
 }
 .faq-item {
-  border-bottom: 1px solid var(--border);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  overflow: hidden;
 }
-.faq-item:first-child { border-top: 1px solid var(--border); }
+.faq-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(13,27,78,0.06);
+}
 .faq-q {
   display: flex; align-items: center; justify-content: space-between;
   gap: 16px;
-  padding: 20px 0;
+  padding: 24px;
   cursor: pointer;
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 17px; font-weight: 700;
@@ -596,7 +602,7 @@ h2.section-heading.on-dark .accent { color: var(--blue); }
 }
 .faq-q::-webkit-details-marker { display: none; }
 .faq-icon {
-  width: 24px; height: 24px; flex-shrink: 0;
+  width: 28px; height: 28px; flex-shrink: 0;
   border: 2px solid var(--border-dark);
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
@@ -608,14 +614,12 @@ details[open] .faq-icon {
   transform: rotate(45deg);
 }
 .faq-a {
-  padding: 0 24px 20px 0;
+  padding: 0 24px 24px 24px;
   font-size: 16px; color: var(--body); line-height: 1.8;
 }
 .faq-a strong { color: var(--navy); }
 @media(max-width:860px) {
-  .faq-grid { grid-template-columns: 1fr; gap: 0; }
-  .faq-item:first-child { border-top: none; }
-  .faq-col:first-child .faq-item:first-child { border-top: 1px solid var(--border); }
+  .faq-grid { grid-template-columns: 1fr; gap: 16px; }
 }
 
 /* ── CONTACT ── */
@@ -1167,9 +1171,15 @@ footer { background: rgba(3, 6, 20, 0.88) !important; border-top: none !importan
 .gstat-label { color: rgba(200,215,255,0.55) !important; }
 
 .faq-item {
-  background: rgba(255,255,255,0.05) !important;
-  border-color: rgba(255,255,255,0.10) !important;
-  backdrop-filter: blur(8px) !important;
+  background: rgba(255,255,255,0.03) !important;
+  border-color: rgba(255,255,255,0.15) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2) !important;
+}
+.faq-item:hover {
+  background: rgba(255,255,255,0.06) !important;
+  border-color: rgba(255,255,255,0.25) !important;
 }
 .faq-q { color: #e8eeff !important; }
 .faq-a { color: rgba(200,215,255,0.75) !important; }
