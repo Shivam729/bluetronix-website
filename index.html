@@ -3497,8 +3497,7 @@ window.addEventListener('scroll', () => {
       <div class="loader-bar-fill" id="loader-bar-fill"></div>
       <div class="loader-bar-shimmer"></div>
     </div>
-    <div class="loader-particles" id="loader-particles"></div>
-  </div>
+    </div>
 </div>
 
 <style>
@@ -3670,24 +3669,6 @@ window.addEventListener('scroll', () => {
 (function() {
   const loader  = document.getElementById('page-loader');
   const barFill = document.getElementById('loader-bar-fill');
-  const parts   = document.getElementById('loader-particles');
-
-  /* Spawn floating particles */
-  for (let i = 0; i < 18; i++) {
-    const p = document.createElement('div');
-    p.className = 'lp';
-    p.style.cssText = `
-      left: ${20 + Math.random() * 60}%;
-      top:  ${30 + Math.random() * 40}%;
-      animation-duration: ${2 + Math.random() * 3}s;
-      animation-delay: ${Math.random() * 2}s;
-      width: ${2 + Math.random() * 3}px;
-      height: ${2 + Math.random() * 3}px;
-      opacity: 0;
-    `;
-    parts.appendChild(p);
-  }
-
   /* Progress bar fills over ~2s then waits for engine */
   let pct = 0;
   const fakeInterval = setInterval(() => {
