@@ -487,12 +487,12 @@ section { padding: 48px 0; }
 h2.section-heading {
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 900; font-size: clamp(32px, 5vw, 72px);
-  line-height: 1.05; text-transform: uppercase; color: var(--navy); letter-spacing: -0.01em;
+  line-height: 1.15; text-transform: uppercase; color: var(--navy); letter-spacing: -0.01em;
   word-break: keep-all; overflow-wrap: break-word;
 }
 h2.section-heading .accent { color: var(--blue); }
 h2.section-heading .ml { font-weight: 900; color: var(--blue); }
-h2.section-heading.on-dark { color: #fff; word-break: keep-all; overflow-wrap: break-word; line-height: 1.05; }
+h2.section-heading.on-dark { color: #fff; word-break: keep-all; overflow-wrap: break-word; line-height: 1.25; padding-bottom: 0.1em; }
 h2.section-heading.on-dark .accent { color: var(--blue); }
 .section-sub { font-size: 17px; color: var(--body); line-height: 1.8; max-width: 620px; margin-top: 16px; overflow-wrap: break-word; }
 
@@ -738,7 +738,7 @@ footer > * { position: relative; z-index: 1; }
 .stigma-section::before { content:''; position:absolute; inset:0; background:rgba(5,10,30,0.62); z-index:0; }
 .stigma-section > * { position: relative; z-index: 1; }
 .stigma-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-.stigma-headline { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(38px,6.5vw,92px); font-weight: 900; text-transform: uppercase; color: #fff; line-height: 1.0; letter-spacing: -0.01em; word-break: keep-all; overflow-wrap: break-word; }
+.stigma-headline { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(38px,6.5vw,92px); font-weight: 900; text-transform: uppercase; color: #fff; line-height: 1.2; letter-spacing: -0.01em; word-break: keep-all; overflow-wrap: break-word; padding-bottom: 0.1em; }
 .stigma-headline .accent { color: var(--blue); }
 .stigma-sub { font-size: 17px; color: rgba(255,255,255,0.50); line-height: 1.8; margin-top: 20px; max-width: 460px; }
 .stigma-pill-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
@@ -1110,7 +1110,7 @@ footer > * { position: relative; z-index: 1; }
   z-index: 1;
   pointer-events: none;
 }
-[data-stars] { position: relative; overflow: hidden; }
+[data-stars] { position: relative; }
 /* Ensure all direct children of dark sections sit above the canvas */
 .stigma-section > *:not(canvas),
 .myth-section > *:not(canvas),
@@ -1118,13 +1118,8 @@ footer > * { position: relative; z-index: 1; }
 .contact-section > *:not(canvas),
 footer > *:not(canvas) { position: relative; z-index: 2; }
 
-/* ── SECTION FADE-IN ── */
-.fade-up {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-.fade-up.in-view { opacity: 1; transform: translateY(0); }
+/* Section fade-up removed — cards visible immediately */
+.fade-up { opacity: 1 !important; transform: none !important; }
 
 /* ═══════════════════════════════════════════════════════════════════
    ENGINE AS GLOBAL BACKGROUND — all sections glass-dark so engine
@@ -1341,6 +1336,9 @@ footer { background: rgba(3, 6, 20, 0.88) !important; border-top: none !importan
 </script>
 </head>
 <body>
+
+<!-- GLOBAL SHOOTING STAR CANVAS — fixed, behind everything -->
+<canvas id="global-stars-canvas" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
 
 <!-- GRAIN + CURSOR -->
 <div class="grain-overlay" aria-hidden="true"></div>
@@ -3045,17 +3043,7 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
   }, { threshold: 0.15 });
   revealEls.forEach(el => revealObs.observe(el));
 
-  /* ── 4. FADE-UP SECTIONS ── */
-  document.querySelectorAll('.course-card, .pw-card, .accred-item-box, .backing-card, .myth-card').forEach((el, i) => {
-    el.classList.add('fade-up');
-    el.style.transitionDelay = (i % 4) * 0.08 + 's';
-  });
-  const fadeObs = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add('in-view'); fadeObs.unobserve(e.target); }
-    });
-  }, { threshold: 0.08 });
-  document.querySelectorAll('.fade-up').forEach(el => fadeObs.observe(el));
+  /* ── 4. FADE-UP removed — cards visible immediately ── */
 
   /* ── 5. COUNTER ANIMATION ── */
   const counters = document.querySelectorAll('.count-up');
@@ -3239,11 +3227,103 @@ function spawnStarField(canvas, opts = {}) {
   requestAnimationFrame(draw);
 }
 
+/* ── Global shooting star canvas — covers entire page ── */
+(function() {
+  const canvas = document.getElementById('global-stars-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, stars = [], shooters = [], shootTimer = 0;
+  const COUNT = 160, FREQ_MIN = 1200, FREQ_MAX = 3500;
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+    stars = Array.from({ length: COUNT }, makeStar);
+  }
+
+  function makeStar() {
+    const size = Math.random() * 1.6 + 0.3;
+    const hue  = Math.random() < 0.3 ? 210 : 0;
+    const sat  = hue === 210 ? 60 : 0;
+    return {
+      x: Math.random() * W, y: Math.random() * H,
+      size, phase: Math.random() * Math.PI * 2,
+      twinkleSpeed: Math.random() * 0.018 + 0.004,
+      baseAlpha: Math.random() * 0.45 + 0.15,
+      hue, sat
+    };
+  }
+
+  function makeShooter() {
+    const angle = (Math.random() * 30 + 10) * Math.PI / 180;
+    const speed = 6 + Math.random() * 7;
+    return {
+      x: Math.random() * W * 0.75, y: Math.random() * H * 0.4,
+      vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
+      alpha: 1, len: 12 + Math.random() * 10
+    };
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+
+  let last = 0;
+  function draw(ts) {
+    const dt = Math.min(ts - last, 32); last = ts;
+    ctx.clearRect(0, 0, W, H);
+
+    /* static star field */
+    stars.forEach(s => {
+      s.phase += s.twinkleSpeed;
+      const a = s.baseAlpha * (0.55 + 0.45 * Math.sin(s.phase));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+      if (s.size > 1.1) {
+        const g = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.size * 3);
+        g.addColorStop(0, `hsla(${s.hue},${s.sat}%,100%,${a})`);
+        g.addColorStop(1, `hsla(${s.hue},${s.sat}%,100%,0)`);
+        ctx.fillStyle = g;
+      } else {
+        ctx.fillStyle = `hsla(${s.hue},${s.sat}%,100%,${a})`;
+      }
+      ctx.fill();
+    });
+
+    /* shooting stars */
+    shootTimer -= dt;
+    if (shootTimer <= 0) {
+      const batch = Math.random() < 0.35 ? 2 : 1;
+      for (let b = 0; b < batch; b++) shooters.push(makeShooter());
+      shootTimer = FREQ_MIN + Math.random() * (FREQ_MAX - FREQ_MIN);
+    }
+    shooters = shooters.filter(s => {
+      const tail = s.len;
+      const gx = ctx.createLinearGradient(s.x, s.y, s.x - s.vx * tail, s.y - s.vy * tail);
+      gx.addColorStop(0, `rgba(255,255,255,${s.alpha})`);
+      gx.addColorStop(1, `rgba(200,220,255,0)`);
+      ctx.beginPath();
+      ctx.moveTo(s.x, s.y);
+      ctx.lineTo(s.x - s.vx * tail, s.y - s.vy * tail);
+      ctx.strokeStyle = gx;
+      ctx.lineWidth = 1.8;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+      s.x += s.vx * (dt / 16);
+      s.y += s.vy * (dt / 16);
+      s.alpha -= 0.016 * (dt / 16);
+      return s.alpha > 0 && s.x < W + 50 && s.y < H + 50;
+    });
+
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+
 /* ── Hero star canvas ── */
 spawnConstellation(document.getElementById('star-canvas'));
 
 /* ══════════════════════════════════════════════════
-   SECTION ANIMATIONS — one style per section
+   SECTION ANIMATIONS — kept for hero only now
 ══════════════════════════════════════════════════ */
 
 /* 1. PARTICLES — slow rising glowing orbs (stigma section) */
@@ -3449,23 +3529,7 @@ function spawnShootingOnly(canvas) {
   spawnStarField(canvas, { count: 0, shooting: true, parallax: false, shootFreqMin: 1800, shootFreqMax: 4500 });
 }
 
-/* ── Inject canvas + dispatch correct animation per section ── */
-document.querySelectorAll('[data-stars]').forEach(section => {
-  const sc = document.createElement('canvas');
-  sc.className = 'section-star-canvas';
-  sc.setAttribute('aria-hidden', 'true');
-  section.prepend(sc);
-  const anim = section.dataset.anim || 'stars';
-  if      (anim === 'particles')    spawnParticles(sc);
-  else if (anim === 'constellation') spawnConstellation(sc);
-  else if (anim === 'matrix')       spawnMatrix(sc);
-  else if (anim === 'radar')        spawnRadar(sc);
-  else if (anim === 'shooting')     spawnShootingOnly(sc);
-  else {
-    const h = section.offsetHeight;
-    spawnStarField(sc, { count: Math.round(50 + (h / 18)), shooting: h > 400, parallax: false, shootFreqMin: 1500, shootFreqMax: 4000 });
-  }
-});
+/* Per-section canvases removed — global shooting star canvas handles all backgrounds */
 
 /* ── NAVBAR SCROLL LOGIC ── */
 window.addEventListener('scroll', () => {
