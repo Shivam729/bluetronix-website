@@ -3484,46 +3484,13 @@ window.addEventListener('scroll', () => {
 </div>
 
 <!-- ═══ PAGE LOADER ═══ -->
-<canvas id="loader-particles-canvas"></canvas>
 <div id="page-loader">
   <div class="loader-bg"></div>
   <div class="loader-content">
     <div class="loader-logo-wrap">
+      <canvas id="loader-arc-canvas" width="340" height="340"></canvas>
       <img src="./loader-bg.png" alt="Bluetronix" class="loader-logo" fetchpriority="high" decoding="sync"/>
       <div class="loader-glow"></div>
-      <!-- Outer gear ring -->
-      <div class="loader-gear-ring">
-        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="50" cy="50" r="44" stroke="#4169E1" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.8"/>
-          <circle cx="50" cy="50" r="38" stroke="#7fa8ff" stroke-width="0.8" stroke-dasharray="3 8" opacity="0.5"/>
-          <!-- Gear teeth -->
-          <g stroke="#4169E1" stroke-width="2" opacity="0.9">
-            <line x1="50" y1="2"  x2="50" y2="10"/>
-            <line x1="50" y1="90" x2="50" y2="98"/>
-            <line x1="2"  y1="50" x2="10" y2="50"/>
-            <line x1="90" y1="50" x2="98" y2="50"/>
-            <line x1="15" y1="15" x2="21" y2="21"/>
-            <line x1="79" y1="79" x2="85" y2="85"/>
-            <line x1="85" y1="15" x2="79" y2="21"/>
-            <line x1="21" y1="79" x2="15" y2="85"/>
-          </g>
-          <!-- Corner diamonds -->
-          <circle cx="50" cy="5"  r="2" fill="#4169E1" opacity="0.9"/>
-          <circle cx="50" cy="95" r="2" fill="#4169E1" opacity="0.9"/>
-          <circle cx="5"  cy="50" r="2" fill="#4169E1" opacity="0.9"/>
-          <circle cx="95" cy="50" r="2" fill="#4169E1" opacity="0.9"/>
-        </svg>
-      </div>
-      <!-- Inner counter-rotating ring -->
-      <div class="loader-gear-ring-inner">
-        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="50" cy="50" r="44" stroke="#7fa8ff" stroke-width="1" stroke-dasharray="2 6" opacity="0.6"/>
-          <circle cx="50" cy="5"  r="2.5" fill="#7fa8ff" opacity="0.8"/>
-          <circle cx="50" cy="95" r="2.5" fill="#7fa8ff" opacity="0.8"/>
-          <circle cx="5"  cy="50" r="2.5" fill="#7fa8ff" opacity="0.8"/>
-          <circle cx="95" cy="50" r="2.5" fill="#7fa8ff" opacity="0.8"/>
-        </svg>
-      </div>
     </div>
     <div class="loader-name">BLUETRONIX</div>
     <div class="loader-sub">Private ITI · Est. 1968 · Palluruthy, Kochi</div>
@@ -3614,7 +3581,7 @@ window.addEventListener('scroll', () => {
   gap: 18px; text-align: center;
 }
 .loader-logo-wrap {
-  position: relative; width: 260px; height: 260px;
+  position: relative; width: 340px; height: 340px;
   display: flex; align-items: center; justify-content: center;
   animation: loader-float 3s ease-in-out infinite;
 }
@@ -3642,30 +3609,10 @@ window.addEventListener('scroll', () => {
   0%,100% { opacity: 0.5; transform: scale(1); }
   50%      { opacity: 1;   transform: scale(1.10); }
 }
-/* Rotating gear ring */
-.loader-gear-ring {
-  position: absolute; inset: -28px;
-  border-radius: 50%;
-  animation: gear-spin 6s linear infinite;
-}
-.loader-gear-ring svg {
-  width: 100%; height: 100%;
-  opacity: 0.55;
-  filter: drop-shadow(0 0 6px rgba(65,105,225,0.6));
-}
-.loader-gear-ring-inner {
-  position: absolute; inset: -14px;
-  border-radius: 50%;
-  animation: gear-spin 4s linear infinite reverse;
-}
-.loader-gear-ring-inner svg {
-  width: 100%; height: 100%;
-  opacity: 0.35;
-  filter: drop-shadow(0 0 4px rgba(127,168,255,0.5));
-}
-@keyframes gear-spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+/* Electric arc ring canvas */
+#loader-arc-canvas {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 3;
 }
 .loader-name {
   font-family: 'EB Garamond', Garamond, Georgia, serif;
@@ -3702,11 +3649,6 @@ window.addEventListener('scroll', () => {
   from { background-position: -60px 0; }
   to   { background-position: 260px 0; }
 }
-/* Option H — corner-convergence particle canvas */
-#loader-particles-canvas {
-  position: fixed; inset: 0; width: 100%; height: 100%;
-  z-index: 10001; pointer-events: none;
-}
 </style>
 
 <script>
@@ -3719,137 +3661,136 @@ window.addEventListener('scroll', () => {
   }, { passive: true });
 })();
 
-/* ── OPTION H PARTICLE ANIMATION ── */
+/* ── ELECTRIC ARC RING ── */
 (function() {
-  const canvas = document.getElementById('loader-particles-canvas');
-  const ctx    = canvas.getContext('2d');
-  let W, H, cx, cy;
-  let particles = [];
-  let phase = 'converge'; // converge → burst → done
-  let burstTriggered = false;
+  const canvas = document.getElementById('loader-arc-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const S = 340;                    // canvas size (matches HTML attr)
+  const cx = S / 2, cy = S / 2;
+  const R  = 152;                   // orbit radius
+
+  // Tail length in radians (≈130°)
+  const TAIL = Math.PI * 0.72;
+  // Normal orbit speed (rad/frame)
+  let speed  = 0.022;
+  let angle  = -Math.PI / 2;       // start at top
+  let phase  = 'orbit';            // orbit → complete → flash → fadeout
+  let flashAlpha = 0;
+  let fadeAlpha  = 1;
+  let completeLap = 0;             // target angle when completing
   let animId;
 
-  function resize() {
-    W = canvas.width  = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-    cx = W / 2; cy = H / 2;
-  }
-  resize();
-  window.addEventListener('resize', resize);
+  /* Draw one frame */
+  function draw() {
+    ctx.clearRect(0, 0, S, S);
 
-  /* One corner particle */
-  function makeParticle() {
-    /* pick a random corner / edge start */
-    const edge = Math.floor(Math.random() * 4); // 0=TL 1=TR 2=BL 3=BR
-    const spread = 120;
-    let sx, sy;
-    if      (edge===0) { sx = Math.random()*spread;       sy = Math.random()*spread; }
-    else if (edge===1) { sx = W - Math.random()*spread;   sy = Math.random()*spread; }
-    else if (edge===2) { sx = Math.random()*spread;       sy = H - Math.random()*spread; }
-    else               { sx = W - Math.random()*spread;   sy = H - Math.random()*spread; }
+    if (phase === 'fadeout') {
+      /* Fade the full bright circle out */
+      ctx.save();
+      ctx.globalAlpha = fadeAlpha;
+      drawFullRing(1.0);
+      ctx.restore();
+      fadeAlpha -= 0.035;
+      if (fadeAlpha <= 0) { cancelAnimationFrame(animId); return; }
+      animId = requestAnimationFrame(draw);
+      return;
+    }
 
-    const dx = cx - sx, dy = cy - sy;
-    const dist = Math.sqrt(dx*dx + dy*dy);
-    const speed = 1.4 + Math.random() * 1.2;
-    const size  = 1.5 + Math.random() * 2.5;
-    const hue   = 200 + Math.random() * 40; // blue range
-    return { x: sx, y: sy, dx: dx/dist * speed, dy: dy/dist * speed,
-             size, hue, alpha: 0, life: 0, dist, speed,
-             /* burst properties populated later */
-             bx: 0, by: 0, ba: 0 };
-  }
+    /* ── Dim base track ── */
+    ctx.beginPath();
+    ctx.arc(cx, cy, R, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(65,105,225,0.14)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
 
-  /* Spawn initial batch */
-  for (let i = 0; i < 90; i++) {
-    const p = makeParticle();
-    /* stagger: particles start at random progress toward center */
-    const frac = Math.random();
-    p.x += p.dx * (p.dist / p.speed) * frac;
-    p.y += p.dy * (p.dist / p.speed) * frac;
-    p.life = frac;
-    particles.push(p);
-  }
+    /* ── Comet tail ── */
+    const STEPS = 80;
+    for (let i = 0; i < STEPS; i++) {
+      const t   = i / STEPS;           // 0 = tail end, 1 = head
+      const a   = angle - TAIL * (1 - t);
+      const a2  = angle - TAIL * (1 - (i + 1) / STEPS);
+      const alpha = t * t * 0.85;      // quadratic fade from tail to head
 
-  function triggerBurst() {
-    if (burstTriggered) return;
-    burstTriggered = true;
-    phase = 'burst';
-    /* Give each particle a burst direction radiating from center */
-    particles.forEach(p => {
-      const ang = Math.random() * Math.PI * 2;
-      const spd = 3 + Math.random() * 5;
-      p.bx = Math.cos(ang) * spd;
-      p.by = Math.sin(ang) * spd;
-      p.ba = p.alpha; // alpha at burst moment
-    });
-  }
+      ctx.beginPath();
+      ctx.arc(cx, cy, R, a, a2);
+      // colour shifts: deep blue at tail → bright white-blue at head
+      const l = Math.round(55 + t * 40);
+      ctx.strokeStyle = `hsla(220,100%,${l}%,${alpha})`;
+      ctx.lineWidth   = 1.5 + t * 3.5;
+      ctx.lineCap     = 'round';
+      ctx.stroke();
+    }
 
-  /* Expose trigger so loader JS can call it */
-  window._loaderParticleBurst = triggerBurst;
+    /* ── Head glow dot ── */
+    const hx = cx + Math.cos(angle) * R;
+    const hy = cy + Math.sin(angle) * R;
 
-  function tick() {
-    ctx.clearRect(0, 0, W, H);
+    // outer glow
+    const g = ctx.createRadialGradient(hx, hy, 0, hx, hy, 18);
+    g.addColorStop(0,   'rgba(200,220,255,0.95)');
+    g.addColorStop(0.25,'rgba(127,168,255,0.70)');
+    g.addColorStop(1,   'rgba(65,105,225,0)');
+    ctx.beginPath();
+    ctx.arc(hx, hy, 18, 0, Math.PI * 2);
+    ctx.fillStyle = g;
+    ctx.fill();
 
-    if (phase === 'converge') {
-      /* Respawn dead particles */
-      while (particles.length < 90) particles.push(makeParticle());
+    // hard bright core
+    ctx.beginPath();
+    ctx.arc(hx, hy, 3.5, 0, Math.PI * 2);
+    ctx.fillStyle = '#fff';
+    ctx.fill();
 
-      particles.forEach((p, i) => {
-        const travelFrames = p.dist / p.speed;
-        p.life += 1 / travelFrames;
-        p.x += p.dx;
-        p.y += p.dy;
-        /* fade in/out */
-        if (p.life < 0.2)       p.alpha = p.life / 0.2;
-        else if (p.life < 0.75) p.alpha = 1;
-        else                    p.alpha = 1 - (p.life - 0.75) / 0.25;
-        p.alpha = Math.max(0, Math.min(1, p.alpha));
+    /* ── Flash overlay on complete ── */
+    if (phase === 'flash') {
+      ctx.save();
+      ctx.globalAlpha = flashAlpha;
+      drawFullRing(flashAlpha);
+      ctx.restore();
+      flashAlpha -= 0.04;
+      if (flashAlpha <= 0) { phase = 'fadeout'; fadeAlpha = 0.85; }
+    }
 
-        if (p.life >= 1) {
-          particles[i] = makeParticle(); /* recycle */
-          return;
-        }
-
-        /* Tail: 3 fading dots behind */
-        for (let t = 1; t <= 3; t++) {
-          const tx = p.x - p.dx * t * 2;
-          const ty = p.y - p.dy * t * 2;
-          ctx.beginPath();
-          ctx.arc(tx, ty, p.size * (1 - t*0.2), 0, Math.PI*2);
-          ctx.fillStyle = `hsla(${p.hue},100%,75%,${p.alpha * (0.4 - t*0.1)})`;
-          ctx.fill();
-        }
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
-        ctx.fillStyle = `hsla(${p.hue},100%,85%,${p.alpha * 0.9})`;
-        ctx.fill();
-      });
-
-    } else if (phase === 'burst') {
-      let alive = 0;
-      particles.forEach(p => {
-        p.x  += p.bx;
-        p.y  += p.by;
-        p.bx *= 0.96; p.by *= 0.96;
-        p.ba -= 0.018;
-        if (p.ba <= 0) return;
-        alive++;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
-        ctx.fillStyle = `hsla(${p.hue},100%,85%,${Math.max(0, p.ba)})`;
-        ctx.fill();
-      });
-      if (alive === 0) {
-        phase = 'done';
-        canvas.style.display = 'none';
-        cancelAnimationFrame(animId);
-        return;
+    /* ── Advance angle ── */
+    if (phase === 'orbit') {
+      angle += speed;
+    } else if (phase === 'complete') {
+      speed = Math.min(speed * 1.08, 0.18);  // accelerate
+      angle += speed;
+      if (angle >= completeLap) {
+        angle  = completeLap;
+        phase  = 'flash';
+        flashAlpha = 1.0;
       }
     }
 
-    animId = requestAnimationFrame(tick);
+    animId = requestAnimationFrame(draw);
   }
-  animId = requestAnimationFrame(tick);
+
+  /* Draw a full bright circle (used for flash) */
+  function drawFullRing(a) {
+    ctx.beginPath();
+    ctx.arc(cx, cy, R, 0, Math.PI * 2);
+    ctx.strokeStyle = `rgba(180,210,255,${a * 0.9})`;
+    ctx.lineWidth   = 4;
+    ctx.shadowColor = '#7fa8ff';
+    ctx.shadowBlur  = 20;
+    ctx.stroke();
+    ctx.shadowBlur  = 0;
+  }
+
+  /* Called by finishLoader to trigger arc completion */
+  window._loaderArcComplete = function() {
+    if (phase !== 'orbit') return;
+    phase = 'complete';
+    // Target: next full revolution from current angle
+    const laps = Math.ceil(angle / (Math.PI * 2));
+    completeLap = laps * Math.PI * 2;
+    if (completeLap <= angle) completeLap += Math.PI * 2;
+  };
+
+  animId = requestAnimationFrame(draw);
 })();
 
 /* ── PAGE LOADER ── */
@@ -3864,15 +3805,14 @@ window.addEventListener('scroll', () => {
     if (pct >= 85) clearInterval(fakeInterval);
   }, 80);
 
-  /* Engine model loaded → finish bar, trigger burst, hide loader */
+  /* Engine model loaded → finish bar, trigger arc complete, hide loader */
   function finishLoader() {
     barFill.style.width = '100%';
-    /* trigger particle burst immediately */
-    if (window._loaderParticleBurst) window._loaderParticleBurst();
+    if (window._loaderArcComplete) window._loaderArcComplete();
     setTimeout(() => {
       loader.classList.add('fade-out');
       setTimeout(() => loader.remove(), 900);
-    }, 400);
+    }, 600);
   }
 
   /* Listen for engine-ready signal or fall back after 6s */
