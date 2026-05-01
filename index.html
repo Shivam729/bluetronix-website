@@ -152,7 +152,10 @@
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { background: var(--white); color: var(--ink); font-family: 'Barlow', sans-serif; overflow-x: hidden; line-height: 1.6; }
+body {
+  background: #050a1e url('./space-bg.jpg') center center / cover fixed no-repeat;
+  color: var(--ink); font-family: 'Barlow', sans-serif; overflow-x: hidden; line-height: 1.6;
+}
 
 
 /* ── NATIVE SCROLLBAR POLISH ── */
@@ -435,7 +438,7 @@ nav.scrolled .nav-inner {
 
 /* ── STATS BAND ── */
 .stats-band {
-  background: url('./night-sky.jpg') center 45% / cover no-repeat;
+  background: url('./space-bg.jpg') center 45% / cover no-repeat;
   position: relative; overflow: hidden;
   display: grid; grid-template-columns: repeat(4, 1fr);
 }
@@ -517,7 +520,7 @@ h2.section-heading.on-dark .accent { color: var(--blue); }
 .cc-arrow { position: absolute; bottom: 24px; right: 24px; color: var(--blue); font-size: 18px; opacity: 0; transition: opacity 0.2s, transform 0.2s; }
 
 /* ── PATHWAY ── */
-.pathway-section { background: url('./night-sky.jpg') center 40% / cover no-repeat; padding: 48px 0; position: relative; }
+.pathway-section { background: url('./space-bg.jpg') center 40% / cover no-repeat; padding: 48px 0; position: relative; }
 .pathway-section::before { content:''; position:absolute; inset:0; background:rgba(5,10,30,0.62); z-index:0; }
 .pathway-section > * { position: relative; z-index: 1; }
 .pathway-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin-top: 32px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.10); border-radius: 2px; overflow: hidden; }
@@ -633,7 +636,7 @@ details[open] .faq-icon {
 }
 
 /* ── CONTACT ── */
-.contact-section { background: url('./night-sky.jpg') center 60% / cover no-repeat; padding: 48px 0; position: relative; }
+.contact-section { background: url('./space-bg.jpg') center 60% / cover no-repeat; padding: 48px 0; position: relative; }
 .contact-section::before { content:''; position:absolute; inset:0; background:rgba(5,10,30,0.64); z-index:0; }
 .contact-section > * { position: relative; z-index: 1; }
 .contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-top: 32px; align-items: start; }
@@ -700,7 +703,7 @@ details[open] .faq-icon {
 }
 
 /* ── FOOTER ── */
-footer { background: url('./night-sky.jpg') center 80% / cover no-repeat; padding: 56px 0 24px; position: relative; }
+footer { background: url('./space-bg.jpg') center 80% / cover no-repeat; padding: 56px 0 24px; position: relative; }
 footer::before { content:''; position:absolute; inset:0; background:rgba(4,8,24,0.75); z-index:0; }
 footer > * { position: relative; z-index: 1; }
 .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
@@ -720,7 +723,7 @@ footer > * { position: relative; z-index: 1; }
 .wa-btn:hover { transform: scale(1.08); }
 
 /* ── STIGMA BUSTER ── */
-.stigma-section { background: url('./night-sky.jpg') center 20% / cover no-repeat; padding: 48px 0; position: relative; overflow: hidden; }
+.stigma-section { background: url('./space-bg.jpg') center 20% / cover no-repeat; padding: 48px 0; position: relative; overflow: hidden; }
 .stigma-section::before { content:''; position:absolute; inset:0; background:rgba(5,10,30,0.62); z-index:0; }
 .stigma-section > * { position: relative; z-index: 1; }
 .stigma-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
@@ -753,7 +756,7 @@ footer > * { position: relative; z-index: 1; }
 .gstat-sub { font-size: 14px; color: var(--body); margin-top: 6px; line-height: 1.4; }
 
 /* ── GOVT BACKING CARDS ── */
-.backing-section { background: url('./night-sky.jpg') center 55% / cover no-repeat; padding: 48px 0; position: relative; overflow: hidden; }
+.backing-section { background: url('./space-bg.jpg') center 55% / cover no-repeat; padding: 48px 0; position: relative; overflow: hidden; }
 .backing-section::before { content:''; position:absolute; inset:0; background:rgba(5,10,30,0.64); z-index:0; }
 .backing-section > * { position: relative; z-index: 1; }
 .backing-section .section-label { color: rgba(255,255,255,0.55); }
@@ -780,7 +783,7 @@ footer > * { position: relative; z-index: 1; }
 /* Hint text: "Hover" on mouse, "Tap" on touch */
 @media(hover: hover) and (pointer: fine) { .myth-interact-hint::after { content: 'Hover'; } .myth-interact-hint { display: none; } }
 .myth-interact-hint { display: inline; }
-.myth-section { background: url('./night-sky.jpg') center 50% / cover no-repeat; padding: 48px 0; position: relative; overflow: hidden; }
+.myth-section { background: url('./space-bg.jpg') center 50% / cover no-repeat; padding: 48px 0; position: relative; overflow: hidden; }
 .myth-section::before { content:''; position:absolute; inset:0; background:rgba(5,10,30,0.62); z-index:0; }
 .myth-section > * { position: relative; z-index: 1; }
 .myth-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 20px; margin-top: 32px; }
@@ -836,7 +839,7 @@ footer > * { position: relative; z-index: 1; }
 .chart-highlight strong { color: var(--navy); }
 
 /* ── PARENT TRUST ── */
-.trust-section { background: url('./night-sky.jpg') center 35% / cover no-repeat; padding: 48px 0; position: relative; overflow: hidden; }
+.trust-section { background: url('./space-bg.jpg') center 35% / cover no-repeat; padding: 48px 0; position: relative; overflow: hidden; }
 .trust-section::before { content:''; position:absolute; inset:0; background:rgba(5,10,30,0.64); z-index:0; }
 .trust-section > * { position: relative; z-index: 2; }
 .trust-section .section-label { color: rgba(255,255,255,0.55); }
@@ -1139,7 +1142,7 @@ footer > *:not(canvas) { position: relative; z-index: 2; }
 .stigma-section, .backing-section, .myth-section, .chart-section,
 .trust-section, .pathway-section, .about-section, .faq-section,
 .contact-section, .stats-band {
-  background: rgba(5, 10, 30, 0.76) !important;
+  background: rgba(5, 10, 30, 0.82) !important;
   border-top: none !important;
   border-bottom: none !important;
 }
@@ -2481,13 +2484,13 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
   document.body.insertBefore(canvas, document.body.firstChild);
 
   /* ── RENDERER ── */
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.2;
-  renderer.setClearColor(0x060d1f, 1);   // dark navy — matches night sky theme
+  renderer.setClearColor(0x000000, 0);   // transparent — space-bg.jpg shows through
 
   const scene  = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(48, 1, 0.1, 200);
@@ -3566,7 +3569,7 @@ window.addEventListener('scroll', () => {
 }
 .loader-bg {
   position: absolute; inset: 0;
-  background: #04081a;
+  background: #050a1e url('./space-bg.jpg') center center / cover no-repeat;
 }
 /* Subtle radial glow in center */
 .loader-bg::after {
