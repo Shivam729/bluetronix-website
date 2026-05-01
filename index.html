@@ -1271,8 +1271,13 @@ footer { background: rgba(3, 6, 20, 0.88) !important; border-top: none !importan
   transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-/* Contact form on dark */
-.form-wrap { background: rgba(10,18,50,0.80) !important; border-color: rgba(255,255,255,0.12) !important; backdrop-filter: blur(16px) !important; }
+/* Contact form — white card */
+.form-wrap { background: #ffffff !important; border-color: #e2e5f0 !important; backdrop-filter: none !important; }
+.form-wrap h3 { color: #1a1a2e !important; }
+.form-wrap > p { color: #3d3d52 !important; }
+.form-label { color: #6b6b80 !important; }
+.form-input, .form-select, .form-textarea { background: #f8f9ff !important; border-color: #e2e5f0 !important; color: #1a1a2e !important; }
+.form-input::placeholder, .form-textarea::placeholder { color: #9b9baa !important; }
 
 /* Section star canvases — keep but very subtle so they don't compete */
 .section-star-canvas { opacity: 0.25 !important; }
