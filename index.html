@@ -176,29 +176,35 @@ body::before {
 
 /* ── NAV — glass morphism ── */
 nav {
-  position: fixed; top: 0; left: 0; right: 0;
+  /* Always centered — only width/radius/bg animate, no position jump */
+  position: fixed; top: 0; left: 50%; transform: translateX(-50%);
   z-index: 200;
+  width: 100%; max-width: 100%;
   border-radius: 0;
-  background: rgba(5, 10, 30, 0.60);
+  background: rgba(5, 10, 30, 0.62);
   backdrop-filter: blur(24px) saturate(1.8);
   -webkit-backdrop-filter: blur(24px) saturate(1.8);
-  border-bottom: 1px solid rgba(100, 140, 255, 0.15);
-  box-shadow: 0 4px 24px rgba(0,0,0,0.30);
-  transition: all 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+  border: 1px solid transparent;
+  border-bottom-color: rgba(100, 140, 255, 0.12);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.25);
+  transition:
+    width       0.55s cubic-bezier(0.34, 1.26, 0.64, 1),
+    max-width   0.55s cubic-bezier(0.34, 1.26, 0.64, 1),
+    top         0.55s cubic-bezier(0.34, 1.26, 0.64, 1),
+    border-radius 0.55s cubic-bezier(0.34, 1.26, 0.64, 1),
+    background  0.55s ease,
+    border-color 0.55s ease,
+    box-shadow  0.55s ease;
 }
 nav.scrolled {
   top: 12px;
-  left: 50%; right: auto;
-  transform: translateX(-50%);
-  width: calc(100% - 48px); max-width: 1200px;
-  border-radius: 36px;
-  background: rgba(4, 8, 24, 0.82);
-  border: 1px solid rgba(100, 140, 255, 0.28);
-  box-shadow: 0 8px 40px rgba(0,0,0,0.50), 0 1px 0 rgba(255,255,255,0.06) inset;
+  width: calc(100% - 48px); max-width: 1160px;
+  border-radius: 40px;
+  background: rgba(4, 8, 24, 0.84);
+  border-color: rgba(100, 140, 255, 0.22);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.50), 0 1px 0 rgba(255,255,255,0.07) inset;
 }
-nav.scrolled .nav-inner {
-  padding: 0 24px;
-}
+nav.scrolled .nav-inner { padding: 0 24px; }
 .nav-inner {
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 5vw; height: 60px; max-width: 1400px; margin: 0 auto;
@@ -251,23 +257,21 @@ nav.scrolled .nav-inner {
     rgba(5,10,30,0.10) 0%,
     rgba(5,10,30,0.55) 100%);
 }
-/* Centered hero island — soft radial glow, no hard box edges */
+/* Frosted glass hero island */
 .hero-content {
   position: relative; z-index: 2;
   display: flex; flex-direction: column; align-items: center; text-align: center;
   max-width: 700px; width: calc(100% - 48px);
   padding: 52px 48px 56px;
-}
-/* Soft background glow behind the text — fades to transparent at all edges */
-.hero-content::before {
-  content: '';
-  position: absolute; inset: -40px -60px;
-  background: radial-gradient(ellipse 80% 85% at 50% 50%,
-    rgba(5, 10, 30, 0.78) 0%,
-    rgba(5, 10, 30, 0.55) 45%,
-    rgba(5, 10, 30, 0.20) 70%,
-    transparent 100%);
-  pointer-events: none; z-index: -1;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(20px) saturate(1.6);
+  -webkit-backdrop-filter: blur(20px) saturate(1.6);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  box-shadow:
+    0 0 0 1px rgba(65, 105, 225, 0.12),
+    0 16px 48px rgba(0, 0, 0, 0.50),
+    inset 0 1px 0 rgba(255, 255, 255, 0.10);
 }
 /* Progress bar for slides */
 .hero-progress {
@@ -988,8 +992,7 @@ footer > * { position: relative; z-index: 1; }
   .nav-logo-name { font-size: 20px; }
   .nav-logo-sub { display: block; font-size: 14px; }
   #mobile-active-section { display: block; margin-left: auto; font-size: 13px; font-weight: 700; color: #1a3a8f; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.8; }
-  nav { top: 0; left: 0; right: 0; width: 100%; transform: none; border-radius: 0; }
-  nav.scrolled { top: 10px; left: 50%; right: auto; transform: translateX(-50%); width: calc(100% - 24px); border-radius: 28px; }
+  nav.scrolled { top: 10px; width: calc(100% - 24px); border-radius: 28px; }
   .hero { padding-top: 76px; }
   .footer-grid { grid-template-columns: 1fr; }
   .pathway-grid { grid-template-columns: 1fr; }
