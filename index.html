@@ -228,7 +228,7 @@ nav.scrolled .nav-inner {
 /* ── HERO ── */
 .hero {
   min-height: 90vh;
-  display: flex; align-items: center;
+  display: flex; align-items: center; justify-content: center;
   position: relative; overflow: hidden;
 }
 /* Full-bleed crossfade slides as hero background */
@@ -247,27 +247,25 @@ nav.scrolled .nav-inner {
   from { transform: scale(1.0) translate(0,0); }
   to   { transform: scale(1.08) translate(-1%,1%); }
 }
-/* Dark vignette: heavier on left (text), lighter on right (image visible) */
+/* Subtle full-screen vignette — darker edges, lighter center so island stands out */
 .hero::before {
   content: '';
   position: absolute; inset: 0; z-index: 1;
-  background:
-    linear-gradient(to right,
-      rgba(5,10,30,0.90) 0%,
-      rgba(5,10,30,0.70) 40%,
-      rgba(5,10,30,0.25) 70%,
-      rgba(5,10,30,0.10) 100%),
-    linear-gradient(to bottom,
-      rgba(5,10,30,0.35) 0%,
-      transparent 30%,
-      transparent 70%,
-      rgba(5,10,30,0.50) 100%);
+  background: radial-gradient(ellipse 80% 70% at 50% 50%,
+    rgba(5,10,30,0.10) 0%,
+    rgba(5,10,30,0.55) 100%);
 }
+/* Island card — centered, frosted glass */
 .hero-content {
-  padding: 80px 5vw 80px;
-  display: flex; flex-direction: column; justify-content: center;
   position: relative; z-index: 2;
-  max-width: 760px;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  max-width: 680px; width: calc(100% - 48px);
+  padding: 48px 48px 52px;
+  background: rgba(5, 10, 30, 0.55);
+  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(100, 140, 255, 0.18);
+  border-radius: 16px;
+  box-shadow: 0 8px 48px rgba(0,0,0,0.45), 0 0 0 1px rgba(65,105,225,0.10);
 }
 /* Progress bar for slides */
 .hero-progress {
@@ -293,7 +291,7 @@ nav.scrolled .nav-inner {
   backdrop-filter: blur(8px);
   color: rgba(255,255,255,0.50); font-size: 15px; font-weight: 700; letter-spacing: 0.08em;
   text-transform: uppercase; padding: 12px 20px; margin-bottom: 20px;
-  width: fit-content; max-width: 100%; border-radius: 4px;
+  width: fit-content; max-width: 100%; border-radius: 4px; align-self: center;
   box-shadow: 0 0 0 1px rgba(100,140,255,0.25), 0 8px 32px rgba(65,105,225,0.18);
 }
 .hero-badge::before { content: ''; width: 7px; height: 7px; background: #7fa8ff; border-radius: 50%; flex-shrink: 0; box-shadow: 0 0 8px #7fa8ff; }
@@ -330,13 +328,13 @@ nav.scrolled .nav-inner {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: clamp(20px, 3vw, 32px);
   font-weight: 400; color: rgba(255,255,255,0.50);
-  margin-top: 4px; margin-bottom: 24px; max-width: 540px;
+  margin-top: 4px; margin-bottom: 20px; max-width: 100%; text-align: center;
 }
 .hero-desc {
-  font-size: 18px; color: rgba(255,255,255,0.50);
-  line-height: 1.8; max-width: 480px; margin-bottom: 40px;
+  font-size: 16px; color: rgba(255,255,255,0.50);
+  line-height: 1.8; max-width: 100%; margin-bottom: 32px; text-align: center;
 }
-.hero-actions { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+.hero-actions { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; justify-content: center; }
 .btn-blue {
   background: var(--blue); color: #fff;
   padding: 16px 36px; font-size: 16px; font-weight: 700;
@@ -1030,7 +1028,7 @@ footer > * { position: relative; z-index: 1; }
   }
   /* Hero heading size down slightly */
   .hero h1 { font-size: clamp(52px, 14vw, 80px); }
-  .hero-content { padding: 72px 5vw 100px; }
+  .hero-content { padding: 36px 24px 40px; width: calc(100% - 32px); }
 }
 
 /* ── CUSTOM CURSOR ── */
