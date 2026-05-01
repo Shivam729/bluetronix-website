@@ -2555,8 +2555,9 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
   loader.load(
     './moto_engine.fbx',
     (model) => {
-      /* ── Hide loading UI ── */
+      /* ── Hide loading UI + signal page loader ── */
       if (loadingEl) loadingEl.style.display = 'none';
+      window.dispatchEvent(new Event('engine-ready'));
 
       /* 1. Collect all meshes and bake world transforms */
       const rawMeshes = [];
@@ -3463,6 +3464,251 @@ window.addEventListener('scroll', () => {
     }
   }
 });
+</script>
+
+<!-- ═══ SCROLL PROGRESS BAR ═══ -->
+<div id="scroll-prog-track">
+  <div id="scroll-prog-fill"></div>
+</div>
+
+<!-- ═══ MOBILE BOTTOM BAR ═══ -->
+<div class="mobile-bar" id="mobile-bar">
+  <a href="tel:9746835055" class="mob-btn mob-call">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.22 1.18 2 2 0 012.22 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.18 6.18l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg>
+    Call Now
+  </a>
+  <a href="#enquiry-form" class="mob-btn mob-enquiry">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    Admission Enquiry
+  </a>
+</div>
+
+<!-- ═══ PAGE LOADER ═══ -->
+<div id="page-loader">
+  <div class="loader-bg"></div>
+  <div class="loader-content">
+    <div class="loader-logo-wrap">
+      <img src="./loader-bg.png" alt="Bluetronix" class="loader-logo"/>
+      <div class="loader-glow"></div>
+    </div>
+    <div class="loader-name">BLUETRONIX</div>
+    <div class="loader-sub">Private ITI · Est. 1968 · Palluruthy, Kochi</div>
+    <div class="loader-bar-wrap">
+      <div class="loader-bar-fill" id="loader-bar-fill"></div>
+      <div class="loader-bar-shimmer"></div>
+    </div>
+    <div class="loader-particles" id="loader-particles"></div>
+  </div>
+</div>
+
+<style>
+/* ── SCROLL PROGRESS BAR ── */
+#scroll-prog-track {
+  position: fixed; top: 0; left: 0; right: 0; height: 3px;
+  z-index: 9999; pointer-events: none;
+  background: rgba(255,255,255,0.08);
+}
+#scroll-prog-fill {
+  height: 100%; width: 0%;
+  background: linear-gradient(to right, #4169E1, #7fa8ff, #4169E1);
+  background-size: 200% 100%;
+  animation: prog-shimmer 2s linear infinite;
+  transition: width 0.1s linear;
+}
+@keyframes prog-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── MOBILE BOTTOM BAR ── */
+.mobile-bar {
+  display: none;
+  position: fixed; bottom: 0; left: 0; right: 0;
+  z-index: 998;
+  padding: 10px 16px 14px;
+  background: rgba(4,8,24,0.96);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255,255,255,0.10);
+  gap: 10px;
+}
+@media(max-width: 768px) {
+  .mobile-bar { display: flex; }
+  /* Push WhatsApp button up above bar */
+  .wa-float, .wa-btn { bottom: 80px !important; }
+}
+.mob-btn {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  gap: 8px; padding: 13px 12px;
+  font-size: 13px; font-weight: 700; letter-spacing: 0.06em;
+  text-transform: uppercase; text-decoration: none;
+  border-radius: 4px; transition: opacity 0.2s, transform 0.15s;
+}
+.mob-btn:active { transform: scale(0.97); opacity: 0.85; }
+.mob-call {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.20);
+  color: #fff;
+}
+.mob-enquiry {
+  background: #4169E1;
+  border: 1px solid transparent;
+  color: #fff;
+}
+
+/* ── PAGE LOADER ── */
+#page-loader {
+  position: fixed; inset: 0; z-index: 99999;
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+#page-loader.fade-out {
+  opacity: 0; transform: scale(1.04); pointer-events: none;
+}
+.loader-bg {
+  position: absolute; inset: 0;
+  background: #04081a;
+}
+/* Subtle radial glow in center */
+.loader-bg::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 50% at 50% 50%,
+    rgba(65,105,225,0.18) 0%, transparent 70%);
+}
+.loader-content {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 18px; text-align: center;
+}
+.loader-logo-wrap {
+  position: relative; width: 160px; height: 160px;
+  display: flex; align-items: center; justify-content: center;
+  animation: loader-float 3s ease-in-out infinite;
+}
+@keyframes loader-float {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+.loader-logo {
+  width: 140px; height: 140px; object-fit: contain;
+  position: relative; z-index: 2;
+  filter: drop-shadow(0 0 24px rgba(65,105,225,0.55));
+  animation: loader-logo-in 0.9s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+@keyframes loader-logo-in {
+  from { opacity: 0; transform: scale(0.7); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.loader-glow {
+  position: absolute; inset: -20px;
+  background: radial-gradient(ellipse at center,
+    rgba(65,105,225,0.30) 0%, transparent 65%);
+  animation: loader-pulse 2s ease-in-out infinite;
+}
+@keyframes loader-pulse {
+  0%,100% { opacity: 0.6; transform: scale(1); }
+  50%      { opacity: 1;   transform: scale(1.12); }
+}
+.loader-name {
+  font-family: 'EB Garamond', Garamond, Georgia, serif;
+  font-size: 36px; font-weight: 800;
+  color: #fff; letter-spacing: 0.22em; text-transform: uppercase;
+  animation: loader-text-in 1s 0.3s cubic-bezier(0.22,1,0.36,1) both;
+}
+@keyframes loader-text-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.loader-sub {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+  text-transform: uppercase; color: rgba(255,255,255,0.45);
+  animation: loader-text-in 1s 0.5s cubic-bezier(0.22,1,0.36,1) both;
+}
+.loader-bar-wrap {
+  width: 200px; height: 2px;
+  background: rgba(255,255,255,0.10); position: relative; overflow: hidden;
+  animation: loader-text-in 0.6s 0.7s both;
+  border-radius: 2px;
+}
+.loader-bar-fill {
+  height: 100%; width: 0%; background: #4169E1;
+  transition: width 0.15s linear; border-radius: 2px;
+}
+.loader-bar-shimmer {
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.5) 50%, transparent 100%);
+  background-size: 60px 100%;
+  animation: shimmer-sweep 1.2s linear infinite;
+}
+@keyframes shimmer-sweep {
+  from { background-position: -60px 0; }
+  to   { background-position: 260px 0; }
+}
+/* Floating particles around the logo */
+.loader-particles { position: absolute; inset: 0; pointer-events: none; }
+.lp { position: absolute; width: 3px; height: 3px; border-radius: 50%;
+  background: #7fa8ff; animation: lp-float linear infinite; opacity: 0; }
+@keyframes lp-float {
+  0%   { opacity: 0; transform: translateY(0) scale(0.5); }
+  20%  { opacity: 0.8; }
+  80%  { opacity: 0.6; }
+  100% { opacity: 0; transform: translateY(-120px) scale(1.5); }
+}
+</style>
+
+<script>
+/* ── SCROLL PROGRESS ── */
+(function() {
+  const fill = document.getElementById('scroll-prog-fill');
+  window.addEventListener('scroll', () => {
+    const max = document.body.scrollHeight - window.innerHeight;
+    fill.style.width = (window.scrollY / max * 100) + '%';
+  }, { passive: true });
+})();
+
+/* ── PAGE LOADER ── */
+(function() {
+  const loader  = document.getElementById('page-loader');
+  const barFill = document.getElementById('loader-bar-fill');
+  const parts   = document.getElementById('loader-particles');
+
+  /* Spawn floating particles */
+  for (let i = 0; i < 18; i++) {
+    const p = document.createElement('div');
+    p.className = 'lp';
+    p.style.cssText = `
+      left: ${20 + Math.random() * 60}%;
+      top:  ${30 + Math.random() * 40}%;
+      animation-duration: ${2 + Math.random() * 3}s;
+      animation-delay: ${Math.random() * 2}s;
+      width: ${2 + Math.random() * 3}px;
+      height: ${2 + Math.random() * 3}px;
+      opacity: 0;
+    `;
+    parts.appendChild(p);
+  }
+
+  /* Progress bar fills over ~2s then waits for engine */
+  let pct = 0;
+  const fakeInterval = setInterval(() => {
+    pct = Math.min(pct + Math.random() * 4, 85);
+    barFill.style.width = pct + '%';
+    if (pct >= 85) clearInterval(fakeInterval);
+  }, 80);
+
+  /* Engine model loaded → finish bar and hide loader */
+  function finishLoader() {
+    barFill.style.width = '100%';
+    setTimeout(() => {
+      loader.classList.add('fade-out');
+      setTimeout(() => loader.remove(), 900);
+    }, 400);
+  }
+
+  /* Listen for engine-ready signal or fall back after 6s */
+  window.addEventListener('engine-ready', finishLoader, { once: true });
+  setTimeout(finishLoader, 6000);
+})();
 </script>
 
 </body>
