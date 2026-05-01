@@ -3581,18 +3581,18 @@ window.addEventListener('scroll', () => {
   gap: 18px; text-align: center;
 }
 .loader-logo-wrap {
-  position: relative; width: 160px; height: 160px;
+  position: relative; width: 260px; height: 260px;
   display: flex; align-items: center; justify-content: center;
   animation: loader-float 3s ease-in-out infinite;
 }
 @keyframes loader-float {
   0%,100% { transform: translateY(0); }
-  50%      { transform: translateY(-10px); }
+  50%      { transform: translateY(-14px); }
 }
 .loader-logo {
-  width: 140px; height: 140px; object-fit: contain;
+  width: 240px; height: 240px; object-fit: contain;
   position: relative; z-index: 2;
-  filter: drop-shadow(0 0 24px rgba(65,105,225,0.55));
+  filter: drop-shadow(0 0 40px rgba(65,105,225,0.65)) drop-shadow(0 0 80px rgba(65,105,225,0.30));
   animation: loader-logo-in 0.9s cubic-bezier(0.22,1,0.36,1) forwards;
 }
 @keyframes loader-logo-in {
