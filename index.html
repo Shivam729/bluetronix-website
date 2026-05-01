@@ -176,33 +176,24 @@ body::before {
 
 /* ── NAV — glass morphism ── */
 nav {
-  position: sticky; top: 0; z-index: 200;
-  background: rgba(255,255,255,0.15);
-  backdrop-filter: blur(32px) saturate(2.5) brightness(1.1);
-  -webkit-backdrop-filter: blur(32px) saturate(2.5) brightness(1.1);
-  border-bottom: 1px solid rgba(255,255,255,0.3);
-  box-shadow:
-    0 1px 0 rgba(255,255,255,0.4) inset,
-    0 8px 32px rgba(13,27,78,0.15);
-  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-  margin: 0;
-  width: 100%;
+  position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
+  z-index: 200;
+  width: calc(100% - 48px); max-width: 1200px;
+  border-radius: 36px;
+  background: rgba(5, 10, 30, 0.55);
+  backdrop-filter: blur(24px) saturate(1.8);
+  -webkit-backdrop-filter: blur(24px) saturate(1.8);
+  border: 1px solid rgba(100, 140, 255, 0.20);
+  box-shadow: 0 4px 32px rgba(0,0,0,0.35), 0 1px 0 rgba(255,255,255,0.06) inset;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 nav.scrolled {
-  top: 20px;
-  width: fit-content;
-  max-width: calc(100% - 40px);
-  margin: 0 auto;
-  border-radius: 36px;
-  background: rgba(255,255,255,0.50);
-  border: 1px solid rgba(255,255,255,0.4);
-  box-shadow:
-    0 1px 0 rgba(255,255,255,0.5) inset,
-    0 12px 40px rgba(13,27,78,0.20);
+  background: rgba(4, 8, 24, 0.80);
+  border-color: rgba(100, 140, 255, 0.28);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.50), 0 1px 0 rgba(255,255,255,0.06) inset;
 }
 nav.scrolled .nav-inner {
-  padding: 0 16px;
-  gap: 24px;
+  padding: 0 24px;
 }
 .nav-inner {
   display: flex; align-items: center; justify-content: space-between;
@@ -227,7 +218,8 @@ nav.scrolled .nav-inner {
 
 /* ── HERO ── */
 .hero {
-  min-height: 90vh;
+  min-height: 100vh;
+  padding-top: 92px; /* clear the fixed island nav */
   display: flex; align-items: center; justify-content: center;
   position: relative; overflow: hidden;
 }
@@ -255,7 +247,7 @@ nav.scrolled .nav-inner {
     rgba(5,10,30,0.10) 0%,
     rgba(5,10,30,0.55) 100%);
 }
-/* Island card — centered, frosted glass */
+/* Island card — centered, frosted glass, no rounded corners */
 .hero-content {
   position: relative; z-index: 2;
   display: flex; flex-direction: column; align-items: center; text-align: center;
@@ -264,7 +256,7 @@ nav.scrolled .nav-inner {
   background: rgba(5, 10, 30, 0.55);
   backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
   border: 1px solid rgba(100, 140, 255, 0.18);
-  border-radius: 16px;
+  border-radius: 0;
   box-shadow: 0 8px 48px rgba(0,0,0,0.45), 0 0 0 1px rgba(65,105,225,0.10);
 }
 /* Progress bar for slides */
@@ -986,7 +978,8 @@ footer > * { position: relative; z-index: 1; }
   .nav-logo-name { font-size: 20px; }
   .nav-logo-sub { display: block; font-size: 14px; }
   #mobile-active-section { display: block; margin-left: auto; font-size: 13px; font-weight: 700; color: #1a3a8f; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.8; }
-  nav.scrolled { top: 20px; width: calc(100% - 32px); border-radius: 30px; background: rgba(255,255,255,0.50); backdrop-filter: blur(20px); }
+  nav { top: 12px; width: calc(100% - 24px); }
+  .hero { padding-top: 80px; }
   .footer-grid { grid-template-columns: 1fr; }
   .pathway-grid { grid-template-columns: 1fr; }
   .pw-arrow { display: none; }
