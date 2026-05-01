@@ -477,7 +477,7 @@ nav.scrolled .nav-inner {
 .container { max-width: 1200px; margin: 0 auto; padding: 0 5vw; }
 section { padding: 48px 0; }
 .section-label {
-  font-size: 13px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+  font-size: 15px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
   color: var(--blue); margin-bottom: 16px;
   display: flex; align-items: center; gap: 12px;
 }
@@ -486,14 +486,15 @@ section { padding: 48px 0; }
 .section-label.center::before { display: none; }
 h2.section-heading {
   font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 900; font-size: clamp(40px, 5vw, 72px);
-  line-height: 0.95; text-transform: uppercase; color: var(--navy); letter-spacing: -0.01em;
+  font-weight: 900; font-size: clamp(32px, 5vw, 72px);
+  line-height: 1.05; text-transform: uppercase; color: var(--navy); letter-spacing: -0.01em;
+  word-break: keep-all; overflow-wrap: break-word;
 }
 h2.section-heading .accent { color: var(--blue); }
 h2.section-heading .ml { font-weight: 900; color: var(--blue); }
-h2.section-heading.on-dark { color: #fff; }
+h2.section-heading.on-dark { color: #fff; word-break: keep-all; overflow-wrap: break-word; line-height: 1.05; }
 h2.section-heading.on-dark .accent { color: var(--blue); }
-.section-sub { font-size: 17px; color: var(--body); line-height: 1.8; max-width: 580px; margin-top: 16px; }
+.section-sub { font-size: 17px; color: var(--body); line-height: 1.8; max-width: 620px; margin-top: 16px; overflow-wrap: break-word; }
 
 /* ── WHY ITI ── */
 .why-section { background: var(--white); }
@@ -737,7 +738,7 @@ footer > * { position: relative; z-index: 1; }
 .stigma-section::before { content:''; position:absolute; inset:0; background:rgba(5,10,30,0.62); z-index:0; }
 .stigma-section > * { position: relative; z-index: 1; }
 .stigma-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-.stigma-headline { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(48px,6.5vw,92px); font-weight: 900; text-transform: uppercase; color: #fff; line-height: 0.92; letter-spacing: -0.01em; }
+.stigma-headline { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(38px,6.5vw,92px); font-weight: 900; text-transform: uppercase; color: #fff; line-height: 1.0; letter-spacing: -0.01em; word-break: keep-all; overflow-wrap: break-word; }
 .stigma-headline .accent { color: var(--blue); }
 .stigma-sub { font-size: 17px; color: rgba(255,255,255,0.50); line-height: 1.8; margin-top: 20px; max-width: 460px; }
 .stigma-pill-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
@@ -1151,7 +1152,7 @@ footer > *:not(canvas) { position: relative; z-index: 2; }
 .partners-section, .why-section, .courses-section, .gstats-section,
 .stigma-section, .backing-section, .myth-section, .chart-section,
 .trust-section, .pathway-section, .about-section, .faq-section,
-.contact-section, .stats-band {
+.contact-section, .stats-band, .findus-section, .accred-section {
   background: rgba(5, 10, 30, 0.82) !important;
   border-top: none !important;
   border-bottom: none !important;
@@ -2188,12 +2189,12 @@ footer { background: rgba(3, 6, 20, 0.88) !important; border-top: none !importan
 </section>
 
 <!-- FIND US -->
-<section style="padding:0;background:var(--white);">
+<section class="findus-section">
   <div style="max-width:1200px;margin:0 auto;padding:72px 5vw;">
     <div class="section-label">Find Us</div>
-    <h2 class="section-heading">How to <span class="accent">Get Here</span></h2>
-    <p style="font-size:14px;color:var(--body);margin-top:12px;margin-bottom:32px;">Vadakkumthodam Lane, ESI Road, Palluruthy, Kochi – 682006</p>
-    <div style="border:1px solid var(--border);overflow:hidden;position:relative;">
+    <h2 class="section-heading on-dark">How to <span class="accent">Get Here</span></h2>
+    <p style="font-size:14px;color:rgba(255,255,255,0.60);margin-top:12px;margin-bottom:32px;">Vadakkumthodam Lane, ESI Road, Palluruthy, Kochi – 682006</p>
+    <div style="border:1px solid rgba(255,255,255,0.10);overflow:hidden;position:relative;border-radius:4px;">
       <iframe
         src="https://www.google.com/maps?q=Bluetronix+College+of+Engineering+Private+ITI,+ESI+Road,+Palluruthy,+Kochi,+Kerala+682006&output=embed"
         width="100%" height="420" style="border:0;display:block;" allowfullscreen=""
@@ -2206,7 +2207,7 @@ footer { background: rgba(3, 6, 20, 0.88) !important; border-top: none !importan
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="white"/></svg>
         Get Directions
       </a>
-      <a href="https://share.google/csOz4BtYvj0OCpVeA" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;border:1px solid var(--border);font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--navy);text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='var(--blue-light)'" onmouseout="this.style.background=''">
+      <a href="https://share.google/csOz4BtYvj0OCpVeA" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;border:1px solid rgba(255,255,255,0.20);font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.80);text-decoration:none;transition:background 0.2s;border-radius:2px;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background=''">
         Open in Google Maps ↗
       </a>
     </div>
